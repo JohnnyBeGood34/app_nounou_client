@@ -119,6 +119,12 @@ public class NounouBdd {
         		  COLUMN_TELEPHONE,COLUMN_DISPONIBILITE,COLUMN_CHEMIN_PHOTO,COLUMN_PASSWORD}, COLUMN_ID_NOUNOU + " LIKE \"" + id +"\"", null, null, null, null);
           return cursorToNounou(c);
     }
+    public List<Nounou> getNounouWithLogin(String login){
+        Cursor c = mDb.query(TABLE_NAME, new String[]{COLUMN_ID_NOUNOU, COLUMN_NOM, COLUMN_PRENOM, COLUMN_DATE_NAISSANCE,
+      		  COLUMN_CIVILITE,COLUMN_ADRESSE,COLUMN_EMAIL,COLUMN_TARIF_HORAIRE,COLUMN_DESCRIPTION_PRESTATION,
+      		  COLUMN_TELEPHONE,COLUMN_DISPONIBILITE,COLUMN_CHEMIN_PHOTO,COLUMN_PASSWORD}, COLUMN_EMAIL + " LIKE \"" + login +"\"", null, null, null, null);
+        return cursorToNounouList(c);
+  }
     private Nounou cursorToNounou(Cursor c){
         if (c.getCount() == 0)
               return null;

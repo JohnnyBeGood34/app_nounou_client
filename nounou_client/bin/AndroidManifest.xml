@@ -22,6 +22,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.example.nounou.ListNounou"
+            android:label="@string/title_activity_list_nounou" >
+        </activity>
+        <activity
+            android:name="com.example.nounou.ListUneNounou"
+            android:label="@string/title_activity_list_une_nounou" >
+        </activity>
+        <activity
+            android:name="com.example.nounou.PageConnexion"
+            android:label="@string/title_activity_page_connexion" >
+        </activity>
+        <activity
+            android:name="com.example.nounou.Utilisateur"
+            android:label="@string/title_activity_utilisateur" >
+        </activity>
     </application>
 
 </manifest>

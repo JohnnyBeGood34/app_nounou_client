@@ -24,7 +24,54 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
+<<<<<<< HEAD
         public static final int action_settings=0x7f080000;
+=======
+        public static final int ButtonValider=0x7f08000a;
+        public static final int action_settings=0x7f08002b;
+        public static final int buttonAn=0x7f080027;
+        public static final int buttonConnexion=0x7f080001;
+        public static final int buttonRet=0x7f080004;
+        public static final int buttonRetourConnexion=0x7f08000c;
+        public static final int buttonSup=0x7f080028;
+        public static final int buttonVal=0x7f080025;
+        public static final int container=0x7f08000e;
+        public static final int edAdresse=0x7f080018;
+        public static final int edCivilite=0x7f080016;
+        public static final int edDate=0x7f080014;
+        public static final int edDescription=0x7f08001e;
+        public static final int edDispo=0x7f080022;
+        public static final int edEmail=0x7f08001a;
+        public static final int edMdp=0x7f080024;
+        public static final int edNom=0x7f080010;
+        public static final int edPrenom=0x7f080012;
+        public static final int edTarif=0x7f08001c;
+        public static final int edTel=0x7f080020;
+        public static final int inputRecherche=0x7f080002;
+        public static final int mainListView=0x7f080000;
+        public static final int mainListViewEmp=0x7f080003;
+        public static final int password=0x7f080009;
+        public static final int pre=0x7f080026;
+        public static final int rowTextView=0x7f080029;
+        public static final int rowTextView2=0x7f08002a;
+        public static final int scroll=0x7f08000d;
+        public static final int tv=0x7f08000b;
+        public static final int tv0=0x7f080005;
+        public static final int tv1=0x7f080006;
+        public static final int tv2=0x7f080008;
+        public static final int tvAdresse=0x7f080017;
+        public static final int tvCivilite=0x7f080015;
+        public static final int tvDate=0x7f080013;
+        public static final int tvDescription=0x7f08001d;
+        public static final int tvDispo=0x7f080021;
+        public static final int tvEmail=0x7f080019;
+        public static final int tvMdp=0x7f080023;
+        public static final int tvNom=0x7f08000f;
+        public static final int tvPrenom=0x7f080011;
+        public static final int tvTarif=0x7f08001b;
+        public static final int tvTel=0x7f08001f;
+        public static final int username=0x7f080007;
+>>>>>>> 1bc8caa7cc850ce9f21b7f8b706980e3a5047a11
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;

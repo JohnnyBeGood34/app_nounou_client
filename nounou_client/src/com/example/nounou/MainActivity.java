@@ -17,6 +17,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+<<<<<<< HEAD
 		startActivity(new Intent(MainActivity.this, ListNounou.class));
 		
 		NounouBdd db = new NounouBdd(this);
@@ -41,6 +42,9 @@ public class MainActivity extends Activity {
 		db.insertNounou(nounou2);
 		db.insertNounou(nounou3);
 		db.close(); 
+=======
+		startActivity(new Intent(MainActivity.this, ListDesNounous.class));
+>>>>>>> 49a6840f31a7ec5816f1d244c03aa3774ae91567
 
 		
 		

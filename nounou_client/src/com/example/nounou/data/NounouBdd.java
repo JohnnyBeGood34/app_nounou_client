@@ -85,7 +85,6 @@ public class NounouBdd {
      * @return: le nombre de lignes éditées*/
     public int updateNounou(Nounou appInfo){
     	ContentValues values = new ContentValues();
-    	 values.put(COLUMN_ID_NOUNOU, appInfo.getIdNounou());
          values.put(COLUMN_NOM, appInfo.getNom());
          values.put(COLUMN_PRENOM, appInfo.getPrenom());
          values.put(COLUMN_DATE_NAISSANCE, appInfo.getDateDeNaissance());
@@ -98,11 +97,19 @@ public class NounouBdd {
          values.put(COLUMN_DISPONIBILITE, appInfo.getDisponibilite());
          values.put(COLUMN_CHEMIN_PHOTO, appInfo.getCheminPhoto());
          values.put(COLUMN_PASSWORD, appInfo.getPassword());
+<<<<<<< HEAD
      	return mDb.update(TABLE_NAME, values, COLUMN_ID_NOUNOU + " = '" +appInfo.getIdNounou() + "'", null);
     }
     /** supprimer une instance de Nounou */
     public int removeNounou(String idNounou){
           return mDb.delete(TABLE_NAME, COLUMN_ID_NOUNOU + " = '" +idNounou + "'", null);
+=======
+     	return mDb.update(TABLE_NAME, values, COLUMN_EMAIL + " = '" +appInfo.getEmail()+"'", null);
+    }
+    /** supprimer une instance de Nounou */
+    public int removeNounou(String idNounou){
+          return mDb.delete(TABLE_NAME, COLUMN_EMAIL + " = '" +idNounou+"'", null);
+>>>>>>> 49a6840f31a7ec5816f1d244c03aa3774ae91567
     }
 
     /** retourne toutes les instances d'application information */
@@ -113,10 +120,11 @@ public class NounouBdd {
           return cursorToNounouList(c);
     }
     /** retourne une instance de Nounou avec son id */
-    public Nounou getNounouWithId(String id){
+    public Nounou getNounouConnexion(String id){
           Cursor c = mDb.query(TABLE_NAME, new String[]{COLUMN_ID_NOUNOU, COLUMN_NOM, COLUMN_PRENOM, COLUMN_DATE_NAISSANCE,
         		  COLUMN_CIVILITE,COLUMN_ADRESSE,COLUMN_EMAIL,COLUMN_TARIF_HORAIRE,COLUMN_DESCRIPTION_PRESTATION,
-        		  COLUMN_TELEPHONE,COLUMN_DISPONIBILITE,COLUMN_CHEMIN_PHOTO,COLUMN_PASSWORD}, COLUMN_ID_NOUNOU + " LIKE \"" + id +"\"", null, null, null, null);
+        		  COLUMN_TELEPHONE,COLUMN_DISPONIBILITE,COLUMN_CHEMIN_PHOTO,COLUMN_PASSWORD}, COLUMN_EMAIL + " LIKE \"" + id +"\"", null, null, null, null);
+
           return cursorToNounou(c);
     }
     public List<Nounou> getNounouWithLogin(String login){

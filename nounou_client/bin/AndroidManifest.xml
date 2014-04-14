@@ -38,6 +38,18 @@
             android:name="com.example.nounou.Utilisateur"
             android:label="@string/title_activity_utilisateur" >
         </activity>
+        <activity
+            android:name="com.example.nounou.InscriptionNounou"
+            android:label="@string/title_activity_inscription_nounou" >
+        </activity>
+        <activity
+            android:name="com.example.nounou.Test"
+            android:label="@string/title_activity_test" >
+        </activity>
+        <activity
+            android:name="com.example.nounou.ListDesNounous"
+            android:label="@string/title_activity_list_des_nounous" >
+        </activity>
     </application>
 
 </manifest>

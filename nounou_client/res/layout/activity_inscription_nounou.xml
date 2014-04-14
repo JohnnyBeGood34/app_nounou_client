@@ -23,11 +23,27 @@
 
     
 
-
+	<TextView
+        android:id="@+id/tvId"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text="Id:" />
+    <EditText
+        android:id="@+id/edId"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvId"
+        android:ems="10"
+        android:singleLine="true" /> 
+        
+    
+    
     <TextView
         android:id="@+id/tvNom"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/edId"
         android:ems="10"
         android:text="Nom:" />
     <EditText
@@ -36,7 +52,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvNom"
         android:ems="10"
-        android:singleLine="true" />    
+        android:singleLine="true" />  
+        
+    
+    
+    
     <TextView
         android:id="@+id/tvPrenom"
         android:layout_width="fill_parent"
@@ -51,6 +71,9 @@
         android:layout_below="@+id/tvPrenom"
         android:ems="10"
         android:singleLine="true" />
+    
+    
+    
     <TextView
         android:id="@+id/tvDate"
         android:layout_width="fill_parent"
@@ -198,14 +221,6 @@
     android:background="@drawable/roundrect"
         android:text="Annuler" />
     
-    <Button
-        android:id="@+id/buttonSup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/buttonAn"
-        android:layout_alignBottom="@+id/buttonAn"
-    android:background="@drawable/roundrect"
-        android:text="Supprimer profil" />
     
       </LinearLayout>
 

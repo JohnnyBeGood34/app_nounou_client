@@ -8,5 +8,8 @@
     <string name="title_activity_list_une_nounou">ListUneNounou</string>
     <string name="title_activity_page_connexion">PageConnexion</string>
     <string name="title_activity_utilisateur">Utilisateur</string>
+    <string name="title_activity_inscription_nounou">InscriptionNounou</string>
+    <string name="title_activity_test">Test</string>
+    <string name="title_activity_list_des_nounous">ListDesNounous</string>
 
 </resources>

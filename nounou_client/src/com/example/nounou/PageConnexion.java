@@ -36,21 +36,23 @@ public class PageConnexion extends Activity {
 		ret.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
-        		Intent intent=new Intent(PageConnexion.this,ListNounou.class);
+        		Intent intent=new Intent(PageConnexion.this,ListDesNounous.class);
     			startActivity(intent);
         	}
         });
 		val.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                verificationLogin(et.getText().toString(),pass.getText().toString());           
+                verificationLogin(et.getText().toString(),pass.getText().toString()); 
             }
         });
 	}
 	void verificationLogin(String ets,String pass){
 		final NounouBdd db=new NounouBdd(this);
 		db.open();
+
     	List<Nounou> nounous =db.getNounouWithLogin(ets);
+    	
     	if(nounous.isEmpty())
     	{
     		Toast.makeText(PageConnexion.this,"Veuillez entrer un login correcte!", Toast.LENGTH_SHORT).show();

@@ -44,7 +44,7 @@ public class Utilisateur extends Activity {
 		/*IL faut récupérer l'ID de la sessions !!!!!!!!!*/
 		Bundle extra = getIntent().getExtras();
         final String  Variable = extra.getString("id");
-        Nounou nounous=db.getNounouWithId(Variable);
+        Nounou nounous=db.getNounouConnexion(Variable);
         
 		
 		
@@ -67,7 +67,7 @@ public class Utilisateur extends Activity {
 		an.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
-        		Intent intent=new Intent(Utilisateur.this,ListNounou.class);
+        		Intent intent=new Intent(Utilisateur.this,ListDesNounous.class);
     			startActivity(intent);
         	}
 		});
@@ -77,30 +77,30 @@ public class Utilisateur extends Activity {
         		
         		Nounou nounous= new Nounou();
         		nounous.setNom(nom.getText().toString());
-        		nounous.setNom(prenom.getText().toString());
-        		nounous.setNom(dateDeNaissance.getText().toString());
-        		nounous.setNom(civilite.getText().toString());
-        		nounous.setNom(adresse.getText().toString());
-        		nounous.setNom(email.getText().toString());
-        		nounous.setNom(tarifHoraire.getText().toString());
-        		nounous.setNom(descriptionPrestation.getText().toString());
-        		nounous.setNom(telephone.getText().toString());
-        		nounous.setNom(disponibilite.getText().toString());
-        		nounous.setNom(password.getText().toString());
+        		nounous.setPrenom(prenom.getText().toString());
+        		nounous.setDateDeNaissance(dateDeNaissance.getText().toString());
+        		nounous.setCivilite(civilite.getText().toString());
+        		nounous.setAdresse(adresse.getText().toString());
+        		nounous.setEmail(email.getText().toString());
+        		nounous.setTarifHoraire(tarifHoraire.getText().toString());
+        		nounous.setDescriptionPrestation(descriptionPrestation.getText().toString());
+        		nounous.setTelephone(telephone.getText().toString());
+        		nounous.setDisponibilite(disponibilite.getText().toString());
+        		nounous.setPassword(password.getText().toString());
                 		
 				//Log.i("visiteur",nounous.toString());
                 db.updateNounou(nounous);
         		
-        		Intent intent=new Intent(Utilisateur.this,Utilisateur.class);
+        		Intent intent=new Intent(Utilisateur.this,ListDesNounous.class);
     			startActivity(intent);
         	}
 		});
 		sup.setOnClickListener(new OnClickListener() {
-        	@Override
+			@Override
         	public void onClick(View v) {
-        		db.removeNounou(Variable);
-        		
-        		Intent intent=new Intent(Utilisateur.this,ListNounou.class);
+				Log.i("visiteur",Variable);
+				db.removeNounou(Variable);
+        		Intent intent=new Intent(Utilisateur.this,ListDesNounous.class);
     			startActivity(intent);
         	}
 		});

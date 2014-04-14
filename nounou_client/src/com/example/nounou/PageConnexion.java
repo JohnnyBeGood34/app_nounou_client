@@ -13,6 +13,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -53,7 +54,7 @@ public class PageConnexion extends Activity {
     	List<Nounou> nounous =db.getNounouWithLogin(ets);
     	if(nounous.isEmpty())
     	{
-    		Toast.makeText(PageConnexion.this,"Veuillez entrer un login correcte!", Toast.LENGTH_SHORT).show();
+    		Toast.makeText(PageConnexion.this,"Veuillez entrer un login correct!", Toast.LENGTH_SHORT).show();
     	}
     	else
     	{

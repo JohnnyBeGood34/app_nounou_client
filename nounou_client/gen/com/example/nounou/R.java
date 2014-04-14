@@ -24,9 +24,6 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-<<<<<<< HEAD
-        public static final int action_settings=0x7f080000;
-=======
         public static final int ButtonValider=0x7f08000a;
         public static final int action_settings=0x7f08002b;
         public static final int buttonAn=0x7f080027;
@@ -71,13 +68,22 @@ public final class R {
         public static final int tvTarif=0x7f08001b;
         public static final int tvTel=0x7f08001f;
         public static final int username=0x7f080007;
->>>>>>> 1bc8caa7cc850ce9f21b7f8b706980e3a5047a11
     }
     public static final class layout {
-        public static final int activity_main=0x7f030000;
+        public static final int activity_list_nounou=0x7f030000;
+        public static final int activity_list_une_nounou=0x7f030001;
+        public static final int activity_main=0x7f030002;
+        public static final int activity_page_connexion=0x7f030003;
+        public static final int activity_utilisateur=0x7f030004;
+        public static final int simplerow=0x7f030005;
+        public static final int simplerow2=0x7f030006;
     }
     public static final class menu {
-        public static final int main=0x7f070000;
+        public static final int list_nounou=0x7f070000;
+        public static final int list_une_nounou=0x7f070001;
+        public static final int main=0x7f070002;
+        public static final int page_connexion=0x7f070003;
+        public static final int utilisateur=0x7f070004;
     }
     public static final class string {
         public static final int action_settings=0x7f050001;

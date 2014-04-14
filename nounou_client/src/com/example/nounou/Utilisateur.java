@@ -46,9 +46,7 @@ public class Utilisateur extends Activity {
         final String  Variable = extra.getString("id");
         Nounou nounous=db.getNounouConnexion(Variable);
         
-		
-		
-		
+
 
         nom.setText(String.valueOf(nounous.getNom()));
         prenom.setText(String.valueOf(nounous.getPrenom()));
@@ -92,6 +90,7 @@ public class Utilisateur extends Activity {
                 db.updateNounou(nounous);
         		
         		Intent intent=new Intent(Utilisateur.this,ListDesNounous.class);
+        		intent.putExtra("id",email.getText().toString());
     			startActivity(intent);
         	}
 		});
@@ -112,5 +111,4 @@ public class Utilisateur extends Activity {
 		getMenuInflater().inflate(R.menu.utilisateur, menu);
 		return true;
 	}
-
 }

@@ -1,6 +1,11 @@
 package com.example.nounou;
 
+import java.io.IOException;
+import java.util.HashMap;
+
 import Adapteur.NounouAdapter;
+import Manager.SessionManager;
+import android.media.MediaCryptoException;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -25,6 +30,7 @@ public class ListDesNounous extends Activity{
 	private ListView mainListView ;
 	private NounouAdapter _nounouManager;
 	private SeekBar volumeControl = null;
+	SessionManager session;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,10 +40,18 @@ public class ListDesNounous extends Activity{
 		dist=(TextView)findViewById(R.id.tvdistance);
 		
 		volumeControl = (SeekBar) findViewById(R.id.volume_bar);
-		 
+		
+		
+		
+		 // User Session Manager
+        session = new SessionManager(getApplicationContext()); 
+        if(session.isUserLoggedIn()==true){
+        	connexion.setText("Déconnexion");
+        }
+        else{
+        	connexion.setText("Connexion");
+        }
         
-
-
 		// Find the ListView resource.   
 		mainListView = (ListView) findViewById( R.id.mainListView ); 
 	    
@@ -51,8 +65,16 @@ public class ListDesNounous extends Activity{
         connexion.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
-        		Intent intent=new Intent(ListDesNounous.this,PageConnexion.class);
-    			startActivity(intent);
+        		if(session.isUserLoggedIn()==true){
+        			session.logoutUser();
+        			Toast.makeText(getApplicationContext(),
+        	                "Vous êtes déconnecté",
+        	                Toast.LENGTH_LONG).show();
+        		}
+        		else{
+	        		Intent intent=new Intent(ListDesNounous.this,PageConnexion.class);
+	    			startActivity(intent);
+        		}
         	}
         });
 

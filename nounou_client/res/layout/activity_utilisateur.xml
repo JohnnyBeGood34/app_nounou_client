@@ -21,8 +21,23 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
-    
+          <TextView
+              android:id="@+id/tvEmail"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:ems="10"
+              android:text="Email" />
 
+          <EditText
+              android:id="@+id/edEmail"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:ems="10"
+              android:editable="false"
+              android:singleLine="true" >
+
+              <requestFocus />
+          </EditText>
 
     <TextView
         android:id="@+id/tvNom"
@@ -91,20 +106,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvAdresse"
-        android:ems="10"
-        android:singleLine="true" />
-    <TextView
-        android:id="@+id/tvEmail"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/edAdresse"
-        android:ems="10"
-        android:text="Email" /> 
-    <EditText
-        android:id="@+id/edEmail"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvEmail"
         android:ems="10"
         android:singleLine="true" />
     <TextView
@@ -177,35 +178,34 @@
         android:layout_below="@+id/tvMdp"
         android:ems="10"
         android:singleLine="true" />
-    
 
-    <Button
-        android:id="@+id/buttonVal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/pre"
-        android:layout_below="@+id/edMdp"
-        android:layout_marginBottom="28dp"
-    android:background="@drawable/roundrect"
-        android:text="Valider" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
-    <Button
-        android:id="@+id/buttonAn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/buttonVal"
-        android:layout_alignBottom="@+id/buttonVal"
-    android:background="@drawable/roundrect"
-        android:text="Annuler" />
-    
-    <Button
-        android:id="@+id/buttonSup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/buttonAn"
-        android:layout_alignBottom="@+id/buttonAn"
-    android:background="@drawable/roundrect"
-        android:text="Supprimer profil" />
+        <Button
+            android:id="@+id/buttonVal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="28dp"
+            android:background="@drawable/roundrect"
+            android:text="Valider" />
+
+        <Button
+            android:id="@+id/buttonAn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundrect"
+            android:text="Annuler" />
+
+        <Button
+            android:id="@+id/buttonSup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundrect"
+            android:text="Supprimer profil" />
+
+    </LinearLayout>
     
       </LinearLayout>
 

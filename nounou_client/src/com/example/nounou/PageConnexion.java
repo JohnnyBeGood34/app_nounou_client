@@ -7,12 +7,17 @@ import java.util.List;
 import com.example.nounou.data.Nounou;
 import com.example.nounou.data.NounouBdd;
 
+import Manager.SessionManager;
 import android.os.Bundle;
+import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -55,15 +60,19 @@ public class PageConnexion extends Activity {
     	
     	if(nounous.isEmpty())
     	{
-    		Toast.makeText(PageConnexion.this,"Veuillez entrer un login correcte!", Toast.LENGTH_SHORT).show();
+    		Toast.makeText(PageConnexion.this,"Veuillez entrer un login correct!", Toast.LENGTH_SHORT).show();
     	}
     	else
     	{
     		if(nounous.get(0).getPassword().equals(pass))
     		{     
+    			
                 Intent intent=new Intent(PageConnexion.this,Utilisateur.class);
                 String etLogin = et.getText().toString();
+                String mdpLogin = this.pass.getText().toString();
         		intent.putExtra("id",etLogin);
+        		SessionManager sm = new SessionManager(this);
+        		sm.createUserLoginSession(etLogin, mdpLogin);
     			startActivity(intent);
     		}
     		else
@@ -94,5 +103,4 @@ public class PageConnexion extends Activity {
 		getMenuInflater().inflate(R.menu.page_connexion, menu);
 		return true;
 	}
-
 }

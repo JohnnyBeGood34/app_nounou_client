@@ -66,6 +66,7 @@ public class InscriptionNounou extends Activity {
         		nounous.setDisponibilite(disponibilite.getText().toString());
         		nounous.setCheminPhoto("aucun");
         		nounous.setPassword(password.getText().toString());
+        		
                 db.insertNounou(nounous);
         		
         		Intent intent=new Intent(InscriptionNounou.this,ListDesNounous.class);

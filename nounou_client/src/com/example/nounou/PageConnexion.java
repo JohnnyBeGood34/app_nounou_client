@@ -16,8 +16,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+<<<<<<< HEAD
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+=======
+import android.util.Log;
+>>>>>>> 98558e45c2d070b3b7ae4df32931f701c1bb2de0
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;

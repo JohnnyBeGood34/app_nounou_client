@@ -1,0 +1,232 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/roundrect"
+    tools:context=".AjouterEmploye" >
+    
+
+<ScrollView 
+      android:id="@+id/scroll" 
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content">
+
+      <LinearLayout 
+            android:id="@+id/container"
+            android:orientation="vertical" 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+    
+
+	<TextView
+        android:id="@+id/tvId"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:text="Id:" />
+    <EditText
+        android:id="@+id/edId"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvId"
+        android:ems="10"
+        android:singleLine="true" /> 
+        
+    
+    
+    <TextView
+        android:id="@+id/tvNom"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edId"
+        android:ems="10"
+        android:text="Nom:" />
+    <EditText
+        android:id="@+id/edNom"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvNom"
+        android:ems="10"
+        android:singleLine="true" />  
+        
+    
+    
+    
+    <TextView
+        android:id="@+id/tvPrenom"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edNom"
+        android:ems="10"
+        android:text="Prenom:" /> 
+    <EditText
+        android:id="@+id/edPrenom"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvPrenom"
+        android:ems="10"
+        android:singleLine="true" />
+    
+    
+    
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edPrenom"
+        android:ems="10"
+        android:text="Date de Naissance" /> 
+    <EditText
+        android:id="@+id/edDate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvDate"
+        android:ems="10"
+        android:singleLine="true" />
+    <TextView
+        android:id="@+id/tvCivilite"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edDate"
+        android:ems="10"
+        android:text="Civilite" /> 
+    <EditText
+        android:id="@+id/edCivilite"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvCivilite"
+        android:ems="10"
+        android:singleLine="true" />
+    <TextView
+        android:id="@+id/tvAdresse"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edCivilite"
+        android:ems="10"
+        android:text="Adresse" /> 
+    <EditText
+        android:id="@+id/edAdresse"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvAdresse"
+        android:ems="10"
+        android:singleLine="true" />
+    <TextView
+        android:id="@+id/tvEmail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edAdresse"
+        android:ems="10"
+        android:text="Email" /> 
+    <EditText
+        android:id="@+id/edEmail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvEmail"
+        android:ems="10"
+        android:singleLine="true" />
+    <TextView
+        android:id="@+id/tvTarif"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edEmail"
+        android:ems="10"
+        android:text="Tarif Horaire" /> 
+    <EditText
+        android:id="@+id/edTarif"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTarif"
+        android:ems="10"
+        android:singleLine="true" />
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edTarif"
+        android:ems="10"
+        android:text="Description prestation" /> 
+    <EditText
+        android:id="@+id/edDescription"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvDescription"
+        android:ems="10"
+        android:singleLine="true" />
+    <TextView
+        android:id="@+id/tvTel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edDescription"
+        android:ems="10"
+        android:text="Téléphone" /> 
+    <EditText
+        android:id="@+id/edTel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvDispo"
+        android:ems="10"
+        android:singleLine="true" />
+    <TextView
+        android:id="@+id/tvDispo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edDescription"
+        android:ems="10"
+        android:text="Disponibilité" /> 
+    <EditText
+        android:id="@+id/edDispo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvDispo"
+        android:ems="10"
+        android:singleLine="true" />
+    <TextView
+        android:id="@+id/tvMdp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edDispo"
+        android:ems="10"
+        android:text="Mot de passe" /> 
+    <EditText
+        android:id="@+id/edMdp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvMdp"
+        android:ems="10"
+        android:singleLine="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <Button
+            android:id="@+id/buttonVal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="28dp"
+            android:background="@drawable/roundrect"
+            android:text="Valider" />
+
+        <Button
+            android:id="@+id/buttonAn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundrect"
+            android:layout_alignParentRight="true"
+            android:text="Annuler" />
+
+    </LinearLayout>
+    
+    
+      </LinearLayout>
+
+ </ScrollView>
+
+
+</RelativeLayout>

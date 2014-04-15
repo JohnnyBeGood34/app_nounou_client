@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Nounou</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_list_nounou">ListNounou</string>
+    <string name="title_activity_list_une_nounou">ListUneNounou</string>
+    <string name="title_activity_page_connexion">PageConnexion</string>
+    <string name="title_activity_utilisateur">Utilisateur</string>
+    <string name="title_activity_inscription_nounou">InscriptionNounou</string>
+    <string name="title_activity_test">Test</string>
+    <string name="title_activity_list_des_nounous">ListDesNounous</string>
+
+</resources>

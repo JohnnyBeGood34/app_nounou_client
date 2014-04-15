@@ -4,6 +4,7 @@ package com.example.nounou;
 import com.example.nounou.data.Nounou;
 import com.example.nounou.data.NounouBdd;
 
+import Manager.SessionManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 public class Utilisateur extends Activity {
 	Button an,sup,val;
 	EditText nom,prenom,dateDeNaissance,civilite,adresse,email,tarifHoraire,descriptionPrestation,telephone,disponibilite,password;
+	SessionManager session;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -97,7 +99,6 @@ public class Utilisateur extends Activity {
 		sup.setOnClickListener(new OnClickListener() {
 			@Override
         	public void onClick(View v) {
-				Log.i("visiteur",Variable);
 				db.removeNounou(Variable);
         		Intent intent=new Intent(Utilisateur.this,ListDesNounous.class);
     			startActivity(intent);

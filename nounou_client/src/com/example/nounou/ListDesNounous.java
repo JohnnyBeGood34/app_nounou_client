@@ -1,11 +1,7 @@
 package com.example.nounou;
 
-import java.io.IOException;
-import java.util.HashMap;
-
 import Adapteur.NounouAdapter;
 import Manager.SessionManager;
-import android.media.MediaCryptoException;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -47,8 +43,10 @@ public class ListDesNounous extends Activity{
         session = new SessionManager(getApplicationContext()); 
         if(session.isUserLoggedIn()==true){
         	connexion.setText("Déconnexion");
+        	inscription.setText("Mon Compte");
         }
         else{
+        	inscription.setText("Inscription");
         	connexion.setText("Connexion");
         }
         
@@ -81,8 +79,17 @@ public class ListDesNounous extends Activity{
         inscription.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
-        		Intent intent=new Intent(ListDesNounous.this,InscriptionNounou.class);
-    			startActivity(intent);
+        		
+    			if(session.isUserLoggedIn()==true){
+    				Intent intent=new Intent(ListDesNounous.this,Utilisateur.class);
+    				String u = session.getLogin();
+    				intent.putExtra("id",u);
+	    			startActivity(intent);
+        		}
+        		else{
+        			Intent intent=new Intent(ListDesNounous.this,InscriptionNounou.class);
+        			startActivity(intent);
+        		}
         	}
         });    
         
@@ -93,7 +100,6 @@ public class ListDesNounous extends Activity{
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
         		
-                Log.i("alors",_nounouManager.getNounouAtIndex(arg2).getEmail());
                 Intent intent= new Intent(getApplicationContext(),ListUneNounou.class);
                 intent.putExtra("id", _nounouManager.getNounouAtIndex(arg2).getEmail());
                 startActivity(intent);

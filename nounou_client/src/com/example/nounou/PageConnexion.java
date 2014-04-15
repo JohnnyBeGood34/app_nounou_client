@@ -9,19 +9,11 @@ import com.example.nounou.data.NounouBdd;
 
 import Manager.SessionManager;
 import android.os.Bundle;
-import android.provider.ContactsContract.CommonDataKinds.Email;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-<<<<<<< HEAD
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-=======
-import android.util.Log;
->>>>>>> 98558e45c2d070b3b7ae4df32931f701c1bb2de0
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -71,12 +63,14 @@ public class PageConnexion extends Activity {
     		if(nounous.get(0).getPassword().equals(pass))
     		{     
     			
-                Intent intent=new Intent(PageConnexion.this,Utilisateur.class);
+                Intent intent=new Intent(PageConnexion.this,ListDesNounous.class);
                 String etLogin = et.getText().toString();
                 String mdpLogin = this.pass.getText().toString();
-        		intent.putExtra("id",etLogin);
         		SessionManager sm = new SessionManager(this);
         		sm.createUserLoginSession(etLogin, mdpLogin);
+        		Toast.makeText(getApplicationContext(),etLogin+
+    	                ", vous êtes Connecté!",
+    	                Toast.LENGTH_LONG).show();
     			startActivity(intent);
     		}
     		else

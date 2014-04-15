@@ -97,19 +97,11 @@ public class NounouBdd {
          values.put(COLUMN_DISPONIBILITE, appInfo.getDisponibilite());
          values.put(COLUMN_CHEMIN_PHOTO, appInfo.getCheminPhoto());
          values.put(COLUMN_PASSWORD, appInfo.getPassword());
-<<<<<<< HEAD
-     	return mDb.update(TABLE_NAME, values, COLUMN_ID_NOUNOU + " = '" +appInfo.getIdNounou() + "'", null);
-    }
-    /** supprimer une instance de Nounou */
-    public int removeNounou(String idNounou){
-          return mDb.delete(TABLE_NAME, COLUMN_ID_NOUNOU + " = '" +idNounou + "'", null);
-=======
      	return mDb.update(TABLE_NAME, values, COLUMN_EMAIL + " = '" +appInfo.getEmail()+"'", null);
     }
     /** supprimer une instance de Nounou */
     public int removeNounou(String idNounou){
           return mDb.delete(TABLE_NAME, COLUMN_EMAIL + " = '" +idNounou+"'", null);
->>>>>>> 49a6840f31a7ec5816f1d244c03aa3774ae91567
     }
 
     /** retourne toutes les instances d'application information */

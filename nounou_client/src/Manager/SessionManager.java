@@ -57,6 +57,10 @@ public class SessionManager {
         // commit changes
         editor.commit();
     }  
+    public String getLogin(){    
+        String Log = pref.getString(KEY_NAME, null);
+        return Log;
+    }
      
     /**
      * Check login method will check user login status

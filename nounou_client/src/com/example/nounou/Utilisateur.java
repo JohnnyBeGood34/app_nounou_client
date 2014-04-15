@@ -8,12 +8,11 @@ import Manager.SessionManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class Utilisateur extends Activity {
 	Button an,sup,val;
@@ -48,7 +47,7 @@ public class Utilisateur extends Activity {
         final String  Variable = extra.getString("id");
         Nounou nounous=db.getNounouConnexion(Variable);
         
-
+        session = new SessionManager(this); 
 
         nom.setText(String.valueOf(nounous.getNom()));
         prenom.setText(String.valueOf(nounous.getPrenom()));
@@ -100,8 +99,11 @@ public class Utilisateur extends Activity {
 			@Override
         	public void onClick(View v) {
 				db.removeNounou(Variable);
-        		Intent intent=new Intent(Utilisateur.this,ListDesNounous.class);
-    			startActivity(intent);
+				session.logoutUser();
+				Toast.makeText(getApplicationContext(),
+    	                "Votre compte a été supprimé",
+    	                Toast.LENGTH_LONG).show();
+				
         	}
 		});
 	}

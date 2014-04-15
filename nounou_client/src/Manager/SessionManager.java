@@ -130,7 +130,6 @@ public class SessionManager {
         _context.startActivity(i);
     }
      
-     
     // Check for login
     public boolean isUserLoggedIn(){
         return pref.getBoolean(IS_USER_LOGIN, false);

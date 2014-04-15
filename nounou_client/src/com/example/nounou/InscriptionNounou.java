@@ -3,14 +3,15 @@ package com.example.nounou;
 import com.example.nounou.data.Nounou;
 import com.example.nounou.data.NounouBdd;
 
+import Manager.SessionManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class InscriptionNounou extends Activity {
 
@@ -70,6 +71,13 @@ public class InscriptionNounou extends Activity {
                 db.insertNounou(nounous);
         		
         		Intent intent=new Intent(InscriptionNounou.this,ListDesNounous.class);
+        		String etLogin = email.getText().toString();
+                String mdpLogin = password.getText().toString();
+         		SessionManager sm = new SessionManager(getApplicationContext());
+         		sm.createUserLoginSession(etLogin, mdpLogin);
+         		Toast.makeText(getApplicationContext(),etLogin+
+     	                ", vous êtes Connecté!",
+     	                Toast.LENGTH_LONG).show();
     			startActivity(intent);
         	}
 		});

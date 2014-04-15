@@ -5,8 +5,6 @@ import Manager.SessionManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -40,7 +38,7 @@ public class ListDesNounous extends Activity{
 		
 		
 		 // User Session Manager
-        session = new SessionManager(getApplicationContext()); 
+        session = new SessionManager(this); 
         if(session.isUserLoggedIn()==true){
         	connexion.setText("Déconnexion");
         	inscription.setText("Mon Compte");
@@ -126,5 +124,4 @@ public class ListDesNounous extends Activity{
         });
         
 	}
-
 }

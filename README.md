@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+app_nounou_client
+=================
+=======
 app_nounou_client
 =================
 1- Connexion => Appel Serveur obligatoire, /api/connexionNounou (POST mail/mdp). Le serveur renvoi un objet nounou => mettre en cache.
@@ -7,3 +11,4 @@ app_nounou_client
 3- Inscription => Si connexion => Serveur /api/nounous (POST, les datas nounou + authentification), Si pas de connexion => stocke la requête dans sqlite. Dès qu'il y a connexion => envoi reqt serveur.
 
 4- Liste des nounous => Par rapport à la current position du client, envoi position serveur, récupération de la liste des nounous. Si pas de co, message erreur. (/api/nounou/:lat/:lng. Connexion obligatoire.
+>>>>>>> 5fd2c8405b6812e02fb7fccf30bb1b533f75e951

@@ -109,25 +109,22 @@ public class ListDesNounous extends Activity{
         volumeControl.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
             int progressChanged = 0;
  
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
+            @Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
                 progressChanged = progress;
             }
  
-            public void onStartTrackingTouch(SeekBar seekBar) {
+            @Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
                 // TODO Auto-generated method stub
             }
  
-            public void onStopTrackingTouch(SeekBar seekBar) {
+            @Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
             	dist.setText(String.valueOf(progressChanged+"Km"));
             }
         });
         
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.list_nounou, menu);
-		return true;
-	}
 }

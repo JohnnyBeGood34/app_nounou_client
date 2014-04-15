@@ -81,13 +81,15 @@ public class PageConnexion extends Activity {
     }
 	public void showAlert(){
     	PageConnexion.this.runOnUiThread(new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 AlertDialog.Builder builder = new AlertDialog.Builder(PageConnexion.this);
                 builder.setTitle("Erreur d'Email");
                 builder.setMessage("Utilisateur non trouvé.") 
                        .setCancelable(false)
                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                           public void onClick(DialogInterface dialog, int id) {
+                           @Override
+						public void onClick(DialogInterface dialog, int id) {
                            }
                        });                    
                 AlertDialog alert = builder.create();
@@ -95,10 +97,5 @@ public class PageConnexion extends Activity {
             }
         });
     }
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.page_connexion, menu);
-		return true;
-	}
+
 }

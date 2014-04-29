@@ -1,5 +1,7 @@
 package com.example.nounou;
 
+import com.example.nounou.data.ApiNounou;
+
 import Adapteur.NounouAdapter;
 import Manager.SessionManager;
 import android.os.Bundle;
@@ -28,6 +30,9 @@ public class ListDesNounous extends Activity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		ApiNounou.getAllNounousApi("http://192.168.12.1:3000/api/nounous",this);
+		
 		setContentView(R.layout.activity_list_des_nounous);
 		connexion=(Button)findViewById(R.id.buttonConnexion);
 		inscription=(Button)findViewById(R.id.buttonInscription);

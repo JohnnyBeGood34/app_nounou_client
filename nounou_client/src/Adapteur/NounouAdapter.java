@@ -25,7 +25,7 @@ public class NounouAdapter implements ListAdapter {
 		db.open();
 
 		this._ctx = ctx;
-		this._list = (ArrayList<Nounou>) db.getAllNounou();;
+		this._list = (ArrayList<Nounou>) db.getAllNounou();
 		this._inflater = (LayoutInflater) this._ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	}
 	

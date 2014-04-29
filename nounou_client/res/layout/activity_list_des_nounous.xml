@@ -25,7 +25,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/roundrect"
-        android:text="Connexion" />
+         />
 
     <Button
         android:id="@+id/buttonInscription"
@@ -34,8 +34,7 @@
         android:layout_alignBaseline="@+id/buttonConnexion"
         android:layout_alignBottom="@+id/buttonConnexion"
         android:layout_alignLeft="@+id/mainListView"
-        android:background="@drawable/roundrect"
-        android:text="Inscription" />
+        android:background="@drawable/roundrect" />
 
     <LinearLayout
         android:id="@+id/refresh_match_layout"

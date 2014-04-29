@@ -20,12 +20,14 @@ public class BaseSQLite extends SQLiteOpenHelper {
           super(context, name, factory, version);
     }
 
-    public void onCreate(SQLiteDatabase db) {
+    @Override
+	public void onCreate(SQLiteDatabase db) {
           //on créé la table de la requete de création
           db.execSQL(CREATE_DATABASE_REQUEST);
     }
 
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    @Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
           //ici on supprime et recréer la base de données.
           db.execSQL("DROP TABLE " + NounouBdd.TABLE_NAME + ";");
           onCreate(db);

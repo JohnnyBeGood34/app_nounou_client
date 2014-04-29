@@ -200,26 +200,28 @@
         android:layout_below="@+id/tvMdp"
         android:ems="10"
         android:singleLine="true" />
-    
 
-    <Button
-        android:id="@+id/buttonVal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/pre"
-        android:layout_below="@+id/edMdp"
-        android:layout_marginBottom="28dp"
-    android:background="@drawable/roundrect"
-        android:text="Valider" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
 
-    <Button
-        android:id="@+id/buttonAn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/buttonVal"
-        android:layout_alignBottom="@+id/buttonVal"
-    android:background="@drawable/roundrect"
-        android:text="Annuler" />
+        <Button
+            android:id="@+id/buttonVal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="28dp"
+            android:background="@drawable/roundrect"
+            android:text="Valider" />
+
+        <Button
+            android:id="@+id/buttonAn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/roundrect"
+            android:layout_alignParentRight="true"
+            android:text="Annuler" />
+
+    </LinearLayout>
     
     
       </LinearLayout>

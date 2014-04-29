@@ -7,13 +7,17 @@ import java.util.List;
 import com.example.nounou.data.Nounou;
 import com.example.nounou.data.NounouBdd;
 
+import Manager.SessionManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+<<<<<<< HEAD
 import android.view.Menu;
+=======
+>>>>>>> b346adbee0f6553d4a23125ecaa6fa02f7e23d0c
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -61,9 +65,15 @@ public class PageConnexion extends Activity {
     	{
     		if(nounous.get(0).getPassword().equals(pass))
     		{     
-                Intent intent=new Intent(PageConnexion.this,Utilisateur.class);
+    			
+                Intent intent=new Intent(PageConnexion.this,ListDesNounous.class);
                 String etLogin = et.getText().toString();
-        		intent.putExtra("id",etLogin);
+                String mdpLogin = this.pass.getText().toString();
+        		SessionManager sm = new SessionManager(this);
+        		sm.createUserLoginSession(etLogin, mdpLogin);
+        		Toast.makeText(getApplicationContext(),etLogin+
+    	                ", vous êtes Connecté!",
+    	                Toast.LENGTH_LONG).show();
     			startActivity(intent);
     		}
     		else
@@ -74,13 +84,15 @@ public class PageConnexion extends Activity {
     }
 	public void showAlert(){
     	PageConnexion.this.runOnUiThread(new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 AlertDialog.Builder builder = new AlertDialog.Builder(PageConnexion.this);
                 builder.setTitle("Erreur d'Email");
                 builder.setMessage("Utilisateur non trouvé.") 
                        .setCancelable(false)
                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                           public void onClick(DialogInterface dialog, int id) {
+                           @Override
+						public void onClick(DialogInterface dialog, int id) {
                            }
                        });                    
                 AlertDialog alert = builder.create();
@@ -88,11 +100,5 @@ public class PageConnexion extends Activity {
             }
         });
     }
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.page_connexion, menu);
-		return true;
-	}
 
 }

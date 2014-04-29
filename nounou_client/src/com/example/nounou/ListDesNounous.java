@@ -1,11 +1,10 @@
 package com.example.nounou;
 
 import Adapteur.NounouAdapter;
+import Manager.SessionManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -24,6 +23,7 @@ public class ListDesNounous extends Activity{
 	private ListView mainListView ;
 	private NounouAdapter _nounouManager;
 	private SeekBar volumeControl = null;
+	SessionManager session;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -33,10 +33,20 @@ public class ListDesNounous extends Activity{
 		dist=(TextView)findViewById(R.id.tvdistance);
 		
 		volumeControl = (SeekBar) findViewById(R.id.volume_bar);
-		 
+		
+		
+		
+		 // User Session Manager
+        session = new SessionManager(this); 
+        if(session.isUserLoggedIn()==true){
+        	connexion.setText("Déconnexion");
+        	inscription.setText("Mon Compte");
+        }
+        else{
+        	inscription.setText("Inscription");
+        	connexion.setText("Connexion");
+        }
         
-
-
 		// Find the ListView resource.   
 		mainListView = (ListView) findViewById( R.id.mainListView ); 
 	    
@@ -50,16 +60,33 @@ public class ListDesNounous extends Activity{
         connexion.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
-        		Intent intent=new Intent(ListDesNounous.this,PageConnexion.class);
-    			startActivity(intent);
+        		if(session.isUserLoggedIn()==true){
+        			session.logoutUser();
+        			Toast.makeText(getApplicationContext(),
+        	                "Vous êtes déconnecté",
+        	                Toast.LENGTH_LONG).show();
+        		}
+        		else{
+	        		Intent intent=new Intent(ListDesNounous.this,PageConnexion.class);
+	    			startActivity(intent);
+        		}
         	}
         });
 
         inscription.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
-        		Intent intent=new Intent(ListDesNounous.this,InscriptionNounou.class);
-    			startActivity(intent);
+        		
+    			if(session.isUserLoggedIn()==true){
+    				Intent intent=new Intent(ListDesNounous.this,Utilisateur.class);
+    				String u = session.getLogin();
+    				intent.putExtra("id",u);
+	    			startActivity(intent);
+        		}
+        		else{
+        			Intent intent=new Intent(ListDesNounous.this,InscriptionNounou.class);
+        			startActivity(intent);
+        		}
         	}
         });    
         
@@ -70,7 +97,6 @@ public class ListDesNounous extends Activity{
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
         		
-                Log.i("alors",_nounouManager.getNounouAtIndex(arg2).getEmail());
                 Intent intent= new Intent(getApplicationContext(),ListUneNounou.class);
                 intent.putExtra("id", _nounouManager.getNounouAtIndex(arg2).getEmail());
                 startActivity(intent);
@@ -80,25 +106,21 @@ public class ListDesNounous extends Activity{
         volumeControl.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
             int progressChanged = 0;
  
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
+            @Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
                 progressChanged = progress;
             }
  
-            public void onStartTrackingTouch(SeekBar seekBar) {
+            @Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
                 // TODO Auto-generated method stub
             }
  
-            public void onStopTrackingTouch(SeekBar seekBar) {
+            @Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
             	dist.setText(String.valueOf(progressChanged+"Km"));
             }
         });
         
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.list_nounou, menu);
-		return true;
 	}
 }

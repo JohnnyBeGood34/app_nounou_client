@@ -4,19 +4,20 @@ package com.example.nounou;
 import com.example.nounou.data.Nounou;
 import com.example.nounou.data.NounouBdd;
 
+import Manager.SessionManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class Utilisateur extends Activity {
 	Button an,sup,val;
 	EditText nom,prenom,dateDeNaissance,civilite,adresse,email,tarifHoraire,descriptionPrestation,telephone,disponibilite,password;
+	SessionManager session;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,9 +47,7 @@ public class Utilisateur extends Activity {
         final String  Variable = extra.getString("id");
         Nounou nounous=db.getNounouConnexion(Variable);
         
-		
-		
-		
+        session = new SessionManager(this); 
 
         nom.setText(String.valueOf(nounous.getNom()));
         prenom.setText(String.valueOf(nounous.getPrenom()));
@@ -92,25 +91,21 @@ public class Utilisateur extends Activity {
                 db.updateNounou(nounous);
         		
         		Intent intent=new Intent(Utilisateur.this,ListDesNounous.class);
+        		intent.putExtra("id",email.getText().toString());
     			startActivity(intent);
         	}
 		});
 		sup.setOnClickListener(new OnClickListener() {
 			@Override
         	public void onClick(View v) {
-				Log.i("visiteur",Variable);
 				db.removeNounou(Variable);
-        		Intent intent=new Intent(Utilisateur.this,ListDesNounous.class);
-    			startActivity(intent);
+				session.logoutUser();
+				Toast.makeText(getApplicationContext(),
+    	                "Votre compte a été supprimé",
+    	                Toast.LENGTH_LONG).show();
+				
         	}
 		});
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.utilisateur, menu);
-		return true;
 	}
 
 }

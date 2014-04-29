@@ -22,7 +22,7 @@ public class ApiNounou {
 	public static void getAllNounousApi(String url,Context c)
 	{
 		_volleyQueue = Volley.newRequestQueue(c);
-		//final NounouAdapter adapter = new NounouAdapter(c);
+		final NounouAdapter adapter = new NounouAdapter(c);
 		
 		JsonObjectRequest jsObjRequest = new JsonObjectRequest(
 				Request.Method.GET, url, null,
@@ -57,7 +57,7 @@ public class ApiNounou {
 								
 								arrayListNounou.add(newNouNou);
 							}
-							//adapter.notifyAll();
+							//adapter.notifyAdapter(arrayListNounou);
 							
 						} catch (JSONException e) {
 							e.printStackTrace();

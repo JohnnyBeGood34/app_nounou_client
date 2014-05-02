@@ -12,6 +12,7 @@ A FAIRE
 
 1. Timeout sur le test de connexion + timer sur splashscreen
 2. Mettre les images et les nounous de la liste en cache.
+3. Mettre en place le systeme d'authentification.
 3. Inscription + connexion (Geoloc des nounous par adresse) + modification profil nounou.
 4. Geoloc du client dans le mainActivity.
 5. Barre de recherche Km.

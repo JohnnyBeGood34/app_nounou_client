@@ -86,6 +86,9 @@ public class ApiNounou {
 								arrayListNounou.add(newNouNou);
 							}
 							//adapter.notifyAdapter(arrayListNounou);
+							
+							
+							
 							// Create ArrayAdapter 
 						    _nounouManager = new NounouAdapter(c,arrayListNounou);
 					        lv.setAdapter( _nounouManager );
@@ -95,7 +98,6 @@ public class ApiNounou {
 										long arg3) {
 					        		
 					                Intent intent= new Intent(c,ListUneNounou.class);
-					                Log.i("MAIL-----------------",_nounouManager.getNounouAtIndex(arg2).getIdNounou());
 					                intent.putExtra("id", _nounouManager.getNounouAtIndex(arg2).getIdNounou());
 					                c.startActivity(intent);
 								}

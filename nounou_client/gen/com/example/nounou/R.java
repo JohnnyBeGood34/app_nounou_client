@@ -32,7 +32,7 @@ public final class R {
         public static final int buttonInscription=0x7f07001e;
         public static final int buttonRetour=0x7f070024;
         public static final int buttonRetourConnexion=0x7f070032;
-        public static final int buttonSup=0x7f070033;
+        public static final int buttonSup=0x7f070035;
         public static final int buttonVal=0x7f070019;
         public static final int container=0x7f070001;
         public static final int edAdresse=0x7f07000c;
@@ -48,19 +48,21 @@ public final class R {
         public static final int edTarif=0x7f070010;
         public static final int edTel=0x7f070014;
         public static final int imageView1=0x7f070022;
-        public static final int imageViewPhoto=0x7f070034;
+        public static final int imageViewPhoto=0x7f070036;
+        public static final int imageViewProfil=0x7f070034;
         public static final int linearLayout1=0x7f070021;
         public static final int linearLayout2=0x7f070025;
         public static final int linearLayout3=0x7f070026;
         public static final int linearLayout4=0x7f070027;
         public static final int linearLayout5=0x7f070029;
         public static final int linearLayout6=0x7f07002a;
+        public static final int linearLayoutvueProfil=0x7f070033;
         public static final int mainListView=0x7f07001b;
         public static final int password=0x7f07002f;
         public static final int refresh_match_layout=0x7f07001d;
         public static final int scroll=0x7f070000;
-        public static final int textViewEmail=0x7f070036;
-        public static final int textViewNom=0x7f070035;
+        public static final int textViewEmail=0x7f070038;
+        public static final int textViewNom=0x7f070037;
         public static final int tv=0x7f070031;
         public static final int tv0=0x7f07002b;
         public static final int tv1=0x7f07002c;
@@ -102,6 +104,7 @@ public final class R {
         public static final int title_activity_page_connexion=0x7f050005;
         public static final int title_activity_test=0x7f050008;
         public static final int title_activity_utilisateur=0x7f050006;
+        public static final int upload=0x7f05000a;
     }
     public static final class style {
         /** 

@@ -14,17 +14,19 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class InscriptionNounou extends Activity {
-
-	Button boutonAnnuler,boutonvalider;
+	//Variable permettant d'obtenir la reponse de l'acivity gallery
+	private static int RESULT_LOAD_IMAGE = 1;
+	Button boutonAnnuler,boutonvalider,boutonUploadPhoto;
 	EditText id,nom,prenom,dateDeNaissance,civilite,adresse,email,tarifHoraire,descriptionPrestation,telephone,disponibilite,password;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_inscription_nounou);
+		//Buttons
 		boutonAnnuler = (Button) findViewById(R.id.buttonAn);
 		boutonvalider = (Button) findViewById(R.id.buttonVal);
-		
-		//id = (EditText)findViewById(R.id.edId);
+		//boutonUploadPhoto = (Button) findViewById(R.id.buttonUploadPhoto);
+		//id = (EditText)findViewById(5);
 		nom = (EditText)findViewById(R.id.edNom);
 		prenom = (EditText)findViewById(R.id.edPrenom);
 		dateDeNaissance = (EditText)findViewById(R.id.edDate);
@@ -39,8 +41,17 @@ public class InscriptionNounou extends Activity {
 		
 		final NounouBdd db=new NounouBdd(this);
 		db.open();
-		
-		
+		/*
+		 * Action sur le click du bouton d'upload
+		 
+		boutonUploadPhoto.setOnClickListener(new OnClickListener() {
+        	@Override
+        	public void onClick(View v) {
+        		//On lance l'intent de la gellerie android (photos)
+        		Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        		startActivityForResult(i, RESULT_LOAD_IMAGE);
+        	}
+		});*/
 		
 		boutonAnnuler.setOnClickListener(new OnClickListener() {
         	@Override

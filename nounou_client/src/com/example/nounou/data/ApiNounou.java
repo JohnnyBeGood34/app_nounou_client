@@ -138,13 +138,14 @@ public class ApiNounou {
 							prenom.setText(String.valueOf(nounou.getPrenom()));
 							
 							TextView date = (TextView) hm.get("date");
-							
+							/*
+							 *	Determinatation de l'age de la nounou pour affichage 
+							 */
 							long age ;
 							Date dateNaissanceNounou = new SimpleDateFormat("dd/MM/yyyy",Locale.FRANCE).parse(nounou.getDateDeNaissance());;
 							Date now = new Date();
 							age = now.getTime() - dateNaissanceNounou.getTime();
 							age = age/31556952/100/10;
-							Log.i("DATE NAISSANCE MEUF-------------",String.valueOf(dateNaissanceNounou));
 							
 							date.setText(String.valueOf(age)+" ans");
 							
@@ -166,7 +167,9 @@ public class ApiNounou {
 							String parseUrl = parseUrl(url);
 							
 							String urlVeritable = "http://"+parseUrl+nounou.getCheminPhoto();
+							//Ajout de l'image via volley
 							getImageFromUrl(urlVeritable,iv,c);
+							
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

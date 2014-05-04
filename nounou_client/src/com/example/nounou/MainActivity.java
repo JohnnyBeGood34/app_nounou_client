@@ -22,11 +22,10 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
 		//Positionnement gps du client
 		LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
-		
-		Log.i("------------------",String.valueOf(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)));
 		if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 		    //Demande a l'utilisateur si il veut activer son gps
 		    AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -35,7 +34,7 @@ public class MainActivity extends Activity {
 		    builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
 		        @Override
 		        public void onClick(DialogInterface dialog, int which) {
-		            //Lancement des settings pour allouer le GPS
+		            //Lancement des settings pour activer le GPS
 		            Intent i = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 		            startActivity(i);
 		        }
@@ -47,15 +46,15 @@ public class MainActivity extends Activity {
 		    });
 		    builder.create().show();
 		}
-		else{
-			LocationListener locationListener = new MyLocationListener(this);
-			locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-		}
-		
+		//Check de la connection internet
 		registerReceiver(
 			      new ConnectivityChangeReceiver(), 
 			      new IntentFilter(
 			            ConnectivityManager.CONNECTIVITY_ACTION));
+		
+		//Mise à l'écoute des coordonnées GPS du client
+		LocationListener locationListener = new MyLocationListener(this);
+		locationManager.requestLocationUpdates( LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 		
 	}
 

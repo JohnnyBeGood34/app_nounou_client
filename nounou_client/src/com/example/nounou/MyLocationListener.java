@@ -17,12 +17,10 @@ public class MyLocationListener implements LocationListener {
 	@Override
 	public void onLocationChanged(Location localisationClient) {
 		// TODO Auto-generated method stub
-		localisationClient.getLatitude();
-
-		localisationClient.getLongitude();
-
-		String Text = "La current position du client est: " +"Latitude = " + localisationClient.getLatitude() +"Longitude = " + localisationClient.getLongitude();
-
+		double latitudeClient = localisationClient.getLatitude();
+		double longitudeClient = localisationClient.getLongitude();
+		
+		String Text = "La current position du client est: " +"Latitude = " + latitudeClient +"Longitude = " + longitudeClient;
 		Toast.makeText( contextApplication,Text,Toast.LENGTH_SHORT).show();
 	}
 

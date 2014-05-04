@@ -15,14 +15,14 @@ import android.widget.Toast;
 
 public class InscriptionNounou extends Activity {
 
-	Button an,val;
+	Button boutonAnnuler,boutonvalider;
 	EditText id,nom,prenom,dateDeNaissance,civilite,adresse,email,tarifHoraire,descriptionPrestation,telephone,disponibilite,password;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_inscription_nounou);
-		an = (Button) findViewById(R.id.buttonAn);
-		val = (Button) findViewById(R.id.buttonVal);
+		boutonAnnuler = (Button) findViewById(R.id.buttonAn);
+		boutonvalider = (Button) findViewById(R.id.buttonVal);
 		
 		id = (EditText)findViewById(R.id.edId);
 		nom = (EditText)findViewById(R.id.edNom);
@@ -42,14 +42,14 @@ public class InscriptionNounou extends Activity {
 		
 		
 		
-		an.setOnClickListener(new OnClickListener() {
+		boutonAnnuler.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
         		Intent intent=new Intent(InscriptionNounou.this,ListDesNounous.class);
     			startActivity(intent);
         	}
 		});
-		val.setOnClickListener(new OnClickListener() {
+		boutonvalider.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
         		

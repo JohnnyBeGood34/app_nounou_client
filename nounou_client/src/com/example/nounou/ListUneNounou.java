@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 public class ListUneNounou extends Activity {
 	TextView nom,prenom,date,tarif,dispo,tel,des,email;
-	Button ret;
+	Button boutonRetour;
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
@@ -27,10 +27,8 @@ public class ListUneNounou extends Activity {
 			//db.open();
 			Bundle extra = getIntent().getExtras();
 	        String  Variable = extra.getString("id");
-	        
-	        
 						
-			ret = (Button)findViewById(R.id.buttonRetour);
+			boutonRetour = (Button)findViewById(R.id.buttonRetour);
 			HashMap<String, TextView> arrayTextView = new HashMap<String, TextView>();
 			
 			nom=(TextView) findViewById(R.id.tvNom);
@@ -52,20 +50,10 @@ public class ListUneNounou extends Activity {
 			arrayTextView.put("des", des);
 			arrayTextView.put("email", email);
 			
-			ApiNounou.getUneNounou("http://172.20.116.10:3000/api/nounou/"+Variable,this,arrayTextView,photoView);
-			
-			/*
-			nom.setText(String.valueOf(nounou.getNom()));
-			prenom.setText(String.valueOf(nounou.getPrenom()));
-			date.setText(String.valueOf(nounou.getDateDeNaissance()));
-			tarif.setText(String.valueOf(nounou.getTarifHoraire()));
-			dispo.setText(String.valueOf(nounou.getDisponibilite()));
-			tel.setText(String.valueOf(nounou.getTelephone()));
-			des.setText(String.valueOf(nounou.getDescriptionPrestation()));
-			email.setText(String.valueOf(nounou.getEmail()));*/
+			ApiNounou.getUneNounou(UrlServer.getServerUrl()+"/api/nounou/"+Variable,this,arrayTextView,photoView);
 			
 			
-			ret.setOnClickListener(new OnClickListener() {
+			boutonRetour.setOnClickListener(new OnClickListener() {
 	        	@Override
 	        	public void onClick(View v) {
 	        		Intent intent=new Intent(ListUneNounou.this,ListDesNounous.class);

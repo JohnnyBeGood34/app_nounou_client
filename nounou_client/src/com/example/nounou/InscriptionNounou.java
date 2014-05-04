@@ -24,7 +24,7 @@ public class InscriptionNounou extends Activity {
 		boutonAnnuler = (Button) findViewById(R.id.buttonAn);
 		boutonvalider = (Button) findViewById(R.id.buttonVal);
 		
-		id = (EditText)findViewById(R.id.edId);
+		//id = (EditText)findViewById(R.id.edId);
 		nom = (EditText)findViewById(R.id.edNom);
 		prenom = (EditText)findViewById(R.id.edPrenom);
 		dateDeNaissance = (EditText)findViewById(R.id.edDate);
@@ -54,7 +54,7 @@ public class InscriptionNounou extends Activity {
         	public void onClick(View v) {
         		
         		Nounou nounous= new Nounou();
-        		nounous.setIdNounou(id.getText().toString());
+        		//nounous.setIdNounou(id.getText().toString());
         		nounous.setNom(nom.getText().toString());
         		nounous.setPrenom(prenom.getText().toString());
         		nounous.setDateDeNaissance(dateDeNaissance.getText().toString());

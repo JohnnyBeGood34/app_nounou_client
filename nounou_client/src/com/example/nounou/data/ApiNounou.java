@@ -5,8 +5,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -134,7 +138,15 @@ public class ApiNounou {
 							prenom.setText(String.valueOf(nounou.getPrenom()));
 							
 							TextView date = (TextView) hm.get("date");
-							date.setText(String.valueOf(nounou.getDateDeNaissance()));
+							
+							long age ;
+							Date dateNaissanceNounou = new SimpleDateFormat("dd/MM/yyyy",Locale.FRANCE).parse(nounou.getDateDeNaissance());;
+							Date now = new Date();
+							age = now.getTime() - dateNaissanceNounou.getTime();
+							age = age/31556952/100/10;
+							Log.i("DATE NAISSANCE MEUF-------------",String.valueOf(dateNaissanceNounou));
+							
+							date.setText(String.valueOf(age)+" ans");
 							
 							TextView tarif = (TextView) hm.get("tarif");
 							tarif.setText(String.valueOf(nounou.getTarifHoraire()));
@@ -156,6 +168,9 @@ public class ApiNounou {
 							String urlVeritable = "http://"+parseUrl+nounou.getCheminPhoto();
 							getImageFromUrl(urlVeritable,iv,c);
 						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (ParseException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}

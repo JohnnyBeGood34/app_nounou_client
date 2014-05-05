@@ -22,6 +22,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		//SingletonCache singleton = SingletonCache.getInstance();
 		
 		//Positionnement gps du client
 		LocationManager locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);

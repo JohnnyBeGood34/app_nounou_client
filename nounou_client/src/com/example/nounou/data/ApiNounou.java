@@ -44,7 +44,7 @@ import com.example.nounou.ListUneNounou;
 import com.example.nounou.R;
 
 public class ApiNounou {
-	static RequestQueue _volleyQueue; // File d'attente volley
+	static RequestQueue _volleyQueue; 
 	private static NounouAdapter _nounouManager;
 	static ProgressDialog dialog=null;
 	public static void getAllNounousApi(String url,final Context c, final ListView lv)
@@ -85,9 +85,6 @@ public class ApiNounou {
 								
 								arrayListNounou.add(newNouNou);
 							}
-							//adapter.notifyAdapter(arrayListNounou);
-							
-							
 							
 							// Create ArrayAdapter 
 						    _nounouManager = new NounouAdapter(c,arrayListNounou);

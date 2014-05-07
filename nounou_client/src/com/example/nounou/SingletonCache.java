@@ -7,12 +7,12 @@ import java.util.Map;
 import com.example.nounou.data.Nounou;
 
 public class SingletonCache {
-	/** Constructeur priv� pour le singleton*/
+	/** Constructeur privé pour le singleton*/
 	private SingletonCache() {}
 
-	/** Instance unique non pr�initialis�e */
+	/** Instance unique non préinitialisée */
 	private static SingletonCache INSTANCE = null;
-	private static HashMap<String,Nounou> mapObjects = new HashMap<String,Nounou>();
+	private static HashMap<String,Object> mapObjects = new HashMap<String,Object>();
 	
 	/** Point d'acc�s pour l'instance unique du singleton */
 	public static SingletonCache getInstance() {

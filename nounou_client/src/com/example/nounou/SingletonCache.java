@@ -7,14 +7,14 @@ import java.util.Map;
 import com.example.nounou.data.Nounou;
 
 public class SingletonCache {
-	/** Constructeur privé pour le singleton*/
+	/** Constructeur privï¿½ pour le singleton*/
 	private SingletonCache() {}
 
-	/** Instance unique non préinitialisée */
+	/** Instance unique non prï¿½initialisï¿½e */
 	private static SingletonCache INSTANCE = null;
 	private static HashMap<String,Nounou> mapObjects = new HashMap<String,Nounou>();
 	
-	/** Point d'accès pour l'instance unique du singleton */
+	/** Point d'accï¿½s pour l'instance unique du singleton */
 	public static SingletonCache getInstance() {
 		if (INSTANCE == null) {
 			/**Synchronized permet de partager l'instance entre les threads*/
@@ -27,6 +27,7 @@ public class SingletonCache {
 		return INSTANCE;
 	}
 	
+	//Ajout d'un objet en cle valeur, la cle correspond Ã  l'id, cela permettra de requeter le HashMap
 	public void addNounou(Nounou nounou)
 	{
 		mapObjects.put(String.valueOf(nounou.getIdNounou()), nounou);

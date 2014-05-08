@@ -50,120 +50,136 @@ import com.example.nounou.VolleySingleton;
 public class ApiNounou {
 	private static NounouAdapter _nounouManager;
 	static ProgressDialog dialog = null;
+
 	public static void getAllNounousApi(String url, final Context contexte,
 			final ListView listView) {
 		dialog = ProgressDialog.show(contexte, "", "Chargement...");
-		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte).getRequestQueue();
+		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte)
+				.getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(contexte);
-
-		JsonObjectRequest jsObjRequest = new JsonObjectRequest(
-				Request.Method.GET, url, null,
-				new Response.Listener<JSONObject>() {
-
-					@Override
-					public void onResponse(JSONObject response) {
-						// parse le JSON et remplis un arrayList d'objet Nounou
-						try {
-							ArrayList<Nounou> arrayListNounou = new ArrayList();
-							JSONArray jsonArrayNounou = response
-									.getJSONArray("allNounous");
-							for (int i = 0; i < jsonArrayNounou.length(); i++) {
-								Nounou newNouNou = new Nounou();
-								String cheminPhotoNounou = "";
-								if (jsonArrayNounou.getJSONObject(i).getString(
-										"cheminPhoto") != "") {
-									cheminPhotoNounou = jsonArrayNounou
-											.getJSONObject(i).getString(
-													"cheminPhoto");
-								}
-								newNouNou.setIdNounou(jsonArrayNounou
-										.getJSONObject(i).getString("_id"));
-								newNouNou.setNom(jsonArrayNounou.getJSONObject(
-										i).getString("nom"));
-								newNouNou.setPrenom(jsonArrayNounou
-										.getJSONObject(i).getString("prenom"));
-								newNouNou.setDateDeNaissance(jsonArrayNounou
-										.getJSONObject(i).getString(
-												"dateDeNaissance"));
-								newNouNou
-										.setCivilite(jsonArrayNounou
-												.getJSONObject(i).getString(
-														"civilite"));
-								newNouNou.setAdresse(jsonArrayNounou
-										.getJSONObject(i).getString("adresse"));
-								newNouNou.setEmail(jsonArrayNounou
-										.getJSONObject(i).getString("email"));
-								newNouNou.setTarifHoraire(jsonArrayNounou
-										.getJSONObject(i).getString(
-												"tarifHoraire"));
-								newNouNou
-										.setDescriptionPrestation(jsonArrayNounou
-												.getJSONObject(i)
-												.getString(
-														"descriptionPrestation"));
-								newNouNou.setTelephone(jsonArrayNounou
-										.getJSONObject(i)
-										.getString("telephone"));
-								newNouNou.setDisponibilite(jsonArrayNounou
-										.getJSONObject(i).getString(
-												"disponibilite"));
-								newNouNou.setCheminPhoto(cheminPhotoNounou);
-								newNouNou
-										.setPassword(jsonArrayNounou
-												.getJSONObject(i).getString(
-														"password"));
-
-								arrayListNounou.add(newNouNou);
-							}
-
-							// Create ArrayAdapter
-							_nounouManager = new NounouAdapter(contexte,
-									arrayListNounou);
-							listView.setAdapter(_nounouManager);
-							listView.setOnItemClickListener(new OnItemClickListener() {
-								@Override
-								public void onItemClick(AdapterView<?> arg0,
-										View arg1, int arg2, long arg3) {
-
-									Intent intent = new Intent(contexte,
-											ListUneNounou.class);
-									intent.putExtra("id", _nounouManager
-											.getNounouAtIndex(arg2)
-											.getIdNounou());
-									contexte.startActivity(intent);
-								}
-
-							});
-							dialog.hide();
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-
-					}
-				}, new Response.ErrorListener() {
-
-					@Override
-					public void onErrorResponse(VolleyError error) {
-						// TODO Auto-generated method stub
-						Log.i("ERROR---------", error.toString());
-					}
-				});
-		/*if (_volleyQueue.getCache().get(url) != null) {
-			// response exists
-			String cachedResponse = new String(
-					_volleyQueue.getCache().get(url).data);
-			Log.i("CACHE-----------------------", "From Cache: "+ cachedResponse);
+		if (_volleyQueue.getCache().get(url) != null) {
+			try {
+				JSONObject cacheContent = new JSONObject(new String(
+						_volleyQueue.getCache().get(url).data));
+				ajoutListeNounou(cacheContent,contexte,listView);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		} else {
-			// no response
-			Log.i("CACHE RESPONSE----------------", "NO CACHE RESPONSE");
-			_volleyQueue.add(jsObjRequest);
-		}*/
-		_volleyQueue.add(jsObjRequest);
-	}
+			JsonObjectRequest jsObjRequest = new JsonObjectRequest(
+					Request.Method.GET, url, null,
+					new Response.Listener<JSONObject>() {
+						@Override
+						public void onResponse(JSONObject response) {
+							ajoutListeNounou(response,contexte,listView);
+						}
+					}, new Response.ErrorListener() {
 
+						@Override
+						public void onErrorResponse(VolleyError error) {
+							// TODO Auto-generated method stub
+							Log.i("ERROR---------", error.toString());
+						}
+					});
+
+			_volleyQueue.add(jsObjRequest);
+		}
+	}
+	
+	/*
+	 * Parse le JSON obtenu par le cache ou la requete
+	 * Et remplis la liste des nounous (CustomAdapter)
+	 */
+	public static void ajoutListeNounou(JSONObject response,final Context contexte, ListView listView)
+	{
+		// parse le JSON et remplis un arrayList d'objet
+		// Nounou
+		try {
+			ArrayList<Nounou> arrayListNounou = new ArrayList();
+			JSONArray jsonArrayNounou = response
+					.getJSONArray("allNounous");
+			for (int i = 0; i < jsonArrayNounou.length(); i++) {
+				Nounou newNouNou = new Nounou();
+				String cheminPhotoNounou = "";
+				if (jsonArrayNounou.getJSONObject(i)
+						.getString("cheminPhoto") != "") {
+					cheminPhotoNounou = jsonArrayNounou
+							.getJSONObject(i).getString(
+									"cheminPhoto");
+				}
+				newNouNou.setIdNounou(jsonArrayNounou
+						.getJSONObject(i).getString("_id"));
+				newNouNou.setNom(jsonArrayNounou
+						.getJSONObject(i).getString("nom"));
+				newNouNou.setPrenom(jsonArrayNounou
+						.getJSONObject(i).getString(
+								"prenom"));
+				newNouNou
+						.setDateDeNaissance(jsonArrayNounou
+								.getJSONObject(i)
+								.getString(
+										"dateDeNaissance"));
+				newNouNou.setCivilite(jsonArrayNounou
+						.getJSONObject(i).getString(
+								"civilite"));
+				newNouNou.setAdresse(jsonArrayNounou
+						.getJSONObject(i).getString(
+								"adresse"));
+				newNouNou.setEmail(jsonArrayNounou
+						.getJSONObject(i)
+						.getString("email"));
+				newNouNou.setTarifHoraire(jsonArrayNounou
+						.getJSONObject(i).getString(
+								"tarifHoraire"));
+				newNouNou
+						.setDescriptionPrestation(jsonArrayNounou
+								.getJSONObject(i)
+								.getString(
+										"descriptionPrestation"));
+				newNouNou.setTelephone(jsonArrayNounou
+						.getJSONObject(i).getString(
+								"telephone"));
+				newNouNou.setDisponibilite(jsonArrayNounou
+						.getJSONObject(i).getString(
+								"disponibilite"));
+				newNouNou.setCheminPhoto(cheminPhotoNounou);
+				newNouNou.setPassword(jsonArrayNounou
+						.getJSONObject(i).getString(
+								"password"));
+
+				arrayListNounou.add(newNouNou);
+			}
+
+			// Create NounouAdapter, pour la liste
+			_nounouManager = new NounouAdapter(contexte,
+					arrayListNounou);
+			listView.setAdapter(_nounouManager);
+			listView.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(
+						AdapterView<?> arg0, View arg1,
+						int arg2, long arg3) {
+
+					Intent intent = new Intent(contexte,
+							ListUneNounou.class);
+					intent.putExtra("id", _nounouManager
+							.getNounouAtIndex(arg2)
+							.getIdNounou());
+					contexte.startActivity(intent);
+				}
+
+			});
+			dialog.hide();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public static void getUneNounou(final String url, final Context contexte,
 			final HashMap hashMap, final ImageView imageView) {
-		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte).getRequestQueue();
+		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte)
+				.getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(contexte);
 		JsonObjectRequest jsObjRequest = new JsonObjectRequest(
 				Request.Method.GET, url, null,
@@ -256,26 +272,33 @@ public class ApiNounou {
 		_volleyQueue.add(jsObjRequest);
 	}
 
-	public static void getImageFromUrl(String url, final ImageView imageView, Context contexte) {
+	/*
+	 * Permet de telecharger une image du serveur en utilisant le Singleton
+	 * volley précédement créé
+	 */
+	public static void getImageFromUrl(String url, final ImageView imageView,
+			Context contexte) {
 		VolleySingleton volleyInstance = VolleySingleton.getInstance(contexte);
 		ImageLoader imageLoader = volleyInstance.getImageLoader();
 		imageLoader.get(url, new ImageListener() {
-		              
-		            public void onErrorResponse(VolleyError error) {
-		                imageView.setImageResource(R.drawable.ic_launcher); // image par defaut si il y a un fail
-		            }
-		              
-		            public void onResponse(ImageContainer response, boolean arg1) {
-		                if (response.getBitmap() != null) {
-		                    imageView.setImageBitmap(response.getBitmap());
-		                }
-		            }
-		        });
+
+			public void onErrorResponse(VolleyError error) {
+				imageView.setImageResource(R.drawable.ic_launcher); // image par
+																	// defaut si
+																	// il y a un
+																	// fail
+			}
+
+			public void onResponse(ImageContainer response, boolean arg1) {
+				if (response.getBitmap() != null) {
+					imageView.setImageBitmap(response.getBitmap());
+				}
+			}
+		});
 	}
 
 	public static String parseUrl(String url) {
 		String[] arrayurl = url.split("/");
-		// Log.i("url--------------------",arrayurl[2]);
 		return arrayurl[2];
 	}
 

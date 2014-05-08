@@ -37,6 +37,9 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.ImageLoader.ImageContainer;
+import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
@@ -254,21 +257,20 @@ public class ApiNounou {
 	}
 
 	public static void getImageFromUrl(String url, final ImageView imageView, Context contexte) {
-		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte).getRequestQueue();
-		_volleyQueue = Volley.newRequestQueue(contexte);
-		ImageRequest imgRequest = new ImageRequest(url,
-				new Response.Listener<Bitmap>() {
-					@Override
-					public void onResponse(Bitmap response) {
-						imageView.setImageBitmap(response);
-					}
-				}, 0, 0, Bitmap.Config.ARGB_8888, new Response.ErrorListener() {
-					@Override
-					public void onErrorResponse(VolleyError error) {
-						Log.i("ERROR IMG--------------", error.toString());
-					}
-				});
-		_volleyQueue.add(imgRequest);
+		VolleySingleton volleyInstance = VolleySingleton.getInstance(contexte);
+		ImageLoader imageLoader = volleyInstance.getImageLoader();
+		imageLoader.get(url, new ImageListener() {
+		              
+		            public void onErrorResponse(VolleyError error) {
+		                imageView.setImageResource(R.drawable.ic_launcher); // image par defaut si il y a un fail
+		            }
+		              
+		            public void onResponse(ImageContainer response, boolean arg1) {
+		                if (response.getBitmap() != null) {
+		                    imageView.setImageBitmap(response.getBitmap());
+		                }
+		            }
+		        });
 	}
 
 	public static String parseUrl(String url) {

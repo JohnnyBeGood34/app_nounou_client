@@ -15,17 +15,15 @@ public class VolleySingleton {
     private ImageLoader imageLoader;
  
     private VolleySingleton(Context context) {
+    	//Nouvelle file d'attente de requetes volley
         requestQueue = Volley.newRequestQueue(context);
- 
+        //Image loader pour telecharger les images des nounous
         imageLoader = new ImageLoader(requestQueue, new ImageLoader.ImageCache() {
             private final LruCache<String, Bitmap> cache = new LruCache<String, Bitmap>(20);
- 
- 
             @Override
             public Bitmap getBitmap(String url) {
                 return cache.get(url);
             }
- 
             @Override
             public void putBitmap(String url, Bitmap bitmap) {
                 cache.put(url, bitmap);
@@ -33,7 +31,7 @@ public class VolleySingleton {
         });
     }
  
- 
+    //getInstance pour le Singeton
     public static VolleySingleton getInstance(Context contexte) {
     	if (INSTANCE == null) {
 			/**Synchronized permet de partager l'instance entre les threads*/

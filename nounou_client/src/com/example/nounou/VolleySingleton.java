@@ -1,5 +1,7 @@
 package com.example.nounou;
 
+import java.util.HashMap;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
@@ -9,7 +11,6 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
 public class VolleySingleton {
-	 
     private static VolleySingleton INSTANCE = null;
     private RequestQueue requestQueue;
     private ImageLoader imageLoader;
@@ -51,4 +52,5 @@ public class VolleySingleton {
     public ImageLoader getImageLoader() {
         return imageLoader;
     }
+    
 }

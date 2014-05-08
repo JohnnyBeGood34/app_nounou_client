@@ -50,9 +50,6 @@ import com.example.nounou.VolleySingleton;
 public class ApiNounou {
 	private static NounouAdapter _nounouManager;
 	static ProgressDialog dialog = null;
-	//Status pour les urls
-    private static HashMap<String,String> URLSTATUS = new HashMap<String,String>();
-    
 	public static void getAllNounousApi(String url, final Context contexte,final ListView listView) {
 		dialog = ProgressDialog.show(contexte, "", "Chargement...");
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte).getRequestQueue();

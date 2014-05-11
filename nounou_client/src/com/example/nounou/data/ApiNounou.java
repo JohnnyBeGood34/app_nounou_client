@@ -158,6 +158,7 @@ public class ApiNounou {
 		if (_volleyQueue.getCache().get(url) != null) {
 			try 
 			{
+				//Si il y a un cache on récupère le JSON depuis le cache
 				JSONObject cacheContent = new JSONObject(new String(_volleyQueue.getCache().get(url).data));
 				afficherProfilNounou(contexte,cacheContent,imageView,url,hashMap);
 			}
@@ -214,7 +215,7 @@ public class ApiNounou {
 
 			TextView date = (TextView) hashMap.get("date");
 			/*
-			 * Determinatation de l'age de la nounou pour
+			 * Determine de l'age de la nounou pour
 			 * affichage
 			 */
 			long age;

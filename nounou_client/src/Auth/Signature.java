@@ -18,7 +18,6 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class Signature
 {
-	//Algorithme à utiliser pour le hash
     private static final String HMAC_SHA1_ALGORITHM = "HmacSHA1";
     
     private static String toHexString(byte[] bytes)

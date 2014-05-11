@@ -54,8 +54,10 @@ public class ApiNounou {
 		dialog = ProgressDialog.show(contexte, "", "Chargement...");
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte).getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(contexte);
+		//Si on a un cache pour cette url
 		if (_volleyQueue.getCache().get(url) != null) {
 			try {
+				//On récupère la liste depuis le cache
 				JSONObject cacheContent = new JSONObject(new String(_volleyQueue.getCache().get(url).data));
 				ajoutListeNounou(cacheContent, contexte, listView);
 			} catch (JSONException e) {

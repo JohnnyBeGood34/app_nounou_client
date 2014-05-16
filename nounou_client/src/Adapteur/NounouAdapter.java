@@ -2,12 +2,25 @@ package Adapteur;
 
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.nounou.R;
+import com.example.nounou.UrlServer;
+import com.example.nounou.data.ApiNounou;
 import com.example.nounou.data.Nounou;
 import com.example.nounou.data.NounouBdd;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,17 +29,22 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 public class NounouAdapter implements ListAdapter {
+	String URL = UrlServer.getServerUrl();
 	Context _ctx;
 	ArrayList<Nounou> _list;
 	LayoutInflater _inflater;
-
-	public NounouAdapter(Context ctx) {
+	static RequestQueue _volleyQueue; // File d'attente volley
+	public NounouAdapter(Context ctx,ArrayList al) {
 		final NounouBdd db=new NounouBdd(ctx);
 		db.open();
-
 		this._ctx = ctx;
-		this._list = (ArrayList<Nounou>) db.getAllNounou();;
+		this._list = al;//(ArrayList<Nounou>) db.getAllNounou();
 		this._inflater = (LayoutInflater) this._ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	}
+	
+	public void notifyAdapter(ArrayList<Nounou> nounous)
+	{
+		this._list = nounous;
 	}
 	
 	public Nounou getNounouAtIndex(int index)
@@ -38,6 +56,10 @@ public class NounouAdapter implements ListAdapter {
 		
 	}
 	
+	public ArrayList<Nounou> getList()
+	{
+		return this._list;
+	}
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
@@ -61,7 +83,7 @@ public class NounouAdapter implements ListAdapter {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Nounou nn = (Nounou) this.getItem(position);
@@ -81,6 +103,7 @@ public class NounouAdapter implements ListAdapter {
 		holder.nom.setText(nn.getNom());
 		holder.email.setText(nn.getEmail());
 		
+		ApiNounou.getImageFromUrl(URL+nn.getCheminPhoto(), holder.image, this._ctx);
 		return convertView;
 	}
 

@@ -1,5 +1,7 @@
 package com.example.nounou;
 
+import com.example.nounou.data.ApiNounou;
+
 import Adapteur.NounouAdapter;
 import Manager.SessionManager;
 import android.os.Bundle;
@@ -18,11 +20,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ListDesNounous extends Activity{
+	String URL = UrlServer.getServerUrl();
 	EditText rec;
 	Button connexion,inscription;
 	TextView dist;
 	private ListView mainListView ;
-	private NounouAdapter _nounouManager;
+	//private NounouAdapter _nounouManager;
 	private SeekBar volumeControl = null;
 	SessionManager session;
 	@Override
@@ -38,7 +41,7 @@ public class ListDesNounous extends Activity{
 		
 		
 		 // User Session Manager
-        session = new SessionManager(this); 
+        session = new SessionManager(this);
         if(session.isUserLoggedIn()==true){
         	connexion.setText("Déconnexion");
         	inscription.setText("Mon Compte");
@@ -50,14 +53,8 @@ public class ListDesNounous extends Activity{
         
 		// Find the ListView resource.   
 		mainListView = (ListView) findViewById( R.id.mainListView ); 
-	    
-  
-	    // Create ArrayAdapter 
-	    _nounouManager = new NounouAdapter(this);
-	    
-	    
-        
-        mainListView.setAdapter( _nounouManager );
+		ApiNounou.getAllNounousApi(URL+"/api/nounous",this,mainListView);
+		
         connexion.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
@@ -91,19 +88,6 @@ public class ListDesNounous extends Activity{
         	}
         });    
         
-        mainListView.setOnItemClickListener(new OnItemClickListener(){
-        	
-
-        	@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
-        		
-                Intent intent= new Intent(getApplicationContext(),ListUneNounou.class);
-                intent.putExtra("id", _nounouManager.getNounouAtIndex(arg2).getEmail());
-                startActivity(intent);
-			}
-        	
-        });
         volumeControl.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
             int progressChanged = 0;
  

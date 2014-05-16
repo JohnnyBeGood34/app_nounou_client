@@ -1,5 +1,7 @@
 package com.example.nounou.data;
 
+import android.net.Uri;
+
 public class Nounou {
 	private String idNounou;
 	private String nom;
@@ -15,7 +17,7 @@ public class Nounou {
 	private String cheminPhoto;
 	private String password;
 	
-	public Nounou(String id,String n,String p,String dN,String c,String ad,String e, String tH, String des,String tel, String dispo,String cP,String MDP){
+	public Nounou(String id,String n,String p,String dN,String c,String ad,String e, String tH, String des,String tel, String dispo,String string,String MDP){
 		this.idNounou=id;
 		this.nom=n;
 		this.prenom=p;
@@ -27,7 +29,7 @@ public class Nounou {
 		this.descriptionPrestation=des;
 		this.telephone=tel;
 		this.disponibilite=dispo;
-		this.cheminPhoto=cP;
+		this.cheminPhoto=string;
 		this.password=MDP;
 	}
 	public Nounou(){
@@ -42,7 +44,7 @@ public class Nounou {
 		this.descriptionPrestation="";
 		this.telephone="";
 		this.disponibilite="";
-		this.cheminPhoto="";
+		this.cheminPhoto=null;
 		this.password="";
 		
 	}

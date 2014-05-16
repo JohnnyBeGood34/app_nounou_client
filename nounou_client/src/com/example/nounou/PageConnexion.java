@@ -14,10 +14,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-<<<<<<< HEAD
 import android.view.Menu;
-=======
->>>>>>> b346adbee0f6553d4a23125ecaa6fa02f7e23d0c
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;

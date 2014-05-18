@@ -8,8 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class ConnectivityChangeReceiver 
-               extends BroadcastReceiver {
+public class ConnectivityChangeReceiver extends BroadcastReceiver {
 	static ProgressDialog dialog=null;
    @Override
    public void onReceive(Context context, Intent intent) {

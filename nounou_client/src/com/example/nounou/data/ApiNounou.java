@@ -266,16 +266,13 @@ public class ApiNounou {
 	 * Permet de telecharger une image du serveur en utilisant le Singleton
 	 * volley 
 	 */
-	public static void getImageFromUrl(String url, final ImageView imageView,
-			Context contexte) {
+	public static void getImageFromUrl(String url, final ImageView imageView,Context contexte) {
 		VolleySingleton volleyInstance = VolleySingleton.getInstance(contexte);
 		ImageLoader imageLoader = volleyInstance.getImageLoader();
 		imageLoader.get(url, new ImageListener() {
-
 			public void onErrorResponse(VolleyError error) {
 				imageView.setImageResource(R.drawable.ic_launcher); 
 			}
-
 			public void onResponse(ImageContainer response, boolean arg1) {
 				if (response.getBitmap() != null) {
 					imageView.setImageBitmap(response.getBitmap());

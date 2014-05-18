@@ -2,6 +2,7 @@ package com.example.nounou.data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -42,7 +43,31 @@ public class NounouBdd {
     private SQLiteDatabase mDb;
     
     private BaseSQLite mBaseSQLite;
-
+    
+    public final static Pattern EMAIL_ADDRESS_PATTERN = Pattern.compile(
+            "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" +
+            "\\@" +
+            "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" +
+            "(" +
+            "\\." +
+            "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" +
+            ")+"
+        );
+    
+    public final static Pattern TARIF_PATTERN = Pattern.compile(
+    		".[0-9]{1,5}"
+    		);
+    
+    public final static Pattern TELEPHONE_PATTERN = Pattern.compile(
+    		"\\d\\d\\d\\d\\d\\d\\d\\d\\d\\d"
+    		);
+    
+    public final static Pattern DATE_PATTERN = Pattern.compile(
+    		"(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[012])/((19|20)\\d\\d)"
+    		);
+    		
+    
+    
     /** créer la base de données si inexistante */
     public NounouBdd(Context context){
           //On créer la BDD et sa table
@@ -175,5 +200,29 @@ public class NounouBdd {
         c.close();
         return apps;
   }
+    
+    //Fonction qui vérifie que l'email est valide (renvoie true ou false)
+    public boolean verificationMail(String email)
+    {
+    	return EMAIL_ADDRESS_PATTERN.matcher(email).matches();
+    }
+    
+    //Vérifie que le tarif horaire est bien un nombre
+    public boolean verificationTarif (String tarifHoraire)
+    {
+    	return TARIF_PATTERN.matcher(tarifHoraire).matches();
+    }
+    
+    //Vérifie que le numéro de téléphone ne contient que des chiffres
+    public boolean verificationTelephone(String telephone)
+    {
+    	return TELEPHONE_PATTERN.matcher(telephone).matches();
+    }
+    
+    //Vérifie le format et la validité d'une date
+    public boolean verificationDate(String Date)
+    {
+    	return DATE_PATTERN.matcher(Date).matches();
+    }
     
 }

@@ -7,6 +7,7 @@ import Manager.SessionManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -53,7 +54,7 @@ public class ListDesNounous extends Activity{
         
 		// Find the ListView resource.   
 		mainListView = (ListView) findViewById( R.id.mainListView ); 
-		ApiNounou.getAllNounousApi(URL+"/api/nounous",this,mainListView);
+		ApiNounou.getAllNounousApi(URL+"/api/nounous/latitude/44/longitude/4/kilometres/2000",this,mainListView);
 		
         connexion.setOnClickListener(new OnClickListener() {
         	@Override
@@ -94,16 +95,22 @@ public class ListDesNounous extends Activity{
             @Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
                 progressChanged = progress;
+               
             }
  
             @Override
-			public void onStartTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
+			public void onStartTrackingTouch(SeekBar seekBar) {               
             }
- 
+            
+            /*Au changement des kilomètres choisis pour la recherche*/
             @Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
             	dist.setText(String.valueOf(progressChanged+"Km"));
+            	/*On actualise la liste des Nounous se trouvant dans le périmètre choisi*/
+            	/*TODO
+            	 * Remplacer la latitude/longitude par les véritbles coordonnées
+            	 * */
+            	ApiNounou.getAllNounousApi(URL+"/api/nounous/latitude/44/longitude/4/kilometres/"+String.valueOf(progressChanged),ListDesNounous.this,mainListView);
             }
         });
         

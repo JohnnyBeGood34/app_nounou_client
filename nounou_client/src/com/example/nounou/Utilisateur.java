@@ -32,6 +32,7 @@ public class Utilisateur extends Activity {
 		setContentView(R.layout.activity_utilisateur);
 		/*
 		 * IL FAUT CHANGER LA SYNTAXE 
+		 * 
 		 */
 		an = (Button) findViewById(R.id.buttonAn);
 		val = (Button) findViewById(R.id.buttonVal);

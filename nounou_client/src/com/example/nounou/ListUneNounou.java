@@ -9,6 +9,7 @@ import com.example.nounou.data.ApiNounou;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -27,7 +28,7 @@ public class ListUneNounou extends Activity {
 			//db.open();
 			Bundle extra = getIntent().getExtras();
 	        String  Variable = extra.getString("id");
-						
+			Log.i("Api ","ID :"+Variable);			
 			boutonRetour = (Button)findViewById(R.id.buttonRetour);
 			HashMap<String, TextView> arrayTextView = new HashMap<String, TextView>();
 			

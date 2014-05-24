@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import Adapteur.NounouAdapter;
+import Manager.SessionManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -32,6 +33,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -43,14 +45,18 @@ import com.android.volley.toolbox.ImageLoader.ImageListener;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.nounou.ListDesNounous;
 import com.example.nounou.ListUneNounou;
+import com.example.nounou.PageConnexion;
 import com.example.nounou.R;
+import com.example.nounou.UrlServer;
 import com.example.nounou.VolleySingleton;
 
 public class ApiNounou {
 	private static NounouAdapter _nounouManager;
 	static ProgressDialog dialog = null;
 	public static void getAllNounousApi(String url, final Context contexte,final ListView listView) {
+		
 		dialog = ProgressDialog.show(contexte, "", "Chargement...");
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte).getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(contexte);
@@ -60,16 +66,20 @@ public class ApiNounou {
 				//On récupère la liste depuis le cache
 				JSONObject cacheContent = new JSONObject(new String(_volleyQueue.getCache().get(url).data));
 				ajoutListeNounou(cacheContent, contexte, listView);
+				Log.i("Api Nounou","Get url from cache ");
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				Log.i("ERROR JSON EXCEPTION---------", e.toString());
 			}
 		} else {
+			
 			JsonObjectRequest jsObjRequest = new JsonObjectRequest(
+					
 					Request.Method.GET, url, null,
 					new Response.Listener<JSONObject>() {
 						@Override
 						public void onResponse(JSONObject response) {
+							
 							ajoutListeNounou(response, contexte, listView);
 						}
 					}, new Response.ErrorListener() {
@@ -93,15 +103,20 @@ public class ApiNounou {
 		// parse le JSON et remplis un arrayList d'objet
 		// Nounou
 		try {
+			
 			ArrayList<Nounou> arrayListNounou = new ArrayList();
 			JSONArray jsonArrayNounou = response.getJSONArray("allNounous");
+			//Log.i("Api nounou","Nb nounous :"+jsonArrayNounou.length()+jsonArrayNounou.toString());
 			for (int i = 0; i < jsonArrayNounou.length(); i++) {
 				Nounou newNouNou = new Nounou();
 				String cheminPhotoNounou = "";
+				//Log.i("Api ","boucle n° "+i);
+				//Log.i("Api"," "+jsonArrayNounou.getJSONObject(i).getString("adresse"));
 				if (jsonArrayNounou.getJSONObject(i).getString("cheminPhoto") != "") {
 					cheminPhotoNounou = jsonArrayNounou.getJSONObject(i)
 							.getString("cheminPhoto");
 				}
+				Log.i("Nounou nom",jsonArrayNounou.getJSONObject(i).getString("nom"));
 				newNouNou.setIdNounou(jsonArrayNounou.getJSONObject(i)
 						.getString("_id"));
 				newNouNou.setNom(jsonArrayNounou.getJSONObject(i).getString(
@@ -118,8 +133,9 @@ public class ApiNounou {
 						"email"));
 				newNouNou.setTarifHoraire(jsonArrayNounou.getJSONObject(i)
 						.getString("tarifHoraire"));
-				newNouNou.setDescriptionPrestation(jsonArrayNounou
+				/*newNouNou.setDescriptionPrestation(jsonArrayNounou
 						.getJSONObject(i).getString("descriptionPrestation"));
+						*/
 				newNouNou.setTelephone(jsonArrayNounou.getJSONObject(i)
 						.getString("telephone"));
 				newNouNou.setDisponibilite(jsonArrayNounou.getJSONObject(i)
@@ -127,6 +143,7 @@ public class ApiNounou {
 				newNouNou.setCheminPhoto(cheminPhotoNounou);
 				newNouNou.setPassword(jsonArrayNounou.getJSONObject(i)
 						.getString("password"));
+						
 
 				arrayListNounou.add(newNouNou);
 			}
@@ -149,6 +166,8 @@ public class ApiNounou {
 			dialog.hide();
 		} catch (JSONException e) {
 			e.printStackTrace();
+			
+			Log.i("Api Nounou","Probleme enregistrement newNounou");
 		}
 	}
 
@@ -191,7 +210,7 @@ public class ApiNounou {
 	public static void afficherProfilNounou(Context contexte,JSONObject response,ImageView imageView,String url,HashMap hashMap)
 	{
 		try {
-			// Log.i("nounou-----------------------------",response.getString("nounou").toString());
+			 Log.i("nounou-----------------------------",response.getString("nounou").toString());
 			Nounou nounou = new Nounou(response
 					.getString("_id"), response
 					.getString("nom"), response
@@ -240,10 +259,10 @@ public class ApiNounou {
 			TextView tel = (TextView) hashMap.get("tel");
 			tel.setText(String.valueOf(nounou.getTelephone()));
 
-			TextView des = (TextView) hashMap.get("des");
+			/*TextView des = (TextView) hashMap.get("des");
 			des.setText(String.valueOf(nounou
 					.getDescriptionPrestation()));
-
+*/
 			TextView email = (TextView) hashMap.get("email");
 			email.setText(String.valueOf(nounou.getEmail()));
 
@@ -280,7 +299,62 @@ public class ApiNounou {
 			}
 		});
 	}
+	
+	public static void identification(final String email,final String password,final Context activityConnection){
+		RequestQueue _volleyQueue = VolleySingleton.getInstance(activityConnection).getRequestQueue();
+		_volleyQueue = Volley.newRequestQueue(activityConnection);
+		final String result="";
+		
+		/* On construit un Objet pour les paramètres à envoyer en POST */
+		JSONObject params=new JSONObject();
+		try {
+			params.put("email", email);
+			params.put("password", password);
+		} catch (JSONException e) {			
+			e.printStackTrace();
+		}
+				
+		JsonObjectRequest jsObjRequest = new JsonObjectRequest(
+				
+				Request.Method.POST, UrlServer.getServerUrl()+"/api/connexionNounou",params,
+				new Response.Listener<JSONObject>() {
 
+					@Override
+					public void onResponse(JSONObject response) {
+						try {							
+							/* On récupère le code HTTP reçu et on traite selon */
+							int codeHTTP=response.getInt("code");
+							/* Si le mot de passe ne correspond pas ou si l'email ne correspond pas à aucune Nounou */
+							if(codeHTTP == 401 || codeHTTP == 404) Toast.makeText(activityConnection,"Email ou mot de passe incorrect.",Toast.LENGTH_LONG).show();
+							else {
+								 Intent listeNounous=new Intent(activityConnection,ListDesNounous.class);
+								SessionManager sm = new SessionManager(activityConnection);
+						 		sm.createUserLoginSession(email,password);
+						 		Toast.makeText(activityConnection,email+
+							                ", vous êtes Connecté!",
+							                Toast.LENGTH_LONG).show();
+						 		activityConnection.startActivity(listeNounous);
+							}
+							
+						} catch (JSONException e) {							
+							e.printStackTrace();
+						}
+						
+					}
+				}, new Response.ErrorListener() {
+
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						
+						Log.i("ERROR---------", error.toString());
+					}
+				});
+		_volleyQueue.add(jsObjRequest);
+				
+	}
+
+	
+	
 	public static String parseUrl(String url) {
 		String[] arrayurl = url.split("/");
 		return arrayurl[2];

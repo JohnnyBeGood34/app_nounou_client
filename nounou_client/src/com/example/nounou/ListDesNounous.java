@@ -54,6 +54,10 @@ public class ListDesNounous extends Activity{
         
 		// Find the ListView resource.   
 		mainListView = (ListView) findViewById( R.id.mainListView ); 
+		/*
+		 * TODO
+		 * A remplacer dans l'URL les coordonnées réelles 
+		 * */
 		ApiNounou.getAllNounousApi(URL+"/api/nounous/latitude/44/longitude/4/kilometres/2000",this,mainListView);
 		
         connexion.setOnClickListener(new OnClickListener() {
@@ -71,15 +75,16 @@ public class ListDesNounous extends Activity{
         		}
         	}
         });
-
+        
+        /*Permet de visualiser son compte si connecté sinon de s'inscrire*/
         inscription.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
         		
     			if(session.isUserLoggedIn()==true){
     				Intent intent=new Intent(ListDesNounous.this,Utilisateur.class);
-    				String u = session.getLogin();
-    				intent.putExtra("id",u);
+    				String idNounou = session.getLogin();
+    				intent.putExtra("id",idNounou);
 	    			startActivity(intent);
         		}
         		else{

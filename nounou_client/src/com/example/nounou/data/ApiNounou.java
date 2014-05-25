@@ -29,6 +29,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -53,6 +54,8 @@ import com.example.nounou.UrlServer;
 import com.example.nounou.VolleySingleton;
 
 public class ApiNounou {
+	
+	
 	private static NounouAdapter _nounouManager;
 	static ProgressDialog dialog = null;
 	public static void getAllNounousApi(String url, final Context contexte,final ListView listView) {
@@ -67,10 +70,10 @@ public class ApiNounou {
 				JSONObject cacheContent = new JSONObject(new String(_volleyQueue.getCache().get(url).data));
 				ajoutListeNounou(cacheContent, contexte, listView);
 				Log.i("Api Nounou","Get url from cache ");
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
+			} catch (JSONException e) {				
 				Log.i("ERROR JSON EXCEPTION---------", e.toString());
 			}
+			/* Sinon on va chercher en BD */
 		} else {
 			
 			JsonObjectRequest jsObjRequest = new JsonObjectRequest(
@@ -133,7 +136,8 @@ public class ApiNounou {
 						"email"));
 				newNouNou.setTarifHoraire(jsonArrayNounou.getJSONObject(i)
 						.getString("tarifHoraire"));
-				/*newNouNou.setDescriptionPrestation(jsonArrayNounou
+				
+				 /* newNouNou.setDescriptionPrestation(jsonArrayNounou
 						.getJSONObject(i).getString("descriptionPrestation"));
 						*/
 				newNouNou.setTelephone(jsonArrayNounou.getJSONObject(i)
@@ -170,7 +174,9 @@ public class ApiNounou {
 			Log.i("Api Nounou","Probleme enregistrement newNounou");
 		}
 	}
-
+    /*
+     * Permet d'obtenir le détail d'une Nounou parmi la liste
+     * */
 	public static void getUneNounou(final String url, final Context contexte,final HashMap hashMap, final ImageView imageView) {
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte).getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(contexte);
@@ -209,8 +215,9 @@ public class ApiNounou {
 
 	public static void afficherProfilNounou(Context contexte,JSONObject response,ImageView imageView,String url,HashMap hashMap)
 	{
+		
 		try {
-			 Log.i("nounou-----------------------------",response.getString("nounou").toString());
+			 Log.i("nounou-----------------------------","");
 			Nounou nounou = new Nounou(response
 					.getString("_id"), response
 					.getString("nom"), response
@@ -259,10 +266,10 @@ public class ApiNounou {
 			TextView tel = (TextView) hashMap.get("tel");
 			tel.setText(String.valueOf(nounou.getTelephone()));
 
-			/*TextView des = (TextView) hashMap.get("des");
+			TextView des = (TextView) hashMap.get("des");
 			des.setText(String.valueOf(nounou
 					.getDescriptionPrestation()));
-*/
+
 			TextView email = (TextView) hashMap.get("email");
 			email.setText(String.valueOf(nounou.getEmail()));
 
@@ -299,7 +306,9 @@ public class ApiNounou {
 			}
 		});
 	}
-	
+	/*
+	 * Méthode utilisée dans l'activité PageConnexion pour s'authentifier
+	 * */
 	public static void identification(final String email,final String password,final Context activityConnection){
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(activityConnection).getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(activityConnection);
@@ -326,10 +335,15 @@ public class ApiNounou {
 							int codeHTTP=response.getInt("code");
 							/* Si le mot de passe ne correspond pas ou si l'email ne correspond pas à aucune Nounou */
 							if(codeHTTP == 401 || codeHTTP == 404) Toast.makeText(activityConnection,"Email ou mot de passe incorrect.",Toast.LENGTH_LONG).show();
+							
+							/*Si les mots de passe correspondent*/
 							else {
+								
+								/*On récupère l'id de la Nounou renvoyé par le serveur */
+								String idNounou=response.getString("message");
 								 Intent listeNounous=new Intent(activityConnection,ListDesNounous.class);
 								SessionManager sm = new SessionManager(activityConnection);
-						 		sm.createUserLoginSession(email,password);
+						 		sm.createUserLoginSession(idNounou,email);
 						 		Toast.makeText(activityConnection,email+
 							                ", vous êtes Connecté!",
 							                Toast.LENGTH_LONG).show();
@@ -352,8 +366,70 @@ public class ApiNounou {
 		_volleyQueue.add(jsObjRequest);
 				
 	}
+ /*
+  * Methode pour remplir les champs du profil de l'utilisateur dans l'activité Utilisateur
+  * */
+	public static void getProfil(String idNounou,final Context activityUtilisateur,final HashMap listEditText){
+		
+		RequestQueue _volleyQueue = VolleySingleton.getInstance(activityUtilisateur).getRequestQueue();
+		_volleyQueue = Volley.newRequestQueue(activityUtilisateur);
+		Log.i("Api","idNounou :"+idNounou);
+JsonObjectRequest jsObjRequest = new JsonObjectRequest(
+				
+				Request.Method.GET, UrlServer.getServerUrl()+"/api/nounou/"+idNounou,null,
+				new Response.Listener<JSONObject>() {
 
+					@Override
+					public void onResponse(JSONObject response) {
+					//Log.i("Api",response.toString());
+						afficherProfil(response,listEditText);
+					}
+				}, new Response.ErrorListener() {
+
+					@Override
+					public void onErrorResponse(VolleyError error) {
+						
+						Log.i("ERROR---------", error.toString());
+					}
+				});
+		_volleyQueue.add(jsObjRequest);
+	}
 	
+	
+	public static void afficherProfil(JSONObject response,HashMap listEditText) {
+		
+		/*Edit TExt de l'activity Utilisateur */
+		EditText nom=(EditText)listEditText.get("nom");
+		EditText prenom=(EditText)listEditText.get("prenom");
+		EditText email=(EditText)listEditText.get("email");
+		EditText dateNaissance=(EditText)listEditText.get("dateDeNaissance");
+		EditText civilite=(EditText)listEditText.get("civilite");
+		EditText password=(EditText)listEditText.get("password");
+		EditText adresse=(EditText)listEditText.get("adresse");
+		EditText telephone=(EditText)listEditText.get("telephone");
+		EditText disponibilite=(EditText)listEditText.get("disponibilite");
+		EditText description=(EditText)listEditText.get("description");
+		EditText tarifHoraire=(EditText)listEditText.get("tarifHoraire");
+		
+		
+		/*On pré-remplit les champs du profil avec la réponse du serveur */
+		try {
+			nom.setText(response.getString("nom"));
+			prenom.setText(response.getString("prenom"));
+			email.setText(response.getString("email"));
+			dateNaissance.setText(response.getString("dateDeNaissance"));
+			password.setText(response.getString("password"));
+			civilite.setText(response.getString("civilite"));
+			adresse.setText(response.getString("adresse"));
+			telephone.setText(response.getString("telephone"));
+			description.setText(response.getString("decription"));
+			tarifHoraire.setText(response.getString("tarifHoraire"));
+			disponibilite.setText(response.getString("disponibilite"));
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	public static String parseUrl(String url) {
 		String[] arrayurl = url.split("/");

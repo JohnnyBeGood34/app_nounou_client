@@ -1,6 +1,9 @@
 package com.example.nounou;
 
 
+import java.util.HashMap;
+
+import com.example.nounou.data.ApiNounou;
 import com.example.nounou.data.Nounou;
 import com.example.nounou.data.NounouBdd;
 
@@ -18,13 +21,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class Utilisateur extends Activity {
 	private static int RESULT_LOAD_IMAGE = 1;
 	private String cheminImageProfil = "";
 	Button an,sup,val;
-	EditText nom,prenom,dateDeNaissance,civilite,adresse,email,tarifHoraire,descriptionPrestation,telephone,disponibilite,password;
+	EditText nom,prenom,dateDeNaissance,civilite,adresse,email,tarifHoraire,description,telephone,disponibilite,password;
 	SessionManager session;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,18 +58,40 @@ public class Utilisateur extends Activity {
 		adresse = (EditText)findViewById(R.id.edAdresse);
 		email = (EditText)findViewById(R.id.edEmail);
 		tarifHoraire = (EditText)findViewById(R.id.edTarif);
-		descriptionPrestation = (EditText)findViewById(R.id.edDescription);
+		description = (EditText)findViewById(R.id.edDescription);
 		telephone = (EditText)findViewById(R.id.edTel);
 		disponibilite = (EditText)findViewById(R.id.edDispo);
 		password = (EditText)findViewById(R.id.edMdp);
 		
-		final NounouBdd db=new NounouBdd(this);
-		db.open();
+		HashMap<String, EditText> listEditText = new HashMap<String, EditText>();
 		
-		/*IL faut récupérer l'ID de la sessions !!!!!!!!!*/
+		listEditText.put("nom",nom);
+		listEditText.put("prenom",prenom);
+		listEditText.put("dateDeNaissance",dateDeNaissance);
+		listEditText.put("email",email);
+		listEditText.put("tarifHoraire",tarifHoraire);
+		listEditText.put("telephone",telephone);
+		listEditText.put("civilite",civilite);
+		listEditText.put("password",password);
+		listEditText.put("description",description);
+		listEditText.put("disponibilite",disponibilite);
+		listEditText.put("adresse",adresse);
+		
+		
+		/* On récupère l'id de la Nounou en session */	
 		Bundle extra = getIntent().getExtras();
-        final String  Variable = extra.getString("id");
-        Nounou nounous=db.getNounouConnexion(Variable);
+        final String  idNounou = extra.getString("id");
+        
+        /* Appel de l'API qui va remplir les champs du profil en fonction de l'ID de la Nounou */
+        ApiNounou.getProfil(idNounou, this,listEditText);
+        
+        
+        
+        final NounouBdd db=new NounouBdd(this);
+		db.open();
+        /*  
+         * 	
+         * Nounou nounous=db.getNounouConnexion(Variable);
         
         session = new SessionManager(this); 
 
@@ -85,7 +111,7 @@ public class Utilisateur extends Activity {
 		{
 			photoView.setImageBitmap(BitmapFactory.decodeFile(nounous.getCheminPhoto()));
 		}
-		
+		*/
 		an.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
@@ -105,7 +131,7 @@ public class Utilisateur extends Activity {
         		nounous.setAdresse(adresse.getText().toString());
         		nounous.setEmail(email.getText().toString());
         		nounous.setTarifHoraire(tarifHoraire.getText().toString());
-        		nounous.setDescriptionPrestation(descriptionPrestation.getText().toString());
+        		nounous.setDescriptionPrestation(description.getText().toString());
         		nounous.setTelephone(telephone.getText().toString());
         		nounous.setDisponibilite(disponibilite.getText().toString());
         		nounous.setPassword(password.getText().toString());
@@ -124,7 +150,7 @@ public class Utilisateur extends Activity {
 		sup.setOnClickListener(new OnClickListener() {
 			@Override
         	public void onClick(View v) {
-				db.removeNounou(Variable);
+				db.removeNounou(idNounou);
 				session.logoutUser();
 				Toast.makeText(getApplicationContext(),
     	                "Votre compte a été supprimé",

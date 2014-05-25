@@ -25,9 +25,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class Utilisateur extends Activity {
+	
+	
 	private static int RESULT_LOAD_IMAGE = 1;
 	private String cheminImageProfil = "";
-	Button an,sup,val;
+	Button annuler,supprimer,valider;
 	EditText nom,prenom,dateDeNaissance,civilite,adresse,email,tarifHoraire,description,telephone,disponibilite,password;
 	SessionManager session;
 	@Override
@@ -38,10 +40,12 @@ public class Utilisateur extends Activity {
 		 * IL FAUT CHANGER LA SYNTAXE 
 		 * 
 		 */
-		an = (Button) findViewById(R.id.buttonAn);
-		val = (Button) findViewById(R.id.buttonVal);
-		sup = (Button) findViewById(R.id.buttonSup);
+		annuler = (Button) findViewById(R.id.buttonAn);
+		valider = (Button) findViewById(R.id.buttonVal);
+		supprimer = (Button) findViewById(R.id.buttonSup);
 		ImageView photoView = (ImageView) findViewById(R.id.imageViewProfil);
+		
+		
 		photoView.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
@@ -90,7 +94,8 @@ public class Utilisateur extends Activity {
         final NounouBdd db=new NounouBdd(this);
 		db.open();
         /*  
-         * 	
+         * 	Version BD locale
+         * 
          * Nounou nounous=db.getNounouConnexion(Variable);
         
         session = new SessionManager(this); 
@@ -112,17 +117,21 @@ public class Utilisateur extends Activity {
 			photoView.setImageBitmap(BitmapFactory.decodeFile(nounous.getCheminPhoto()));
 		}
 		*/
-		an.setOnClickListener(new OnClickListener() {
+		annuler.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
         		Intent intent=new Intent(Utilisateur.this,ListDesNounous.class);
     			startActivity(intent);
         	}
 		});
-		val.setOnClickListener(new OnClickListener() {
+		valider.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
         		
+        		ApiNounou.updateProfil(idNounou,Utilisateur.this);
+        		
+        		/*
+        		 * Version BD locale
         		Nounou nounous= new Nounou();
         		nounous.setNom(nom.getText().toString());
         		nounous.setPrenom(prenom.getText().toString());
@@ -141,13 +150,14 @@ public class Utilisateur extends Activity {
                 }
 				//Log.i("visiteur",nounous.toString());
                 db.updateNounou(nounous);
+        		*/
         		
         		Intent intent=new Intent(Utilisateur.this,ListDesNounous.class);
         		intent.putExtra("id",email.getText().toString());
     			startActivity(intent);
         	}
 		});
-		sup.setOnClickListener(new OnClickListener() {
+		supprimer.setOnClickListener(new OnClickListener() {
 			@Override
         	public void onClick(View v) {
 				db.removeNounou(idNounou);

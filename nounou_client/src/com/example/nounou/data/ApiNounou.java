@@ -5,6 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,6 +63,8 @@ public class ApiNounou {
 	
 	private static NounouAdapter _nounouManager;
 	static ProgressDialog dialog = null;
+	
+	
 	public static void getAllNounousApi(String url, final Context contexte,final ListView listView) {
 		
 		dialog = ProgressDialog.show(contexte, "", "Chargement...");
@@ -373,15 +380,17 @@ public class ApiNounou {
 		
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(activityUtilisateur).getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(activityUtilisateur);
+		
 		Log.i("Api","idNounou :"+idNounou);
-JsonObjectRequest jsObjRequest = new JsonObjectRequest(
+		
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(
 				
 				Request.Method.GET, UrlServer.getServerUrl()+"/api/nounou/"+idNounou,null,
 				new Response.Listener<JSONObject>() {
 
 					@Override
 					public void onResponse(JSONObject response) {
-					//Log.i("Api",response.toString());
+					    //Log.i("Api",response.toString());
 						afficherProfil(response,listEditText);
 					}
 				}, new Response.ErrorListener() {
@@ -395,7 +404,7 @@ JsonObjectRequest jsObjRequest = new JsonObjectRequest(
 		_volleyQueue.add(jsObjRequest);
 	}
 	
-	
+	/* Affiche le compte de l'utilisateur avec toutes ses informations */
 	public static void afficherProfil(JSONObject response,HashMap listEditText) {
 		
 		/*Edit TExt de l'activity Utilisateur */
@@ -425,10 +434,55 @@ JsonObjectRequest jsObjRequest = new JsonObjectRequest(
 			description.setText(response.getString("decription"));
 			tarifHoraire.setText(response.getString("tarifHoraire"));
 			disponibilite.setText(response.getString("disponibilite"));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+		} catch (JSONException e) {			
 			e.printStackTrace();
 		}
+	}
+	
+	public static void updateProfil(String idNounou,Context activityUtilisateur){
+		
+		RequestQueue _volleyQueue = VolleySingleton.getInstance(activityUtilisateur).getRequestQueue();
+		_volleyQueue = Volley.newRequestQueue(activityUtilisateur);
+		
+		Date date = new java.util.Date();
+        long timestampClient = new Timestamp(date.getTime()).getTime();
+
+      
+		//String signatureClient=Auth.Hmac.createHmacForServer(urlParams, timestampClient);
+
+
+        
+        String paramsUrl="?time="+timestampClient+"?login=login"+"?signature=signature";
+        
+        
+		JSONObject paramsBody=new JSONObject();
+		try {
+			paramsBody.put("nom","stef");
+		} catch (JSONException e) {			
+			e.printStackTrace();
+		}
+		
+		
+		 JsonObjectRequest jsObjRequest = new JsonObjectRequest(
+					
+					Request.Method.PUT, UrlServer.getServerUrl()+"/api/nounou/"+idNounou+paramsUrl,paramsBody,
+					new Response.Listener<JSONObject>() {
+
+						@Override
+						public void onResponse(JSONObject response) {
+						    Log.i("Api",response.toString());
+							
+						}
+					}, new Response.ErrorListener() {
+
+						@Override
+						public void onErrorResponse(VolleyError error) {
+							
+							Log.i("Api", error.toString());
+						}
+					});
+			_volleyQueue.add(jsObjRequest);
+		
 	}
 	
 	public static String parseUrl(String url) {

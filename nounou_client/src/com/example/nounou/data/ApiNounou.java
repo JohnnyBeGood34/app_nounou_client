@@ -51,7 +51,7 @@ public class ApiNounou {
 	private static NounouAdapter _nounouManager;
 	static ProgressDialog dialog = null;
 	public static void getAllNounousApi(String url, final Context contexte,final ListView listView) {
-		dialog = ProgressDialog.show(contexte, "", "Chargement...");
+		/*dialog = ProgressDialog.show(contexte, "", "Chargement...");
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte).getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(contexte);
 		//Si on a un cache pour cette url
@@ -81,7 +81,7 @@ public class ApiNounou {
 					});
 			
 			_volleyQueue.add(jsObjRequest);
-		}
+		}*/
 	}
 
 	/*

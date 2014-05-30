@@ -8,6 +8,7 @@ import Manager.SessionManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.MediaStore.MediaColumns;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -143,7 +144,7 @@ public class Utilisateur extends Activity {
          
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            String[] filePathColumn = { MediaColumns.DATA };
  
             Cursor cursor = getContentResolver().query(selectedImage,
                     filePathColumn, null, null, null);

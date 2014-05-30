@@ -1,10 +1,5 @@
 package com.example.nounou.data;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,11 +15,6 @@ import Adapteur.NounouAdapter;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -40,7 +30,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
-import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.nounou.ListUneNounou;
@@ -270,9 +259,11 @@ public class ApiNounou {
 		VolleySingleton volleyInstance = VolleySingleton.getInstance(contexte);
 		ImageLoader imageLoader = volleyInstance.getImageLoader();
 		imageLoader.get(url, new ImageListener() {
+			@Override
 			public void onErrorResponse(VolleyError error) {
 				imageView.setImageResource(R.drawable.ic_launcher); 
 			}
+			@Override
 			public void onResponse(ImageContainer response, boolean arg1) {
 				if (response.getBitmap() != null) {
 					imageView.setImageBitmap(response.getBitmap());

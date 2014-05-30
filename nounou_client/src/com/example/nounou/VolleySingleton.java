@@ -1,7 +1,5 @@
 package com.example.nounou;
 
-import java.util.HashMap;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;

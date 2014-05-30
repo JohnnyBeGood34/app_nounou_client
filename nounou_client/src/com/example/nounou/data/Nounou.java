@@ -1,7 +1,5 @@
 package com.example.nounou.data;
 
-import android.net.Uri;
-
 public class Nounou {
 	private String idNounou;
 	private String nom;

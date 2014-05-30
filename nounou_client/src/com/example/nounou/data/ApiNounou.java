@@ -438,39 +438,11 @@ public class ApiNounou {
 		
 		Date date = new java.util.Date();
         long timestampClient = new Timestamp(date.getTime()).getTime();
-<<<<<<< HEAD
-
-        JSONObject paramsBody=new JSONObject();
-=======
-
-        String urlForSignature ="nom=testUpdate&prenom=prenom" +
-        		"&dateDeNaissance=20/09/1983&civilite=Monsieur&adresse=adresse" +
-        		"&email=test&tarifHoraire=500&descriptionPrestation=description" +
-        		"&telephone=0606&disponibilite=dispo&cheminPhoto=chemin&password=pass";
-        
-        String signatureClient="";
-		try {
-			 signatureClient = Auth.Hmac.createHmacForServer(urlForSignature, timestampClient);
-		} catch (InvalidKeyException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (SignatureException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (NoSuchAlgorithmException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-    Log.i("Api","Signature :"+signatureClient);
-        
-        String paramsUrl="?time="+timestampClient+"&login=abcd4ABCD"+"&signature="+signatureClient;
-
-        
-        Log.i("Api","params Url :"+paramsUrl);  
+               
+              
         
 		JSONObject paramsBody=new JSONObject();
->>>>>>> 7ef324a234041eefb8a2b65591ca738f964d90a9
+
 		try {
 			paramsBody.put("nom","testUpdate");
 			paramsBody.put("prenom","prenom");

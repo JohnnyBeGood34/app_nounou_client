@@ -1,7 +1,6 @@
 package com.example.nounou.data;
 
-<<<<<<< HEAD
-=======
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +11,6 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
 import java.sql.Timestamp;
->>>>>>> 3b99a4509ede10bdf432220ac664293ad8801b36
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -374,7 +372,7 @@ public class ApiNounou {
 	}
  /*
   * Methode pour remplir les champs du profil de l'utilisateur dans l'activité Utilisateur
-  * */
+  */
 	public static void getProfil(String idNounou,final Context activityUtilisateur,final HashMap listEditText){
 		
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(activityUtilisateur).getRequestQueue();

@@ -1,15 +1,6 @@
 package com.example.nounou.data;
 
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SignatureException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -61,12 +52,8 @@ public class ApiNounou {
 	
 	
 	public static void getAllNounousApi(String url, final Context contexte,final ListView listView) {
-<<<<<<< HEAD
-		/*dialog = ProgressDialog.show(contexte, "", "Chargement...");
-=======
-		
+
 		dialog = ProgressDialog.show(contexte, "", "Chargement...");
->>>>>>> 3b99a4509ede10bdf432220ac664293ad8801b36
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte).getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(contexte);
 		//Si on a un cache pour cette url
@@ -100,7 +87,7 @@ public class ApiNounou {
 					});
 			
 			_volleyQueue.add(jsObjRequest);
-		}*/
+		}
 	}
 
 	/*

@@ -2,7 +2,6 @@ package com.example.nounou;
 
 import com.example.nounou.data.ApiNounou;
 
-import Adapteur.NounouAdapter;
 import Manager.SessionManager;
 import android.os.Bundle;
 import android.app.Activity;
@@ -10,11 +9,9 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;

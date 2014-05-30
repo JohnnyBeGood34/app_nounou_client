@@ -1,14 +1,6 @@
 package com.example.nounou.data;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SignatureException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,11 +18,6 @@ import Manager.SessionManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -48,7 +35,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.ImageLoader.ImageContainer;
 import com.android.volley.toolbox.ImageLoader.ImageListener;
-import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.nounou.ListDesNounous;
@@ -66,7 +52,7 @@ public class ApiNounou {
 	
 	
 	public static void getAllNounousApi(String url, final Context contexte,final ListView listView) {
-		
+
 		dialog = ProgressDialog.show(contexte, "", "Chargement...");
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte).getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(contexte);
@@ -303,9 +289,11 @@ public class ApiNounou {
 		VolleySingleton volleyInstance = VolleySingleton.getInstance(contexte);
 		ImageLoader imageLoader = volleyInstance.getImageLoader();
 		imageLoader.get(url, new ImageListener() {
+			@Override
 			public void onErrorResponse(VolleyError error) {
 				imageView.setImageResource(R.drawable.ic_launcher); 
 			}
+			@Override
 			public void onResponse(ImageContainer response, boolean arg1) {
 				if (response.getBitmap() != null) {
 					imageView.setImageBitmap(response.getBitmap());
@@ -375,7 +363,7 @@ public class ApiNounou {
 	}
  /*
   * Methode pour remplir les champs du profil de l'utilisateur dans l'activité Utilisateur
-  * */
+  */
 	public static void getProfil(String idNounou,final Context activityUtilisateur,final HashMap listEditText){
 		
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(activityUtilisateur).getRequestQueue();

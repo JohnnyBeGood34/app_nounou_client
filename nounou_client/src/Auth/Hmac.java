@@ -4,6 +4,8 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
 
+import android.util.Log;
+
 public class Hmac {
 	/*
 	 * Pseudo, cle privée et mot de passe du client
@@ -27,7 +29,7 @@ public class Hmac {
             concat = concat + post[1];
         }
         concat = concat + PASSWORD;
-        System.out.println(concat);
+        Log.i("Concat",concat);
         concat = concat+timestamp;
         String hmac = Signature.calculateRFC2104HMAC(concat, CLE);
         return hmac;

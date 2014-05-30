@@ -435,15 +435,53 @@ public class ApiNounou {
 		Date date = new java.util.Date();
         long timestampClient = new Timestamp(date.getTime()).getTime();
 
+<<<<<<< HEAD
       
 		//String signatureClient=Auth.Hmac.createHmacForServer(urlParams, timestampClient);
 
         String paramsUrl="?time="+timestampClient+"?login=login"+"?signature=signature";
+=======
+        String urlForSignature ="nom=testUpdate&prenom=prenom" +
+        		"&dateDeNaissance=20/09/1983&civilite=Monsieur&adresse=adresse" +
+        		"&email=test&tarifHoraire=500&descriptionPrestation=description" +
+        		"&telephone=0606&disponibilite=dispo&cheminPhoto=chemin&password=pass";
         
+        String signatureClient="";
+		try {
+			 signatureClient = Auth.Hmac.createHmacForServer(urlForSignature, timestampClient);
+		} catch (InvalidKeyException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (SignatureException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (NoSuchAlgorithmException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+    Log.i("Api","Signature :"+signatureClient);
+        
+        String paramsUrl="?time="+timestampClient+"&login=abcd4ABCD"+"&signature="+signatureClient;
+>>>>>>> f2194f3bff715b9afd50a44a06f380adef87dba4
+        
+        Log.i("Api","params Url :"+paramsUrl);  
         
 		JSONObject paramsBody=new JSONObject();
 		try {
-			paramsBody.put("nom","stef");
+			paramsBody.put("nom","testUpdate");
+			paramsBody.put("prenom","prenom");
+			paramsBody.put("dateDeNaissance","20/09/1983");
+			paramsBody.put("civilite","Monsieur");
+			paramsBody.put("adresse","adresse");
+			paramsBody.put("email","test");
+			paramsBody.put("tarifHoraire","500");
+			paramsBody.put("descriptionPrestation","description");
+			paramsBody.put("telephone","0606");
+			paramsBody.put("disponibilite","dispo");
+			paramsBody.put("cheminPhoto","chemin");
+			paramsBody.put("password","pass");
+			
 		} catch (JSONException e) {			
 			e.printStackTrace();
 		}

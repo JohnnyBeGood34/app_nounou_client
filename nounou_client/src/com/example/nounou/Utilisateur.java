@@ -3,6 +3,8 @@ package com.example.nounou;
 
 import java.util.HashMap;
 
+import org.json.JSONException;
+
 import com.example.nounou.data.ApiNounou;
 import com.example.nounou.data.Nounou;
 import com.example.nounou.data.NounouBdd;
@@ -129,7 +131,11 @@ public class Utilisateur extends Activity {
         	@Override
         	public void onClick(View v) {
         		
-        		ApiNounou.updateProfil(idNounou,Utilisateur.this);
+        		try {
+					ApiNounou.updateProfil(idNounou,Utilisateur.this);
+				} catch (JSONException e) {					
+					e.printStackTrace();
+				}
         		
         		/*
         		 * Version BD locale

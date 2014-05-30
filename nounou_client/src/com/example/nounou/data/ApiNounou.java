@@ -1,12 +1,16 @@
 package com.example.nounou.data;
 
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 
 import org.json.JSONArray;
@@ -100,7 +104,7 @@ public class ApiNounou {
 		// Nounou
 		try {
 			
-			ArrayList<Nounou> arrayListNounou = new ArrayList();
+			ArrayList<Nounou> arrayListNounou = new ArrayList<Nounou>();
 			JSONArray jsonArrayNounou = response.getJSONArray("allNounous");
 			//Log.i("Api nounou","Nb nounous :"+jsonArrayNounou.length()+jsonArrayNounou.toString());
 			for (int i = 0; i < jsonArrayNounou.length(); i++) {
@@ -427,7 +431,7 @@ public class ApiNounou {
 		}
 	}
 	
-	public static void updateProfil(String idNounou,Context activityUtilisateur){
+	public static void updateProfil(String idNounou,Context activityUtilisateur) throws JSONException{
 		
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(activityUtilisateur).getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(activityUtilisateur);
@@ -435,11 +439,37 @@ public class ApiNounou {
 		Date date = new java.util.Date();
         long timestampClient = new Timestamp(date.getTime()).getTime();
 
-        String urlForSignature ="nom=testUpdate&prenom=prenom" +
-        		"&dateDeNaissance=20/09/1983&civilite=Monsieur&adresse=adresse" +
-        		"&email=test&tarifHoraire=500&descriptionPrestation=description" +
-        		"&telephone=0606&disponibilite=dispo&cheminPhoto=chemin&password=pass";
-        
+        JSONObject paramsBody=new JSONObject();
+		try {
+			paramsBody.put("nom","testUpdate");
+			paramsBody.put("prenom","prenom");
+			paramsBody.put("dateDeNaissance","20/09/1983");
+			paramsBody.put("civilite","Monsieur");
+			paramsBody.put("adresse","adresse");
+			paramsBody.put("email","test");
+			paramsBody.put("tarifHoraire","500");
+			paramsBody.put("descriptionPrestation","description");
+			paramsBody.put("telephone","0606");
+			paramsBody.put("disponibilite","dispo");
+			paramsBody.put("cheminPhoto","chemin");
+			paramsBody.put("password","pass");			
+		} catch (JSONException e) {			
+			e.printStackTrace();
+		} 
+		
+		/*On contruit l'URL pour la signature avec les params du JSON envoyé en params*/
+		String urlForSignature ="";
+		Iterator<String> clésBody =paramsBody.keys();
+		
+       while(clésBody.hasNext()){
+    	   String clé=clésBody.next();
+    	 urlForSignature+=clé+"="+paramsBody.getString(clé)+"&";
+       }
+       
+       /* On enlève le dernier "&" à la fin */
+       urlForSignature=urlForSignature.substring(0,urlForSignature.lastIndexOf("&"));
+       
+       /*On crypte l'URL pour faire la signature du client */
         String signatureClient="";
 		try {
 			 signatureClient = Auth.Hmac.createHmacForServer(urlForSignature, timestampClient);
@@ -453,33 +483,11 @@ public class ApiNounou {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
-    Log.i("Api","Signature :"+signatureClient);
+      
         
         String paramsUrl="?time="+timestampClient+"&login=abcd4ABCD"+"&signature="+signatureClient;
-        
-        Log.i("Api","params Url :"+paramsUrl);  
-        
-		JSONObject paramsBody=new JSONObject();
-		try {
-			paramsBody.put("nom","testUpdate");
-			paramsBody.put("prenom","prenom");
-			paramsBody.put("dateDeNaissance","20/09/1983");
-			paramsBody.put("civilite","Monsieur");
-			paramsBody.put("adresse","adresse");
-			paramsBody.put("email","test");
-			paramsBody.put("tarifHoraire","500");
-			paramsBody.put("descriptionPrestation","description");
-			paramsBody.put("telephone","0606");
-			paramsBody.put("disponibilite","dispo");
-			paramsBody.put("cheminPhoto","chemin");
-			paramsBody.put("password","pass");
-			
-		} catch (JSONException e) {			
-			e.printStackTrace();
-		}
-		
-		
+               
+				
 		 JsonObjectRequest jsObjRequest = new JsonObjectRequest(
 					
 					Request.Method.PUT, UrlServer.getServerUrl()+"/api/nounou/"+idNounou+paramsUrl,paramsBody,

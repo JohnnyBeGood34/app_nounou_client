@@ -53,11 +53,7 @@ public class PageConnexion extends Activity {
 	}
 	
 	void verificationLogin(String email,String pass){
-		
-					
-
-			
-				ApiNounou.identification(email, pass,this);
+	ApiNounou.identification(email, pass,this);
 			
 		
 		

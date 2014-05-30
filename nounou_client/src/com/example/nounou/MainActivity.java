@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
 		if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 		    //Demande a l'utilisateur si il veut activer son gps
 		    AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		    builder.setTitle("Location Manager");
+		    builder.setTitle("GPS manager");
 		    builder.setMessage("Voulez vous activer la fonction GPS de votre telephone?");
 		    builder.setPositiveButton("Oui", new DialogInterface.OnClickListener() {
 		        @Override
@@ -48,10 +48,7 @@ public class MainActivity extends Activity {
 		    builder.create().show();
 		}
 		//Check de la connection internet
-		registerReceiver(
-			      new ConnectivityChangeReceiver(), 
-			      new IntentFilter(
-			            ConnectivityManager.CONNECTIVITY_ACTION));
+		registerReceiver(new ConnectivityChangeReceiver(),new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 		
 		//Mise à l'écoute des coordonnées GPS du client
 		LocationListener locationListener = new MyLocationListener(this);

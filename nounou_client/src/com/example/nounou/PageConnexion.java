@@ -4,6 +4,9 @@ package com.example.nounou;
 
 import java.util.List;
 
+import org.json.JSONException;
+
+import com.example.nounou.data.ApiNounou;
 import com.example.nounou.data.Nounou;
 import com.example.nounou.data.NounouBdd;
 
@@ -14,6 +17,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -48,8 +52,17 @@ public class PageConnexion extends Activity {
             }
         });
 	}
-	void verificationLogin(String ets,String pass){
-		final NounouBdd db=new NounouBdd(this);
+	
+	void verificationLogin(String email,String pass){
+		
+					
+
+			
+				ApiNounou.identification(email, pass,this);
+			
+		
+		
+	 /*	final NounouBdd db=new NounouBdd(this);
 		db.open();
 
     	List<Nounou> nounous =db.getNounouWithLogin(ets);
@@ -78,6 +91,7 @@ public class PageConnexion extends Activity {
     			showAlert(); 
     		}
     	}
+    	*/
     }
 	public void showAlert(){
     	PageConnexion.this.runOnUiThread(new Runnable() {

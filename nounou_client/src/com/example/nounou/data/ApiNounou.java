@@ -438,8 +438,6 @@ public class ApiNounou {
       
 		//String signatureClient=Auth.Hmac.createHmacForServer(urlParams, timestampClient);
 
-
-        
         String paramsUrl="?time="+timestampClient+"?login=login"+"?signature=signature";
         
         

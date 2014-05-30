@@ -20,7 +20,7 @@ public class MyLocationListener implements LocationListener {
 		double latitudeClient = localisationClient.getLatitude();
 		double longitudeClient = localisationClient.getLongitude();
 		String Text = "La current position du client est: " +"Latitude = " + latitudeClient +"Longitude = " + longitudeClient;
-		Toast.makeText( contextApplication,Text,Toast.LENGTH_SHORT).show();
+		//Toast.makeText( contextApplication,Text,Toast.LENGTH_SHORT).show();
 	}
 
 	@Override

@@ -1,6 +1,9 @@
 package com.example.nounou.data;
 
 
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SignatureException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -435,12 +438,6 @@ public class ApiNounou {
 		Date date = new java.util.Date();
         long timestampClient = new Timestamp(date.getTime()).getTime();
 
-<<<<<<< HEAD
-      
-		//String signatureClient=Auth.Hmac.createHmacForServer(urlParams, timestampClient);
-
-        String paramsUrl="?time="+timestampClient+"?login=login"+"?signature=signature";
-=======
         String urlForSignature ="nom=testUpdate&prenom=prenom" +
         		"&dateDeNaissance=20/09/1983&civilite=Monsieur&adresse=adresse" +
         		"&email=test&tarifHoraire=500&descriptionPrestation=description" +
@@ -463,7 +460,7 @@ public class ApiNounou {
     Log.i("Api","Signature :"+signatureClient);
         
         String paramsUrl="?time="+timestampClient+"&login=abcd4ABCD"+"&signature="+signatureClient;
->>>>>>> f2194f3bff715b9afd50a44a06f380adef87dba4
+
         
         Log.i("Api","params Url :"+paramsUrl);  
         

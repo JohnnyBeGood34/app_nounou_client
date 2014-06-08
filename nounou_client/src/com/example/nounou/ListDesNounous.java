@@ -18,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class ListDesNounous extends Activity{
+	
+	
 	String URL = UrlServer.getServerUrl();
 	EditText rec;
 	Button connexion,inscription;
@@ -26,8 +28,13 @@ public class ListDesNounous extends Activity{
 	//private NounouAdapter _nounouManager;
 	private SeekBar volumeControl = null;
 	SessionManager session;
+	
+	
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_list_des_nounous);
 		connexion=(Button)findViewById(R.id.buttonConnexion);
@@ -35,8 +42,7 @@ public class ListDesNounous extends Activity{
 		dist=(TextView)findViewById(R.id.tvdistance);
 		
 		volumeControl = (SeekBar) findViewById(R.id.volume_bar);
-		
-		
+				
 		
 		 // User Session Manager
         session = new SessionManager(this);
@@ -55,7 +61,7 @@ public class ListDesNounous extends Activity{
 		 * TODO
 		 * A remplacer dans l'URL les coordonnées réelles 
 		 * */
-		ApiNounou.getAllNounousApi(URL+"/api/nounous/latitude/44/longitude/4/kilometres/2000",this,mainListView);
+		ApiNounou.getAllNounousApi(URL+"/api/nounous/latitude/44/longitude/4",this,mainListView);
 		
         connexion.setOnClickListener(new OnClickListener() {
         	@Override
@@ -112,7 +118,10 @@ public class ListDesNounous extends Activity{
             	/*TODO
             	 * Remplacer la latitude/longitude par les véritbles coordonnées
             	 * */
+            	if(progressChanged != 0)
             	ApiNounou.getAllNounousApi(URL+"/api/nounous/latitude/44/longitude/4/kilometres/"+String.valueOf(progressChanged),ListDesNounous.this,mainListView);
+            	else 	ApiNounou.getAllNounousApi(URL+"/api/nounous/latitude/44/longitude/4",ListDesNounous.this,mainListView);
+
             }
         });
         

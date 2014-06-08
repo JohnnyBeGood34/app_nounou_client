@@ -39,10 +39,7 @@ public class Utilisateur extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_utilisateur);
-		/*
-		 * IL FAUT CHANGER LA SYNTAXE 
-		 * 
-		 */
+		
 		annuler = (Button) findViewById(R.id.buttonAn);
 		valider = (Button) findViewById(R.id.buttonVal);
 		supprimer = (Button) findViewById(R.id.buttonSup);
@@ -52,7 +49,7 @@ public class Utilisateur extends Activity {
 		photoView.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
-        		//On lance l'intent de la gellerie android (photos)
+        		//On lance l'intent de la gallerie android (photos)
         		Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         		startActivityForResult(i, RESULT_LOAD_IMAGE);
         	}
@@ -90,7 +87,7 @@ public class Utilisateur extends Activity {
         final String  idNounou = extra.getString("id");
         
         /* Appel de l'API qui va remplir les champs du profil en fonction de l'ID de la Nounou */
-        ApiNounou.getProfil(idNounou, this,listEditText);
+        ApiNounou.getProfil(idNounou, this,listEditText,photoView);
         
         
         
@@ -120,6 +117,8 @@ public class Utilisateur extends Activity {
 			photoView.setImageBitmap(BitmapFactory.decodeFile(nounous.getCheminPhoto()));
 		}
 		*/
+		
+		
 		annuler.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
@@ -127,12 +126,26 @@ public class Utilisateur extends Activity {
     			startActivity(intent);
         	}
 		});
+		
+		/* Validation du formulaire de mise a jour */		
 		valider.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
         		
+        		Nounou nounou=new Nounou();        		
+        		nounou.setNom(nom.getText().toString());
+        		nounou.setPrenom(prenom.getText().toString());
+        		nounou.setEmail(email.getText().toString());
+        		nounou.setAdresse(adresse.getText().toString());
+        		nounou.setPassword(password.getText().toString());
+        		nounou.setCivilite(civilite.getText().toString());
+        		nounou.setDateDeNaissance(dateDeNaissance.getText().toString());
+        		nounou.setDescriptionPrestation(description.getText().toString());
+        		nounou.setTarifHoraire(tarifHoraire.getText().toString());
+        		nounou.setDisponibilite(disponibilite.getText().toString());
+        		nounou.setTelephone(telephone.getText().toString());
         		try {
-					ApiNounou.updateProfil(idNounou,Utilisateur.this);
+					ApiNounou.updateProfil(idNounou,Utilisateur.this,nounou,cheminImageProfil);
 				} catch (JSONException e) {					
 					e.printStackTrace();
 				}
@@ -165,6 +178,7 @@ public class Utilisateur extends Activity {
         	}
 		});
 		supprimer.setOnClickListener(new OnClickListener() {
+			
 			@Override
         	public void onClick(View v) {
 				db.removeNounou(idNounou);

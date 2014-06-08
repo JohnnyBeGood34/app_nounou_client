@@ -1,5 +1,8 @@
 package com.example.nounou;
 
+import org.json.JSONException;
+
+import com.example.nounou.data.ApiNounou;
 import com.example.nounou.data.Nounou;
 import com.example.nounou.data.NounouBdd;
 
@@ -8,6 +11,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -45,8 +49,8 @@ public class InscriptionNounou extends Activity {
 		disponibilite = (EditText)findViewById(R.id.edDispo);
 		password = (EditText)findViewById(R.id.edMdp);
 		
-		final NounouBdd db=new NounouBdd(this);
-		db.open();
+		//final NounouBdd db=new NounouBdd(this);
+		//db.open();
 		/*
 		 * Action sur le click du bouton d'upload
 		 
@@ -69,13 +73,34 @@ public class InscriptionNounou extends Activity {
 		boutonvalider.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
-        		//Chaînes de caractères pour les validations de saisie
-                String mailAVerif = email.getText().toString();
-                String dateAVerif = dateDeNaissance.getText().toString();
-                String telAVerif = telephone.getText().toString();
-                String tarifAVerif = tarifHoraire.getText().toString();
+        		     Log.i("Api","click valider");   		              
+                
+                Nounou nounou= new Nounou();
+				
+				nounou.setNom(nom.getText().toString());
+				nounou.setPrenom(prenom.getText().toString());
+				nounou.setDateDeNaissance(dateDeNaissance.getText().toString());
+				nounou.setCivilite(civilite.getText().toString());
+				nounou.setAdresse(adresse.getText().toString());
+				nounou.setEmail(email.getText().toString());
+				nounou.setTarifHoraire(tarifHoraire.getText().toString());
+				nounou.setDescriptionPrestation(descriptionPrestation.getText().toString());
+				nounou.setTelephone(telephone.getText().toString());
+				nounou.setDisponibilite(disponibilite.getText().toString());
+				nounou.setCheminPhoto("aucun");
+				nounou.setPassword(password.getText().toString());
+              
+		       try {
+				ApiNounou.createNounou(InscriptionNounou.this,nounou);
+			} catch (JSONException e) {
+				
+				e.printStackTrace();
+			}
+                
+                /*Version BD Locale */
+                
                 //booléens pour les conditions if de validation du formulaire
-                boolean verifEMail = db.verificationMail(mailAVerif);
+               /* boolean verifEMail = db.verificationMail(mailAVerif);
                 boolean verifDate = db.verificationDate(dateAVerif);
                 boolean verifTel = db.verificationTelephone(telAVerif);
                 boolean verifTarif = db.verificationTarif(tarifAVerif);
@@ -151,6 +176,7 @@ public class InscriptionNounou extends Activity {
                  		{
                  			Toast.makeText(context, messageMail2, duration).show();
                  		}
+                 		*/
                  	}
         	});
         }

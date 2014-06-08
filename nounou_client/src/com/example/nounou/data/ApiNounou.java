@@ -1,6 +1,8 @@
 package com.example.nounou.data;
 
 
+import java.io.File;
+import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SignatureException;
@@ -13,6 +15,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ContentBody;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,6 +32,8 @@ import Manager.SessionManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -106,12 +118,11 @@ public class ApiNounou {
 			
 			ArrayList<Nounou> arrayListNounou = new ArrayList<Nounou>();
 			JSONArray jsonArrayNounou = response.getJSONArray("allNounous");
-			//Log.i("Api nounou","Nb nounous :"+jsonArrayNounou.length()+jsonArrayNounou.toString());
+			
 			for (int i = 0; i < jsonArrayNounou.length(); i++) {
 				Nounou newNouNou = new Nounou();
 				String cheminPhotoNounou = "";
-				//Log.i("Api ","boucle n° "+i);
-				//Log.i("Api"," "+jsonArrayNounou.getJSONObject(i).getString("adresse"));
+				
 				if (jsonArrayNounou.getJSONObject(i).getString("cheminPhoto") != "") {
 					cheminPhotoNounou = jsonArrayNounou.getJSONObject(i)
 							.getString("cheminPhoto");
@@ -186,7 +197,7 @@ public class ApiNounou {
 			}
 			catch(JSONException e)
 			{
-				
+				Log.i("ERROR---------", e.toString());
 			}
 		}else{
 		JsonObjectRequest jsObjRequest = new JsonObjectRequest(
@@ -201,7 +212,7 @@ public class ApiNounou {
 
 					@Override
 					public void onErrorResponse(VolleyError error) {
-						// TODO Auto-generated method stub
+						
 						Log.i("ERROR---------", error.toString());
 					}
 				});
@@ -223,8 +234,8 @@ public class ApiNounou {
 					.getString("civilite"), response
 					.getString("adresse"), response
 					.getString("email"), response
-					.getString("tarifHoraire"), response
-					.getString("descriptionPrestation"),
+					.getString("tarifHoraire"), /*response
+					.getString("descriptionPrestation")*/"description",//Plante si pas de descriptionPrestation dans le JSON
 					response.getString("telephone"), response
 							.getString("disponibilite"),
 					response.getString("cheminPhoto"), response
@@ -275,13 +286,14 @@ public class ApiNounou {
 			String urlVeritable = "http://" + parseUrl
 					+ nounou.getCheminPhoto();
 			// Ajout de l'image via volley
+			Log.i("Api","url :"+urlVeritable);
 			getImageFromUrl(urlVeritable, imageView, contexte);
 
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 	}
@@ -305,6 +317,7 @@ public class ApiNounou {
 			}
 		});
 	}
+	
 	/*
 	 * Méthode utilisée dans l'activité PageConnexion pour s'authentifier
 	 * */
@@ -368,7 +381,7 @@ public class ApiNounou {
  /*
   * Methode pour remplir les champs du profil de l'utilisateur dans l'activité Utilisateur
   */
-	public static void getProfil(String idNounou,final Context activityUtilisateur,final HashMap listEditText){
+	public static void getProfil(String idNounou,final Context activityUtilisateur,final HashMap listEditText,final ImageView imageProfil){
 		
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(activityUtilisateur).getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(activityUtilisateur);
@@ -382,8 +395,12 @@ public class ApiNounou {
 
 					@Override
 					public void onResponse(JSONObject response) {
-					    //Log.i("Api",response.toString());
-						afficherProfil(response,listEditText);
+					    Log.i("Api",response.toString());
+						try {
+							afficherProfil(activityUtilisateur,response,listEditText,imageProfil);
+						} catch (JSONException e) {							
+							e.printStackTrace();
+						}
 					}
 				}, new Response.ErrorListener() {
 
@@ -397,7 +414,7 @@ public class ApiNounou {
 	}
 	
 	/* Affiche le compte de l'utilisateur avec toutes ses informations */
-	public static void afficherProfil(JSONObject response,HashMap listEditText) {
+	public static void afficherProfil(Context activityUtilisateur,JSONObject response,HashMap listEditText,ImageView photoProfil) throws JSONException {
 		
 		/*Edit TExt de l'activity Utilisateur */
 		EditText nom=(EditText)listEditText.get("nom");
@@ -411,7 +428,7 @@ public class ApiNounou {
 		EditText disponibilite=(EditText)listEditText.get("disponibilite");
 		EditText description=(EditText)listEditText.get("description");
 		EditText tarifHoraire=(EditText)listEditText.get("tarifHoraire");
-		
+		//Log.i("Api","Resultat afficher profil :"+response.toString());
 		
 		/*On pré-remplit les champs du profil avec la réponse du serveur */
 		try {
@@ -423,15 +440,23 @@ public class ApiNounou {
 			civilite.setText(response.getString("civilite"));
 			adresse.setText(response.getString("adresse"));
 			telephone.setText(response.getString("telephone"));
-			description.setText(response.getString("decription"));
+			description.setText(response.getString("descriptionPrestation"));
 			tarifHoraire.setText(response.getString("tarifHoraire"));
 			disponibilite.setText(response.getString("disponibilite"));
 		} catch (JSONException e) {			
 			e.printStackTrace();
 		}
+		
+		/* Affichage de la photo à partir de l'URL */
+		String urlPhoto = UrlServer.getServerUrl()
+				+ response.getString("cheminPhoto");
+		
+		getImageFromUrl(urlPhoto,photoProfil,activityUtilisateur);
 	}
 	
-	public static void updateProfil(String idNounou,Context activityUtilisateur) throws JSONException{
+	
+	@SuppressWarnings("deprecation")
+	public static void updateProfil(final String idNounou,final Context activityUtilisateur,final Nounou nounou,final String cheminPhoto) throws JSONException{
 		
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(activityUtilisateur).getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(activityUtilisateur);
@@ -439,23 +464,22 @@ public class ApiNounou {
 		Date date = new java.util.Date();
         long timestampClient = new Timestamp(date.getTime()).getTime();
                
-              
-        
+                      
 		JSONObject paramsBody=new JSONObject();
 
 		try {
-			paramsBody.put("nom","testUpdate");
-			paramsBody.put("prenom","prenom");
-			paramsBody.put("dateDeNaissance","20/09/1983");
-			paramsBody.put("civilite","Monsieur");
-			paramsBody.put("adresse","adresse");
-			paramsBody.put("email","test");
-			paramsBody.put("tarifHoraire","500");
-			paramsBody.put("descriptionPrestation","description");
-			paramsBody.put("telephone","0606");
-			paramsBody.put("disponibilite","dispo");
+			paramsBody.put("nom",nounou.getNom());
+			paramsBody.put("prenom",nounou.getPrenom());
+			paramsBody.put("dateDeNaissance",nounou.getDateDeNaissance());
+			paramsBody.put("civilite",nounou.getCivilite());
+			paramsBody.put("adresse",nounou.getAdresse());
+			paramsBody.put("email",nounou.getEmail());
+			paramsBody.put("tarifHoraire",nounou.getTarifHoraire());
+			paramsBody.put("descriptionPrestation",nounou.getDescriptionPrestation());
+			paramsBody.put("telephone",nounou.getTelephone());
+			paramsBody.put("disponibilite",nounou.getDisponibilite());
 			paramsBody.put("cheminPhoto","chemin");
-			paramsBody.put("password","pass");			
+			paramsBody.put("password",nounou.getPassword());			
 		} catch (JSONException e) {			
 			e.printStackTrace();
 		} 
@@ -467,6 +491,7 @@ public class ApiNounou {
        while(clésBody.hasNext()){
     	   String clé=clésBody.next();
     	 urlForSignature+=clé+"="+paramsBody.getString(clé)+"&";
+    	
        }
        
        /* On enlève le dernier "&" à la fin */
@@ -476,20 +501,17 @@ public class ApiNounou {
         String signatureClient="";
 		try {
 			 signatureClient = Auth.Hmac.createHmacForServer(urlForSignature, timestampClient);
-		} catch (InvalidKeyException e1) {
-			// TODO Auto-generated catch block
+		} catch (InvalidKeyException e1) {			
 			e1.printStackTrace();
-		} catch (SignatureException e1) {
-			// TODO Auto-generated catch block
+		} catch (SignatureException e1) {			
 			e1.printStackTrace();
-		} catch (NoSuchAlgorithmException e1) {
-			// TODO Auto-generated catch block
+		} catch (NoSuchAlgorithmException e1) {			
 			e1.printStackTrace();
 		}
       
         
         String paramsUrl="?time="+timestampClient+"&login=abcd4ABCD"+"&signature="+signatureClient;
-               
+             
 				
 		 JsonObjectRequest jsObjRequest = new JsonObjectRequest(
 					
@@ -498,15 +520,155 @@ public class ApiNounou {
 
 						@Override
 						public void onResponse(JSONObject response) {
-						    Log.i("Api",response.toString());
-							
+						    
+							try {
+								if(response.getInt("code")==200)
+									Toast.makeText(activityUtilisateur, "Mise à jour du profil réussie !",Toast.LENGTH_LONG).show();								
+								else Toast.makeText(activityUtilisateur, "Erreur dans la mise à jour !",Toast.LENGTH_LONG).show();
+							} catch (JSONException e) {								
+								e.printStackTrace();
+							}
 						}
-					}, new Response.ErrorListener() {
+					},
+					new Response.ErrorListener() {
 
 						@Override
-						public void onErrorResponse(VolleyError error) {
-							
+						public void onErrorResponse(VolleyError error) {							
 							Log.i("Api", error.toString());
+							Toast.makeText(activityUtilisateur, "Erreur dans la mise à jour !",Toast.LENGTH_LONG).show();
+						}
+					});
+			_volleyQueue.add(jsObjRequest);
+			
+		    /* Mise à jour de la photo de profil réalisée séparemment
+		     * A mettre dans un Thread séparé de l'UI
+		     * Volley de gérant pas les paramètres de type fichier,
+		     * et n'ayant pas besoin de cache dans ce cas
+		     * on passe par une requete POST classique. 
+		     * 
+		     * */	
+			Thread thread=new Thread(){		    
+
+			@Override
+			public void run() {
+				Log.i("Api ","Chemin photo : "+cheminPhoto);
+				HttpClient client =new DefaultHttpClient();
+				HttpPost httpPost=new HttpPost(UrlServer.getServerUrl()+"/api/image/id/"+idNounou);
+				File photo=new File(cheminPhoto);
+				MultipartEntity entity=new MultipartEntity();
+
+				entity.addPart("image",new FileBody(photo));
+				
+				httpPost.setEntity(entity);
+				try {
+					HttpResponse response=client.execute(httpPost);
+					
+				} catch (ClientProtocolException e) {
+					
+					Log.i("Api ","reponse :"+e.toString());
+				} catch (IOException e) {
+					
+					Log.i("Api ","reponse :"+e.toString());
+				}
+				
+			}
+			
+			};
+			thread.start();
+	}
+	
+	/*
+	 * Méthode utilisée pour l'utilisation de l'API
+	 * pour la  création d'une nounou
+	 * */
+	public static void createNounou(final Context activityInscription,final Nounou nounou) throws JSONException{
+		
+		RequestQueue _volleyQueue = VolleySingleton.getInstance(activityInscription).getRequestQueue();
+		_volleyQueue = Volley.newRequestQueue(activityInscription);
+		
+		Date date = new Date();
+		long timestampClient = new Timestamp(date.getTime()).getTime();
+		
+		JSONObject paramsBody =new JSONObject();
+		paramsBody.put("nom",nounou.getNom());
+		paramsBody.put("prenom",nounou.getPrenom());
+		paramsBody.put("dateDeNaissance",nounou.getDateDeNaissance());
+		paramsBody.put("civilite",nounou.getCivilite());
+		paramsBody.put("adresse",nounou.getAdresse());
+		paramsBody.put("email",nounou.getEmail());
+		paramsBody.put("tarifHoraire",nounou.getTarifHoraire());
+		paramsBody.put("descriptionPrestation",nounou.getDescriptionPrestation());
+		paramsBody.put("telephone",nounou.getTelephone());
+		paramsBody.put("disponibilite",nounou.getDisponibilite());
+		paramsBody.put("cheminPhoto","chemin");
+		paramsBody.put("password",nounou.getPassword());
+		
+		/*On contruit l'URL pour la signature avec les params du JSON envoyé en params*/
+		String urlForSignature ="";
+		Iterator<String> clésBody =paramsBody.keys();
+		
+       while(clésBody.hasNext()){
+    	   String clé=clésBody.next();
+    	 urlForSignature+=clé+"="+paramsBody.getString(clé)+"&";
+    	
+       }
+       
+       /* On enlève le dernier "&" à la fin */
+       urlForSignature=urlForSignature.substring(0,urlForSignature.lastIndexOf("&"));
+       
+       /*On crypte l'URL pour faire la signature du client */
+        String signatureClient="";
+		try {
+			 signatureClient = Auth.Hmac.createHmacForServer(urlForSignature, timestampClient);
+		} catch (InvalidKeyException e1) {			
+			e1.printStackTrace();
+		} catch (SignatureException e1) {			
+			e1.printStackTrace();
+		} catch (NoSuchAlgorithmException e1) {			
+			e1.printStackTrace();
+		}
+      
+        
+        String paramsUrl="?time="+timestampClient+"&login=abcd4ABCD"+"&signature="+signatureClient;
+             
+		
+		 JsonObjectRequest jsObjRequest = new JsonObjectRequest(
+					
+					Request.Method.POST, UrlServer.getServerUrl()+"/api/nounous"+paramsUrl,paramsBody,
+					new Response.Listener<JSONObject>() {
+
+						@Override
+						public void onResponse(JSONObject response) {
+						    
+							try {
+								
+								if(response.getInt("code")==200){
+									
+									Toast.makeText(activityInscription, "Création du profil réussie !",Toast.LENGTH_LONG).show();								
+									
+									Intent intent=new Intent(activityInscription,ListDesNounous.class);
+    								String id = response.getString("message");
+    								String email = nounou.getEmail();
+    								SessionManager sm = new SessionManager(activityInscription);
+    								sm.createUserLoginSession(id, email);
+    								Toast.makeText(activityInscription,email+
+    										", vous êtes Connecté!",
+    										Toast.LENGTH_LONG).show();
+    								activityInscription.startActivity(intent);
+								}
+									
+								else Toast.makeText(activityInscription, "Erreur dans la création !",Toast.LENGTH_LONG).show();
+							} catch (JSONException e) {								
+								e.printStackTrace();
+							}
+						}
+					},
+					new Response.ErrorListener() {
+
+						@Override
+						public void onErrorResponse(VolleyError error) {							
+							Log.i("Api", error.toString());
+							Toast.makeText(activityInscription, "Erreur dans la création !",Toast.LENGTH_LONG).show();
 						}
 					});
 			_volleyQueue.add(jsObjRequest);

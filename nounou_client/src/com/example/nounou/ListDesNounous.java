@@ -20,13 +20,11 @@ import android.widget.Toast;
 public class ListDesNounous extends Activity{
 	
 	
-	String URL = UrlServer.getServerUrl();
-	EditText rec;
+	String URL = UrlServer.getServerUrl();	
 	Button connexion,inscription;
-	TextView dist;
-	private ListView mainListView ;
-	//private NounouAdapter _nounouManager;
-	private SeekBar volumeControl = null;
+	TextView distance_text;
+	private ListView mainListView ;	
+	private SeekBar control_distance = null;
 	SessionManager session;
 	
 	
@@ -39,9 +37,8 @@ public class ListDesNounous extends Activity{
 		setContentView(R.layout.activity_list_des_nounous);
 		connexion=(Button)findViewById(R.id.buttonConnexion);
 		inscription=(Button)findViewById(R.id.buttonInscription);
-		dist=(TextView)findViewById(R.id.tvdistance);
-		
-		volumeControl = (SeekBar) findViewById(R.id.volume_bar);
+		distance_text=(TextView)findViewById(R.id.tvdistance);		
+		control_distance = (SeekBar) findViewById(R.id.volume_bar);
 				
 		
 		 // User Session Manager
@@ -57,9 +54,10 @@ public class ListDesNounous extends Activity{
         
 		// Find the ListView resource.   
 		mainListView = (ListView) findViewById( R.id.mainListView ); 
+		
 		/*
 		 * TODO
-		 * A remplacer dans l'URL les coordonnées réelles 
+		 * A remplacer dans l'URL les coordonnées réelles du LocationListener
 		 * */
 		ApiNounou.getAllNounousApi(URL+"/api/nounous/latitude/44/longitude/4",this,mainListView);
 		
@@ -79,7 +77,10 @@ public class ListDesNounous extends Activity{
         	}
         });
         
-        /*Permet de visualiser son compte si connecté sinon de s'inscrire*/
+        /*
+         * Permet de visualiser son compte si connecté sinon de s'inscrire
+         * 
+         * */
         inscription.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
@@ -97,7 +98,7 @@ public class ListDesNounous extends Activity{
         	}
         });    
         
-        volumeControl.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+        control_distance.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
             int progressChanged = 0;
  
             @Override
@@ -113,7 +114,8 @@ public class ListDesNounous extends Activity{
             /*Au changement des kilomètres choisis pour la recherche*/
             @Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
-            	dist.setText(String.valueOf(progressChanged+"Km"));
+            	distance_text.setText(String.valueOf(progressChanged+"Km"));
+            	
             	/*On actualise la liste des Nounous se trouvant dans le périmètre choisi*/
             	/*TODO
             	 * Remplacer la latitude/longitude par les véritbles coordonnées

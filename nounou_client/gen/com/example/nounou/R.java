@@ -35,6 +35,7 @@ public final class R {
         public static final int buttonSup=0x7f070035;
         public static final int buttonVal=0x7f070019;
         public static final int container=0x7f070001;
+        public static final int distance=0x7f070039;
         public static final int edAdresse=0x7f07000c;
         public static final int edCivilite=0x7f07000a;
         public static final int edDate=0x7f070008;

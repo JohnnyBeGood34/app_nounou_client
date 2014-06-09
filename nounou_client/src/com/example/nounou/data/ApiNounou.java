@@ -72,8 +72,10 @@ public class ApiNounou {
 		dialog = ProgressDialog.show(contexte, "", "Chargement...");
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte).getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(contexte);
-		//Si on a un cache pour cette url
+		
+		/*Si on a un cache pour cette url*/
 		if (_volleyQueue.getCache().get(url) != null) {
+			
 			try {
 				//On récupère la liste depuis le cache
 				JSONObject cacheContent = new JSONObject(new String(_volleyQueue.getCache().get(url).data));
@@ -82,7 +84,8 @@ public class ApiNounou {
 			} catch (JSONException e) {				
 				Log.i("ERROR JSON EXCEPTION---------", e.toString());
 			}
-			/* Sinon on va chercher en BD */
+			
+		/* Sinon on va chercher en BD */
 		} else {
 			
 			JsonObjectRequest jsObjRequest = new JsonObjectRequest(
@@ -94,10 +97,10 @@ public class ApiNounou {
 							
 							ajoutListeNounou(response, contexte, listView);
 						}
-					}, new Response.ErrorListener() {
+					},
+					new Response.ErrorListener() {
 						@Override
-						public void onErrorResponse(VolleyError error) {
-							// TODO Auto-generated method stub
+						public void onErrorResponse(VolleyError error) {							
 							Log.i("ERROR---------", error.toString());
 						}
 					});
@@ -110,8 +113,8 @@ public class ApiNounou {
 	 * Parse le JSON obtenu par le cache ou la requete Et remplis la liste des
 	 * nounous (CustomAdapter)
 	 */
-	public static void ajoutListeNounou(JSONObject response,
-			final Context contexte, ListView listView) {
+	public static void ajoutListeNounou(JSONObject response,final Context contexte, ListView listView)
+	{
 		// parse le JSON et remplis un arrayList d'objet
 		// Nounou
 		try {
@@ -127,35 +130,48 @@ public class ApiNounou {
 					cheminPhotoNounou = jsonArrayNounou.getJSONObject(i)
 							.getString("cheminPhoto");
 				}
-				Log.i("Nounou nom",jsonArrayNounou.getJSONObject(i).getString("nom"));
+				
 				newNouNou.setIdNounou(jsonArrayNounou.getJSONObject(i)
 						.getString("_id"));
+				
 				newNouNou.setNom(jsonArrayNounou.getJSONObject(i).getString(
 						"nom"));
+				
 				newNouNou.setPrenom(jsonArrayNounou.getJSONObject(i).getString(
 						"prenom"));
+				
 				newNouNou.setDateDeNaissance(jsonArrayNounou.getJSONObject(i)
 						.getString("dateDeNaissance"));
+				
 				newNouNou.setCivilite(jsonArrayNounou.getJSONObject(i)
 						.getString("civilite"));
+				
 				newNouNou.setAdresse(jsonArrayNounou.getJSONObject(i)
 						.getString("adresse"));
+				
 				newNouNou.setEmail(jsonArrayNounou.getJSONObject(i).getString(
 						"email"));
+				
 				newNouNou.setTarifHoraire(jsonArrayNounou.getJSONObject(i)
 						.getString("tarifHoraire"));
 				
-				 /* newNouNou.setDescriptionPrestation(jsonArrayNounou
+				newNouNou.setDescriptionPrestation(jsonArrayNounou
 						.getJSONObject(i).getString("descriptionPrestation"));
-						*/
+						
 				newNouNou.setTelephone(jsonArrayNounou.getJSONObject(i)
 						.getString("telephone"));
+				
 				newNouNou.setDisponibilite(jsonArrayNounou.getJSONObject(i)
 						.getString("disponibilite"));
+				
 				newNouNou.setCheminPhoto(cheminPhotoNounou);
+				
 				newNouNou.setPassword(jsonArrayNounou.getJSONObject(i)
 						.getString("password"));
-						
+				
+				newNouNou.setDistance(jsonArrayNounou.getJSONObject(i)
+						.getString("distance"));
+				
 
 				arrayListNounou.add(newNouNou);
 			}
@@ -163,32 +179,38 @@ public class ApiNounou {
 			// Create NounouAdapter, pour la liste
 			_nounouManager = new NounouAdapter(contexte, arrayListNounou);
 			listView.setAdapter(_nounouManager);
+			
 			listView.setOnItemClickListener(new OnItemClickListener() {
+				
 				@Override
 				public void onItemClick(AdapterView<?> arg0, View arg1,
-						int arg2, long arg3) {
+						int index, long arg3) {
 
 					Intent intent = new Intent(contexte, ListUneNounou.class);
-					intent.putExtra("id", _nounouManager.getNounouAtIndex(arg2)
+					intent.putExtra("id", _nounouManager.getNounouAtIndex(index)
 							.getIdNounou());
 					contexte.startActivity(intent);
 				}
 
 			});
-			dialog.hide();
-		} catch (JSONException e) {
-			e.printStackTrace();
 			
+			dialog.hide();
+			
+		} catch (JSONException e) {					
 			Log.i("Api Nounou","Probleme enregistrement newNounou");
 		}
 	}
+	
     /*
      * Permet d'obtenir le détail d'une Nounou parmi la liste
      * */
 	public static void getUneNounou(final String url, final Context contexte,final HashMap hashMap, final ImageView imageView) {
+		
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte).getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(contexte);
+		
 		if (_volleyQueue.getCache().get(url) != null) {
+			
 			try 
 			{
 				//Si il y a un cache on récupère le JSON depuis le cache
@@ -199,16 +221,20 @@ public class ApiNounou {
 			{
 				Log.i("ERROR---------", e.toString());
 			}
-		}else{
+		}
+		else{
 		JsonObjectRequest jsObjRequest = new JsonObjectRequest(
+				
 				Request.Method.GET, url, null,
+				
 				new Response.Listener<JSONObject>() {
 
 					@Override
 					public void onResponse(JSONObject response) {
 						afficherProfilNounou(contexte,response,imageView,url,hashMap);
 					}
-				}, new Response.ErrorListener() {
+				}, 
+				new Response.ErrorListener() {
 
 					@Override
 					public void onErrorResponse(VolleyError error) {
@@ -216,6 +242,7 @@ public class ApiNounou {
 						Log.i("ERROR---------", error.toString());
 					}
 				});
+		
 		_volleyQueue.add(jsObjRequest);
 		}
 		
@@ -225,17 +252,17 @@ public class ApiNounou {
 	{
 		
 		try {
-			 Log.i("nounou-----------------------------","");
+						 
 			Nounou nounou = new Nounou(response
 					.getString("_id"), response
 					.getString("nom"), response
 					.getString("prenom"), response
-					.getString("dateDeNaissance"), response
+					.getString("dateDeNaissance"), response//Attention à bien avoir une date renvoyée par la réponse
 					.getString("civilite"), response
 					.getString("adresse"), response
 					.getString("email"), response
-					.getString("tarifHoraire"), /*response
-					.getString("descriptionPrestation")*/"description",//Plante si pas de descriptionPrestation dans le JSON
+					.getString("tarifHoraire"), response
+					.getString("descriptionPrestation"),
 					response.getString("telephone"), response
 							.getString("disponibilite"),
 					response.getString("cheminPhoto"), response
@@ -285,32 +312,36 @@ public class ApiNounou {
 
 			String urlVeritable = "http://" + parseUrl
 					+ nounou.getCheminPhoto();
-			// Ajout de l'image via volley
+			/* Ajout de l'image via volley*/
 			Log.i("Api","url :"+urlVeritable);
 			getImageFromUrl(urlVeritable, imageView, contexte);
 
-		} catch (JSONException e) {
-			
+		} catch (JSONException e) {			
 			e.printStackTrace();
-		} catch (ParseException e) {
-			
+		} catch (ParseException e) {			
 			e.printStackTrace();
 		}
 	}
+	
 	/*
 	 * Permet de telecharger une image du serveur en utilisant le Singleton
 	 * volley 
 	 */
 	public static void getImageFromUrl(String url, final ImageView imageView,Context contexte) {
+		
 		VolleySingleton volleyInstance = VolleySingleton.getInstance(contexte);
 		ImageLoader imageLoader = volleyInstance.getImageLoader();
+		
 		imageLoader.get(url, new ImageListener() {
+			
 			@Override
 			public void onErrorResponse(VolleyError error) {
 				imageView.setImageResource(R.drawable.ic_launcher); 
 			}
+			
 			@Override
 			public void onResponse(ImageContainer response, boolean arg1) {
+				Log.i("Api","Get image url reponse :"+response.getRequestUrl());
 				if (response.getBitmap() != null) {
 					imageView.setImageBitmap(response.getBitmap());
 				}
@@ -322,6 +353,7 @@ public class ApiNounou {
 	 * Méthode utilisée dans l'activité PageConnexion pour s'authentifier
 	 * */
 	public static void identification(final String email,final String password,final Context activityConnection){
+		
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(activityConnection).getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(activityConnection);
 		final String result="";
@@ -353,7 +385,7 @@ public class ApiNounou {
 								
 								/*On récupère l'id de la Nounou renvoyé par le serveur */
 								String idNounou=response.getString("message");
-								 Intent listeNounous=new Intent(activityConnection,ListDesNounous.class);
+							    Intent listeNounous=new Intent(activityConnection,ListDesNounous.class);
 								SessionManager sm = new SessionManager(activityConnection);
 						 		sm.createUserLoginSession(idNounou,email);
 						 		Toast.makeText(activityConnection,email+
@@ -364,20 +396,22 @@ public class ApiNounou {
 							
 						} catch (JSONException e) {							
 							e.printStackTrace();
-						}
-						
+						}						
 					}
+					
 				}, new Response.ErrorListener() {
 
 					@Override
-					public void onErrorResponse(VolleyError error) {
-						
+					public void onErrorResponse(VolleyError error) {						
 						Log.i("ERROR---------", error.toString());
 					}
 				});
+		
 		_volleyQueue.add(jsObjRequest);
 				
 	}
+	
+	
  /*
   * Methode pour remplir les champs du profil de l'utilisateur dans l'activité Utilisateur
   */
@@ -642,7 +676,7 @@ public class ApiNounou {
 						    
 							try {
 								
-								if(response.getInt("code")==200){
+								if(response.getInt("code") == 200){
 									
 									Toast.makeText(activityInscription, "Création du profil réussie !",Toast.LENGTH_LONG).show();								
 									
@@ -654,10 +688,12 @@ public class ApiNounou {
     								Toast.makeText(activityInscription,email+
     										", vous êtes Connecté!",
     										Toast.LENGTH_LONG).show();
+    								
     								activityInscription.startActivity(intent);
 								}
 									
 								else Toast.makeText(activityInscription, "Erreur dans la création !",Toast.LENGTH_LONG).show();
+								
 							} catch (JSONException e) {								
 								e.printStackTrace();
 							}

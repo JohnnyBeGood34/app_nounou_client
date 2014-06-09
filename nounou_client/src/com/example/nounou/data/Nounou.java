@@ -14,6 +14,7 @@ public class Nounou {
 	private String disponibilite;
 	private String cheminPhoto;
 	private String password;
+	private String distance;
 	
 	public Nounou(String id,String n,String p,String dN,String c,String ad,String e, String tH, String des,String tel, String dispo,String string,String MDP){
 		this.idNounou=id;
@@ -30,6 +31,7 @@ public class Nounou {
 		this.cheminPhoto=string;
 		this.password=MDP;
 	}
+	
 	public Nounou(){
 		this.idNounou="";
 		this.nom="";
@@ -123,5 +125,11 @@ public class Nounou {
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	public String getDistance() {
+		return distance;
+	}
+	public void setDistance(String distance) {
+		this.distance = distance;
 	}
 }

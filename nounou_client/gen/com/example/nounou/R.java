@@ -35,7 +35,7 @@ public final class R {
         public static final int buttonSup=0x7f070035;
         public static final int buttonVal=0x7f070019;
         public static final int container=0x7f070001;
-        public static final int distance=0x7f070039;
+        public static final int distance=0x7f070038;
         public static final int edAdresse=0x7f07000c;
         public static final int edCivilite=0x7f07000a;
         public static final int edDate=0x7f070008;
@@ -62,7 +62,7 @@ public final class R {
         public static final int password=0x7f07002f;
         public static final int refresh_match_layout=0x7f07001d;
         public static final int scroll=0x7f070000;
-        public static final int textViewEmail=0x7f070038;
+        public static final int textViewEmail=0x7f070039;
         public static final int textViewNom=0x7f070037;
         public static final int tv=0x7f070031;
         public static final int tv0=0x7f07002b;

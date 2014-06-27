@@ -89,35 +89,7 @@ public class Utilisateur extends Activity {
         /* Appel de l'API qui va remplir les champs du profil en fonction de l'ID de la Nounou */
         ApiNounou.getProfil(idNounou, this,listEditText,photoView);
         
-        
-        
-        final NounouBdd db=new NounouBdd(this);
-		db.open();
-        /*  
-         * 	Version BD locale
-         * 
-         * Nounou nounous=db.getNounouConnexion(Variable);
-        
-        session = new SessionManager(this); 
-
-        nom.setText(String.valueOf(nounous.getNom()));
-        prenom.setText(String.valueOf(nounous.getPrenom()));
-        dateDeNaissance.setText(String.valueOf(nounous.getDateDeNaissance()));
-        civilite.setText(String.valueOf(nounous.getCivilite()));
-        adresse.setText(String.valueOf(nounous.getAdresse()));
-        email.setText(String.valueOf(nounous.getEmail()));
-        tarifHoraire.setText(String.valueOf(nounous.getTarifHoraire()));
-        descriptionPrestation.setText(String.valueOf(nounous.getDescriptionPrestation()));
-        telephone.setText(String.valueOf(nounous.getTelephone()));
-        disponibilite.setText(String.valueOf(nounous.getDisponibilite()));
-        password.setText(String.valueOf(nounous.getPassword()));
-		
-		if(!String.valueOf(nounous.getCheminPhoto()).equals(""))
-		{
-			photoView.setImageBitmap(BitmapFactory.decodeFile(nounous.getCheminPhoto()));
-		}
-		*/
-		
+               
 		
 		annuler.setOnClickListener(new OnClickListener() {
         	@Override
@@ -129,6 +101,7 @@ public class Utilisateur extends Activity {
 		
 		/* Validation du formulaire de mise a jour */		
 		valider.setOnClickListener(new OnClickListener() {
+			
         	@Override
         	public void onClick(View v) {
         		
@@ -144,52 +117,34 @@ public class Utilisateur extends Activity {
         		nounou.setTarifHoraire(tarifHoraire.getText().toString());
         		nounou.setDisponibilite(disponibilite.getText().toString());
         		nounou.setTelephone(telephone.getText().toString());
+        		
         		try {
 					ApiNounou.updateProfil(idNounou,Utilisateur.this,nounou,cheminImageProfil);
 				} catch (JSONException e) {					
 					e.printStackTrace();
 				}
-        		
-        		/*
-        		 * Version BD locale
-        		Nounou nounous= new Nounou();
-        		nounous.setNom(nom.getText().toString());
-        		nounous.setPrenom(prenom.getText().toString());
-        		nounous.setDateDeNaissance(dateDeNaissance.getText().toString());
-        		nounous.setCivilite(civilite.getText().toString());
-        		nounous.setAdresse(adresse.getText().toString());
-        		nounous.setEmail(email.getText().toString());
-        		nounous.setTarifHoraire(tarifHoraire.getText().toString());
-        		nounous.setDescriptionPrestation(description.getText().toString());
-        		nounous.setTelephone(telephone.getText().toString());
-        		nounous.setDisponibilite(disponibilite.getText().toString());
-        		nounous.setPassword(password.getText().toString());
-                if(cheminImageProfil != "")
-                {
-                	nounous.setCheminPhoto(cheminImageProfil);
-                }
-				//Log.i("visiteur",nounous.toString());
-                db.updateNounou(nounous);
-        		*/
+        		        		
         		
         		Intent intent=new Intent(Utilisateur.this,ListDesNounous.class);
         		intent.putExtra("id",email.getText().toString());
     			startActivity(intent);
         	}
 		});
+		
+		
 		supprimer.setOnClickListener(new OnClickListener() {
 			
 			@Override
         	public void onClick(View v) {
-				db.removeNounou(idNounou);
-				session.logoutUser();
-				Toast.makeText(getApplicationContext(),
-    	                "Votre compte a été supprimé",
-    	                Toast.LENGTH_LONG).show();
 				
+				
+				ApiNounou.deleteProfil(Utilisateur.this,idNounou);
+								
         	}
 		});
 	}
+	
+	
 	/*
 	 * (non-Javadoc)
 	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)

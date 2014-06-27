@@ -276,7 +276,7 @@ public class ApiNounou {
 
 			TextView date = (TextView) hashMap.get("date");
 			/*
-			 * Determine de l'age de la nounou pour
+			 * Determine l'age de la nounou pour
 			 * affichage
 			 */
 			long age;
@@ -313,7 +313,7 @@ public class ApiNounou {
 			String urlVeritable = "http://" + parseUrl
 					+ nounou.getCheminPhoto();
 			/* Ajout de l'image via volley*/
-			Log.i("Api","url :"+urlVeritable);
+			
 			getImageFromUrl(urlVeritable, imageView, contexte);
 
 		} catch (JSONException e) {			
@@ -323,31 +323,7 @@ public class ApiNounou {
 		}
 	}
 	
-	/*
-	 * Permet de telecharger une image du serveur en utilisant le Singleton
-	 * volley 
-	 */
-	public static void getImageFromUrl(String url, final ImageView imageView,Context contexte) {
-		
-		VolleySingleton volleyInstance = VolleySingleton.getInstance(contexte);
-		ImageLoader imageLoader = volleyInstance.getImageLoader();
-		
-		imageLoader.get(url, new ImageListener() {
-			
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				imageView.setImageResource(R.drawable.ic_launcher); 
-			}
-			
-			@Override
-			public void onResponse(ImageContainer response, boolean arg1) {
-				Log.i("Api","Get image url reponse :"+response.getRequestUrl());
-				if (response.getBitmap() != null) {
-					imageView.setImageBitmap(response.getBitmap());
-				}
-			}
-		});
-	}
+	
 	
 	/*
 	 * Méthode utilisée dans l'activité PageConnexion pour s'authentifier
@@ -419,8 +395,7 @@ public class ApiNounou {
 		
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(activityUtilisateur).getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(activityUtilisateur);
-		
-		Log.i("Api","idNounou :"+idNounou);
+				
 		
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(
 				
@@ -429,7 +404,7 @@ public class ApiNounou {
 
 					@Override
 					public void onResponse(JSONObject response) {
-					    Log.i("Api",response.toString());
+											   
 						try {
 							afficherProfil(activityUtilisateur,response,listEditText,imageProfil);
 						} catch (JSONException e) {							
@@ -439,8 +414,7 @@ public class ApiNounou {
 				}, new Response.ErrorListener() {
 
 					@Override
-					public void onErrorResponse(VolleyError error) {
-						
+					public void onErrorResponse(VolleyError error) {						
 						Log.i("ERROR---------", error.toString());
 					}
 				});
@@ -462,7 +436,7 @@ public class ApiNounou {
 		EditText disponibilite=(EditText)listEditText.get("disponibilite");
 		EditText description=(EditText)listEditText.get("description");
 		EditText tarifHoraire=(EditText)listEditText.get("tarifHoraire");
-		//Log.i("Api","Resultat afficher profil :"+response.toString());
+		
 		
 		/*On pré-remplit les champs du profil avec la réponse du serveur */
 		try {
@@ -495,7 +469,7 @@ public class ApiNounou {
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(activityUtilisateur).getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(activityUtilisateur);
 		
-		Date date = new java.util.Date();
+		Date date = new Date();
         long timestampClient = new Timestamp(date.getTime()).getTime();
                
                       
@@ -585,6 +559,7 @@ public class ApiNounou {
 
 			@Override
 			public void run() {
+				
 				Log.i("Api ","Chemin photo : "+cheminPhoto);
 				HttpClient client =new DefaultHttpClient();
 				HttpPost httpPost=new HttpPost(UrlServer.getServerUrl()+"/api/image/id/"+idNounou);
@@ -692,7 +667,7 @@ public class ApiNounou {
     								activityInscription.startActivity(intent);
 								}
 									
-								else Toast.makeText(activityInscription, "Erreur dans la création !",Toast.LENGTH_LONG).show();
+								else Toast.makeText(activityInscription, "Erreur dans la création  !",Toast.LENGTH_LONG).show();
 								
 							} catch (JSONException e) {								
 								e.printStackTrace();
@@ -704,11 +679,124 @@ public class ApiNounou {
 						@Override
 						public void onErrorResponse(VolleyError error) {							
 							Log.i("Api", error.toString());
-							Toast.makeText(activityInscription, "Erreur dans la création !",Toast.LENGTH_LONG).show();
+							Toast.makeText(activityInscription, "Erreur dans la création ou vous n'êtes pas connecté !",Toast.LENGTH_LONG).show();
 						}
 					});
 			_volleyQueue.add(jsObjRequest);
 		
+	}
+	
+	
+	/*
+	 * Methode utilisée dans l'activité Utilisateur afin de supprimer le profil de la personne connectée
+	 * */
+	public static void deleteProfil(final Context activityUtilisateur,final String idNounou) {
+		
+		RequestQueue requestQueue =VolleySingleton.getInstance(activityUtilisateur).getRequestQueue();
+		requestQueue = Volley.newRequestQueue(activityUtilisateur);
+		
+		Date date = new Date();
+		long timestampClient = new Timestamp(date.getTime()).getTime();
+		
+		JSONObject paramsBody =new JSONObject();
+		try {
+			paramsBody.put("idNounou",idNounou);
+		} catch (JSONException e2) {			
+			e2.printStackTrace();
+		}
+
+		/*On contruit l'URL pour la signature avec les params du JSON envoyé en params*/
+		String urlForSignature ="idNounou="+idNounou;
+		            
+       
+       /*On crypte l'URL pour faire la signature du client */
+        String signatureClient="";
+		try {
+			 signatureClient = Auth.Hmac.createHmacForServer(urlForSignature, timestampClient);
+		} catch (InvalidKeyException e1) {			
+			e1.printStackTrace();
+		} catch (SignatureException e1) {			
+			e1.printStackTrace();
+		} catch (NoSuchAlgorithmException e1) {			
+			e1.printStackTrace();
+		}
+      
+        
+        String paramsUrl="?time="+timestampClient+"&login=abcd4ABCD"+"&signature="+signatureClient;
+		
+		 JsonObjectRequest jsObjRequest = new JsonObjectRequest(
+					
+					Request.Method.DELETE, UrlServer.getServerUrl()+"/api/nounou/id/"+idNounou+paramsUrl,null,
+					new Response.Listener<JSONObject>() {
+
+						@Override
+						public void onResponse(JSONObject response) {
+							
+						    Log.i("Api",response.toString());
+							try {
+								
+								if(response.getInt("code") == 200){
+									
+								SessionManager	session=new SessionManager(activityUtilisateur);
+								session.logoutUser();
+								Toast.makeText(activityUtilisateur, "Suppression du profil réussie !",Toast.LENGTH_LONG).show();																	
+								Intent intent=new Intent(activityUtilisateur,ListDesNounous.class);
+ 								
+								Toast.makeText(activityUtilisateur,
+				    	                "Votre compte a été supprimé",
+				    	                Toast.LENGTH_LONG).show();
+ 								
+ 								activityUtilisateur.startActivity(intent);
+								}
+									
+								else Toast.makeText(activityUtilisateur, "Erreur dans la suppression de votre profil  !",Toast.LENGTH_LONG).show();
+								
+							} catch (JSONException e) {								
+								e.printStackTrace();
+							}
+						}
+					},
+					new Response.ErrorListener() {
+
+						@Override
+						public void onErrorResponse(VolleyError error) {
+							
+							Log.i("Api", error.toString());
+							Toast.makeText(activityUtilisateur, "Erreur dans la suppression de votre profil !",Toast.LENGTH_LONG).show();
+						}
+					});
+		 
+		 requestQueue.add(jsObjRequest);
+		 
+		
+	}
+	
+	
+	/*
+	 * Permet de telecharger une image du serveur en utilisant le Singleton
+	 * volley 
+	 */
+	public static void getImageFromUrl(String url, final ImageView imageView,Context contexte) {
+		
+		VolleySingleton volleyInstance = VolleySingleton.getInstance(contexte);
+		ImageLoader imageLoader = volleyInstance.getImageLoader();
+		
+		imageLoader.get(url, new ImageListener() {
+			
+			@Override
+			public void onErrorResponse(VolleyError error) {
+				imageView.setImageResource(R.drawable.ic_launcher); 
+			}
+			
+			@Override
+			public void onResponse(ImageContainer response, boolean arg1) {
+				
+				Log.i("Api","Get image url reponse :"+response.getRequestUrl());
+				if (response.getBitmap() != null) {
+					imageView.setImageBitmap(response.getBitmap());
+				}
+			}
+		});
 	}
 	
 	public static String parseUrl(String url) {

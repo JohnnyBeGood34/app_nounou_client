@@ -10,7 +10,7 @@ import android.widget.Toast;
 public class MyLocationListener implements LocationListener {
 	
 	Context _contextApplication;
-	public double latitudeClient;
+	 public double latitudeClient;
 	public double longitudeClient;
 	
 	public MyLocationListener(Context contexte)
@@ -21,11 +21,11 @@ public class MyLocationListener implements LocationListener {
 	@Override
 	public void onLocationChanged(Location localisationClient) {
 		
-		 latitudeClient = localisationClient.getLatitude();
+		latitudeClient = localisationClient.getLatitude();
 		 longitudeClient = localisationClient.getLongitude();
 		String Text = "La current position du client est: " +"Latitude = " + latitudeClient +"Longitude = " + longitudeClient;
 		//Toast.makeText( _contextApplication,Text,Toast.LENGTH_SHORT).show();
-		Log.i("Location",Text);
+		//Log.i("Location",Text);
 	}
 
 	@Override

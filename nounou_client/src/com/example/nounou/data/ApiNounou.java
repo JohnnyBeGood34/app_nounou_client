@@ -46,6 +46,7 @@ import com.example.nounou.PageConnexion;
 import com.example.nounou.R;
 import com.example.nounou.UrlServer;
 import com.example.nounou.VolleySingleton;
+import com.example.nounou.data.Nounou;
 
 public class ApiNounou {
 	

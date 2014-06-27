@@ -27,8 +27,8 @@ public class ListUneNounou extends Activity {
 			//final NounouBdd db=new NounouBdd(this);
 			//db.open();
 			Bundle extra = getIntent().getExtras();
-	        String  Variable = extra.getString("id");
-			Log.i("Api ","ID :"+Variable);			
+	        String  idNounou = extra.getString("id");
+			Log.i("Api ","ID :"+idNounou);			
 			boutonRetour = (Button)findViewById(R.id.buttonRetour);
 			HashMap<String, TextView> arrayTextView = new HashMap<String, TextView>();
 			
@@ -51,7 +51,7 @@ public class ListUneNounou extends Activity {
 			arrayTextView.put("des", des);
 			arrayTextView.put("email", email);
 			
-			ApiNounou.getUneNounou(UrlServer.getServerUrl()+"/api/nounou/"+Variable,this,arrayTextView,photoView);
+			ApiNounou.getUneNounou(UrlServer.getServerUrl()+"/api/nounou/"+idNounou,this,arrayTextView,photoView);
 			
 			
 			boutonRetour.setOnClickListener(new OnClickListener() {

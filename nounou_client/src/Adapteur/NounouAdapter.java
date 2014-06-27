@@ -19,12 +19,15 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 public class NounouAdapter implements ListAdapter {
+	
 	String URL = UrlServer.getServerUrl();
 	Context _ctx;
 	ArrayList<Nounou> _list;
 	LayoutInflater _inflater;
 	static RequestQueue _volleyQueue; // File d'attente volley
+	
 	public NounouAdapter(Context ctx,ArrayList al) {
+		
 		final NounouBdd db=new NounouBdd(ctx);
 		db.open();
 		this._ctx = ctx;
@@ -50,68 +53,66 @@ public class NounouAdapter implements ListAdapter {
 	{
 		return this._list;
 	}
+	
 	@Override
-	public int getCount() {
-		// TODO Auto-generated method stub
+	public int getCount() {		
 		return this._list.size();
 	}
 
 	@Override
-	public Object getItem(int position) {
-		// TODO Auto-generated method stub
+	public Object getItem(int position) {		
 		return this._list.get(position);
 	}
 
 	@Override
-	public long getItemId(int position) {
-		// TODO Auto-generated method stub
+	public long getItemId(int position) {		
 		return position;
 	}
 
 	@Override
-	public int getItemViewType(int position) {
-		// TODO Auto-generated method stub
+	public int getItemViewType(int position) {		
 		return 0;
 	}
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Nounou nn = (Nounou) this.getItem(position);
 		
+		Nounou nounou = (Nounou) this.getItem(position);		
 		CustomNounouHolder holder;
+		
 		if (convertView == null) {
+			
 			holder = new CustomNounouHolder();
 			convertView = this._inflater.inflate(R.layout.cell_nounou, null);
 			holder.nom = (TextView)convertView.findViewById(R.id.textViewNom);
 			holder.email = (TextView)convertView.findViewById(R.id.textViewEmail);
 			holder.image = (ImageView)convertView.findViewById(R.id.imageViewPhoto);
+			holder.distance=(TextView)convertView.findViewById(R.id.distance);
 			convertView.setTag(holder);
-		} else {
+		}
+		else {
 			holder = (CustomNounouHolder) convertView.getTag();
 		}
 		
-		holder.nom.setText(nn.getNom());
-		holder.email.setText(nn.getEmail());
-		
-		ApiNounou.getImageFromUrl(URL+nn.getCheminPhoto(), holder.image, this._ctx);
+		holder.nom.setText(nounou.getNom());
+		holder.email.setText(nounou.getEmail());
+		holder.distance.setText(nounou.getDistance());
+		ApiNounou.getImageFromUrl(URL+nounou.getCheminPhoto(), holder.image, this._ctx);
 		return convertView;
 	}
 
 	@Override
-	public int getViewTypeCount() {
-		// TODO Auto-generated method stub
+	public int getViewTypeCount() {		
 		return 1;
 	}
 
 	@Override
-	public boolean hasStableIds() {
-		// TODO Auto-generated method stub
+	public boolean hasStableIds() {		
 		return false;
 	}
 
 	@Override
-	public boolean isEmpty() {
-		// TODO Auto-generated method stub
+	public boolean isEmpty() {		
 		return false;
 	}
 
@@ -143,5 +144,6 @@ public class NounouAdapter implements ListAdapter {
 		TextView email;
 		TextView nom;
 		ImageView image;
+		TextView distance;
 	}
 }

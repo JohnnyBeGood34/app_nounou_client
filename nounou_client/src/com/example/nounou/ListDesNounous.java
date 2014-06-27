@@ -3,8 +3,12 @@ package com.example.nounou;
 import com.example.nounou.data.ApiNounou;
 
 import Manager.SessionManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
@@ -19,27 +23,32 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+@SuppressLint("ServiceCast")
 public class ListDesNounous extends Activity{
-	String URL = UrlServer.getServerUrl();
-	EditText rec;
+
+	
+	String URL = UrlServer.getServerUrl();	
 	Button connexion,inscription;
-	TextView dist;
-	private ListView mainListView ;
-	//private NounouAdapter _nounouManager;
-	private SeekBar volumeControl = null;
+	TextView distance_text;
+	private ListView mainListView ;	
+	private SeekBar control_distance = null;
 	SessionManager session;
+	
+	String longitude;
+	String latitude;
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_list_des_nounous);
 		
 		connexion=(Button)findViewById(R.id.buttonConnexion);
 		inscription=(Button)findViewById(R.id.buttonInscription);
-		dist=(TextView)findViewById(R.id.tvdistance);
-		
-		volumeControl = (SeekBar) findViewById(R.id.volume_bar);
-		
-		
+		distance_text=(TextView)findViewById(R.id.tvdistance);		
+		control_distance = (SeekBar) findViewById(R.id.volume_bar);
+				
 		
 		 // User Session Manager
         session = new SessionManager(this);
@@ -54,11 +63,18 @@ public class ListDesNounous extends Activity{
         
 		// Find the ListView resource.   
 		mainListView = (ListView) findViewById( R.id.mainListView ); 
+
 		/*
-		 * TODO
-		 * A remplacer dans l'URL les coordonnées réelles 
+		 * Localisation 
 		 * */
-		ApiNounou.getAllNounousApi(URL+"/api/nounous/latitude/44/longitude/4/kilometres/2000",this,mainListView);
+		 LocationManager locationManager=(LocationManager) this.getSystemService(Context.LOCATION_SERVICE);                    
+	     Location location =locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+	     latitude =String.valueOf(location.getLatitude());
+	     longitude=String.valueOf(location.getLongitude());
+	     
+	     		
+		 ApiNounou.getAllNounousApi(URL+"/api/nounous/latitude/"+latitude+"/longitude/"+longitude,this,mainListView);
+		
 		
         connexion.setOnClickListener(new OnClickListener() {
         	@Override
@@ -76,7 +92,10 @@ public class ListDesNounous extends Activity{
         	}
         });
         
-        /*Permet de visualiser son compte si connecté sinon de s'inscrire*/
+        /*
+         * Permet de visualiser son compte si connecté sinon de s'inscrire
+         * 
+         * */
         inscription.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
@@ -94,7 +113,10 @@ public class ListDesNounous extends Activity{
         	}
         });    
         
-        volumeControl.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+        
+       
+        
+        control_distance.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
             int progressChanged = 0;
  
             @Override
@@ -110,12 +132,16 @@ public class ListDesNounous extends Activity{
             /*Au changement des kilomètres choisis pour la recherche*/
             @Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
-            	dist.setText(String.valueOf(progressChanged+"Km"));
+            	distance_text.setText(String.valueOf(progressChanged+"Km"));
+            	
             	/*On actualise la liste des Nounous se trouvant dans le périmètre choisi*/
             	/*TODO
             	 * Remplacer la latitude/longitude par les véritbles coordonnées
             	 * */
-            	ApiNounou.getAllNounousApi(URL+"/api/nounous/latitude/44/longitude/4/kilometres/"+String.valueOf(progressChanged),ListDesNounous.this,mainListView);
+            	if(progressChanged != 0)
+            	ApiNounou.getAllNounousApi(URL+"/api/nounous/latitude/"+latitude+"/longitude/"+longitude+"/kilometres/"+String.valueOf(progressChanged),ListDesNounous.this,mainListView);
+            	else 	ApiNounou.getAllNounousApi(URL+"/api/nounous/latitude/"+latitude+"/longitude/"+longitude,ListDesNounous.this,mainListView);
+
             }
         });
         

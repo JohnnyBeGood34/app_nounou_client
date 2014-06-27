@@ -5,5 +5,9 @@
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="gen"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Easy/Downloads/httpcomponents-client-4.3.3-bin/httpcomponents-client-4.3.3/lib/httpclient-4.3.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Easy/Downloads/httpcomponents-client-4.3.3-bin/httpcomponents-client-4.3.3/lib/httpcore-4.3.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Easy/Downloads/httpcomponents-client-4.3.3-bin/httpcomponents-client-4.3.3/lib/httpmime-4.3.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/Easy/Downloads/apache-mime4j-0.7.2-bin/apache-mime4j-0.7.2/lib/apache-mime4j-core-0.7.2.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

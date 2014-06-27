@@ -2,7 +2,6 @@ package com.example.nounou;
 
 import com.example.nounou.data.ApiNounou;
 
-import Manager.SessionManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;

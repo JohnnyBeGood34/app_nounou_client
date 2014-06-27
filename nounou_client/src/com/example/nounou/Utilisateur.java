@@ -9,7 +9,6 @@ import com.example.nounou.data.ApiNounou;
 import com.example.nounou.data.Nounou;
 import com.example.nounou.data.NounouBdd;
 
-import Manager.SessionManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;

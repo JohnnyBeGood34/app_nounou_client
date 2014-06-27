@@ -4,19 +4,14 @@ import org.json.JSONException;
 
 import com.example.nounou.data.ApiNounou;
 import com.example.nounou.data.Nounou;
-import com.example.nounou.data.NounouBdd;
-
-import Manager.SessionManager;
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 public class InscriptionNounou extends Activity {
 /*public boolean onCreateOptionsMenu(Menu menu) {

@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -30,6 +32,7 @@ public class ListDesNounous extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_list_des_nounous);
+		
 		connexion=(Button)findViewById(R.id.buttonConnexion);
 		inscription=(Button)findViewById(R.id.buttonInscription);
 		dist=(TextView)findViewById(R.id.tvdistance);
@@ -117,4 +120,12 @@ public class ListDesNounous extends Activity{
         });
         
 	}
+	/*
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu){
+		Log.i("MENU","create menu");
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}*/
 }

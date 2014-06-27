@@ -52,8 +52,7 @@ public class ApiNounou {
 	
 	private static NounouAdapter _nounouManager;
 	static ProgressDialog dialog = null;
-	
-	
+		
 	public static void getAllNounousApi(String url, final Context contexte,final ListView listView) {
 
 		dialog = ProgressDialog.show(contexte, "", "Chargement...");
@@ -311,7 +310,6 @@ public class ApiNounou {
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(activityConnection).getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(activityConnection);
 		final String result="";
-		
 		/* On construit un Objet pour les paramètres à envoyer en POST */
 		JSONObject params=new JSONObject();
 		try {

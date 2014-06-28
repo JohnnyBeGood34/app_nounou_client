@@ -21,9 +21,10 @@ public final class R {
         public static final int activity_vertical_margin=0x7f040001;
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
-        public static final int nounou=0x7f020001;
-        public static final int roundrect=0x7f020002;
+        public static final int arrow=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
+        public static final int nounou=0x7f020002;
+        public static final int roundrect=0x7f020003;
     }
     public static final class id {
         public static final int ButtonValider=0x7f080030;
@@ -35,7 +36,7 @@ public final class R {
         public static final int buttonSup=0x7f080035;
         public static final int buttonVal=0x7f080019;
         public static final int container=0x7f080001;
-        public static final int distance=0x7f080038;
+        public static final int distance=0x7f08003a;
         public static final int edAdresse=0x7f08000c;
         public static final int edCivilite=0x7f08000a;
         public static final int edDate=0x7f080008;
@@ -49,7 +50,7 @@ public final class R {
         public static final int edTarif=0x7f080010;
         public static final int edTel=0x7f080014;
         public static final int imageView1=0x7f080022;
-        public static final int imageViewPhoto=0x7f080036;
+        public static final int imageViewPhoto=0x7f080037;
         public static final int imageViewProfil=0x7f080034;
         public static final int linearLayout1=0x7f080021;
         public static final int linearLayout2=0x7f080025;
@@ -59,12 +60,13 @@ public final class R {
         public static final int linearLayout6=0x7f08002a;
         public static final int linearLayoutvueProfil=0x7f080033;
         public static final int mainListView=0x7f08001b;
-        public static final int menu_search=0x7f08003a;
+        public static final int menu_search=0x7f08003b;
         public static final int password=0x7f08002f;
         public static final int refresh_match_layout=0x7f08001d;
         public static final int scroll=0x7f080000;
         public static final int textViewEmail=0x7f080039;
-        public static final int textViewNom=0x7f080037;
+        public static final int textViewNom=0x7f080038;
+        public static final int thumbnail=0x7f080036;
         public static final int tv=0x7f080031;
         public static final int tv0=0x7f08002b;
         public static final int tv1=0x7f08002c;

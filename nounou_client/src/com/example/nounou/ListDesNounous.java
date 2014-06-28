@@ -93,9 +93,15 @@ public class ListDesNounous extends Activity {
 		}else{
 		    //Si le GPS est activé on récupere la derniere latitude et longitude connue
 			Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-			latitude = String.valueOf(location.getLatitude());
-			longitude = String.valueOf(location.getLongitude());
-			ApiNounou.getAllNounousApi(URL + "/api/nounous/latitude/"+ latitude + "/longitude/" + longitude, this, mainListView);
+			if(location != null){
+				latitude = String.valueOf(location.getLatitude());
+				longitude = String.valueOf(location.getLongitude());
+				ApiNounou.getAllNounousApi(URL + "/api/nounous/latitude/"+ latitude + "/longitude/" + longitude, this, mainListView);
+			}
+			else
+			{
+				ApiNounou.getAllNounousApi(URL + "/api/nounous", this, mainListView);
+			}
 		}
 		
 		connexion.setOnClickListener(new OnClickListener() {

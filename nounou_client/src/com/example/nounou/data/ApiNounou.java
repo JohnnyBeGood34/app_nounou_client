@@ -62,7 +62,7 @@ public class ApiNounou {
 
 	public static void getAllNounousApi(String url, final Context contexte,
 			final ListView listView) {
-
+		Log.i("URL SERVER---------", url);
 		dialog = ProgressDialog.show(contexte, "", "Chargement...");
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte)
 				.getRequestQueue();
@@ -81,7 +81,6 @@ public class ApiNounou {
 
 			/* Sinon on va chercher en BD */
 		} else {
-			Log.i("APPEL SERVEUR POUR LES NOUNOUS","SERVEUUUUR");
 			JsonObjectRequest jsObjRequest = new JsonObjectRequest(
 
 			Request.Method.GET, url, null, new Response.Listener<JSONObject>() {

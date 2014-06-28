@@ -7,7 +7,6 @@ import com.example.nounou.R;
 import com.example.nounou.UrlServer;
 import com.example.nounou.data.ApiNounou;
 import com.example.nounou.data.Nounou;
-import com.example.nounou.data.NounouBdd;
 
 import android.content.Context;
 import android.database.DataSetObserver;
@@ -28,8 +27,6 @@ public class NounouAdapter implements ListAdapter {
 	
 	public NounouAdapter(Context ctx,ArrayList al) {
 		
-		final NounouBdd db=new NounouBdd(ctx);
-		db.open();
 		this._ctx = ctx;
 		this._list = al;//(ArrayList<Nounou>) db.getAllNounou();
 		this._inflater = (LayoutInflater) this._ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

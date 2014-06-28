@@ -19,14 +19,16 @@
         android:layout_height="wrap_content" />
     
     <TextView
-        android:id="@+id/distance"        
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
-    
-    <TextView
         android:id="@+id/textViewEmail"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:visibility="gone" />
+    
+    
+    <TextView
+        android:id="@+id/distance"        
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true" />
 
 </LinearLayout>

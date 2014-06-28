@@ -7,12 +7,10 @@ import org.json.JSONException;
 
 import com.example.nounou.data.ApiNounou;
 import com.example.nounou.data.Nounou;
-import com.example.nounou.data.NounouBdd;
 
 import Manager.SessionManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
 import android.app.Activity;
 import android.content.Intent;
@@ -24,8 +22,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class Utilisateur extends Activity {
 	

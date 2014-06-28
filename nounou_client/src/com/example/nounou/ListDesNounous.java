@@ -13,6 +13,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -64,8 +65,9 @@ public class ListDesNounous extends Activity {
 		 */
 
 		LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-		//Si le GPS est activé
+		//Si le GPS n'est activé pas activé
 		if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+			Log.i("GPS","non activé");
 			// Demande a l'utilisateur si il veut activer son gps
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle("GPS manager");
@@ -90,6 +92,7 @@ public class ListDesNounous extends Activity {
 					});
 			builder.create().show();
 		}else{
+			Log.i("GPS","activé");
 		    //Si le GPS est activé on récupere la derniere latitude et longitude connue
 			Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 			if(location != null){

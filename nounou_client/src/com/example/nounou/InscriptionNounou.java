@@ -22,7 +22,7 @@ public class InscriptionNounou extends Activity {
 	//Variable permettant d'obtenir la reponse de l'acivity gallery
 	private static int RESULT_LOAD_IMAGE = 1;
 	Button boutonAnnuler,boutonvalider,boutonUploadPhoto;
-	EditText id,nom,prenom,dateDeNaissance,civilite,adresse,email,tarifHoraire,descriptionPrestation,telephone,disponibilite,password;
+	EditText id,nom,prenom,dateDeNaissance,civilite,adresse,ville,email,tarifHoraire,descriptionPrestation,telephone,disponibilite,password;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -37,6 +37,7 @@ public class InscriptionNounou extends Activity {
 		dateDeNaissance = (EditText)findViewById(R.id.edDate);
 		civilite = (EditText)findViewById(R.id.edCivilite);
 		adresse = (EditText)findViewById(R.id.edAdresse);
+		ville= (EditText)findViewById(R.id.edVille);
 		email = (EditText)findViewById(R.id.edEmail);
 		tarifHoraire = (EditText)findViewById(R.id.edTarif);
 		descriptionPrestation = (EditText)findViewById(R.id.edDescription);
@@ -77,6 +78,7 @@ public class InscriptionNounou extends Activity {
 				nounou.setDateDeNaissance(dateDeNaissance.getText().toString());
 				nounou.setCivilite(civilite.getText().toString());
 				nounou.setAdresse(adresse.getText().toString());
+				nounou.setVille(ville.getText().toString());
 				nounou.setEmail(email.getText().toString());
 				nounou.setTarifHoraire(tarifHoraire.getText().toString());
 				nounou.setDescriptionPrestation(descriptionPrestation.getText().toString());

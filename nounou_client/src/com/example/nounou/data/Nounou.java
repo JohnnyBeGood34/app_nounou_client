@@ -7,6 +7,7 @@ public class Nounou {
 	private String dateDeNaissance;
 	private String civilite;
 	private String adresse;
+	private String ville;
 	private String email;
 	private String tarifHoraire;
 	private String descriptionPrestation;
@@ -16,13 +17,14 @@ public class Nounou {
 	private String password;
 	private String distance;
 	
-	public Nounou(String id,String n,String p,String dN,String c,String ad,String e, String tH, String des,String tel, String dispo,String string,String MDP){
+	public Nounou(String id,String n,String p,String dN,String c,String ad,String ville,String e, String tH, String des,String tel, String dispo,String string,String MDP){
 		this.idNounou=id;
 		this.nom=n;
 		this.prenom=p;
 		this.dateDeNaissance=dN;
 		this.civilite=c;
 		this.adresse=ad;
+		this.ville=ville;
 		this.email=e;
 		this.tarifHoraire=tH;
 		this.descriptionPrestation=des;
@@ -39,6 +41,7 @@ public class Nounou {
 		this.dateDeNaissance="";
 		this.civilite="";
 		this.adresse="";
+		this.ville="";
 		this.email="";
 		this.tarifHoraire="";
 		this.descriptionPrestation="";
@@ -84,6 +87,14 @@ public class Nounou {
 	public void setAdresse(String adresse) {
 		this.adresse = adresse;
 	}
+	
+	public String getVille() {
+		return ville;
+	}
+	public void setVille(String ville) {
+		this.ville = ville;
+	}
+	
 	public String getEmail() {
 		return email;
 	}

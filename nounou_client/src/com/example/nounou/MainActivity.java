@@ -1,5 +1,7 @@
 package com.example.nounou;
 
+import java.util.Timer;
+
 import Manager.ConnectivityChangeReceiver;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -23,7 +25,22 @@ public class MainActivity extends Activity {
 		
 		// Check de la connection internet
 		registerReceiver(new ConnectivityChangeReceiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-
+        
+		
+		/*
+		 * Clear du cache de Volley à intervalle régulier
+		 * */
+		
+		TimerCache clearTask=new TimerCache(this);
+		Timer timer=new Timer();
+		/*
+		 * 1st Param : tache à effectuer
+		 * 2nd Param : temps en millisecondes à partir duquel commencer la tache
+		 * 3rd Param : intervalle en millisecondes
+		 * */
+		timer.schedule(clearTask, 10*60*1000,10*60*1000);//ici 10 => 10 minutes
+		
+		
 	}
 
 }

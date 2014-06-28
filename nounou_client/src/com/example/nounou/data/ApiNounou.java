@@ -67,9 +67,10 @@ public class ApiNounou {
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte)
 				.getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(contexte);
-		_volleyQueue.getCache().clear();
+		//_volleyQueue.getCache().clear();
 		/* Si on a un cache pour cette url */
 		if (_volleyQueue.getCache().get(url) != null) {
+			Log.i("Api","get url from cache");
 			try {
 				// On récupère la liste depuis le cache
 				JSONObject cacheContent = new JSONObject(new String(
@@ -139,7 +140,8 @@ public class ApiNounou {
 
 				newNouNou.setAdresse(jsonArrayNounou.getJSONObject(i)
 						.getString("adresse"));
-
+                newNouNou.setVille(jsonArrayNounou.getJSONObject(i).getString("ville"));
+				
 				newNouNou.setEmail(jsonArrayNounou.getJSONObject(i).getString(
 						"email"));
 
@@ -248,7 +250,9 @@ public class ApiNounou {
 			Nounou nounou = new Nounou(response.getString("_id"),
 					response.getString("nom"), response.getString("prenom"),
 					response.getString("dateDeNaissance"), response.getString("civilite"),
-					response.getString("adresse"), response.getString("email"),
+					response.getString("adresse"),
+					response.getString("ville"),
+					response.getString("email"),
 					response.getString("tarifHoraire"),
 					response.getString("descriptionPrestation"),
 					response.getString("telephone"),
@@ -310,76 +314,103 @@ public class ApiNounou {
 	 * Méthode utilisée dans l'activité PageConnexion pour s'authentifier
 	 */
 	public static void identification(final String email,
-			final String password, final Context activityConnection) {
+			final String password, final Context activityConnection,boolean hasConnection)  {
 
-		RequestQueue _volleyQueue = VolleySingleton.getInstance(
-				activityConnection).getRequestQueue();
+		RequestQueue _volleyQueue = VolleySingleton.getInstance(activityConnection).getRequestQueue();				
 		_volleyQueue = Volley.newRequestQueue(activityConnection);
+		String url=UrlServer.getServerUrl() + "/api/connexionNounou";
 		final String result = "";
+        
+		/*
+		 * Si le cache de Volley contient qqchose et qu'il n' y a pas connection
+		 * */
+		if (_volleyQueue.getCache().get(url) != null && hasConnection==false) {
+			
+			JSONObject cacheContent = null;
+			try {
+				cacheContent = new JSONObject(new String(
+						_volleyQueue.getCache().get(url).data));
+			} catch (JSONException e) {			
+				e.printStackTrace();
+			}
+			Log.i("Api","connexion from cache :"+cacheContent);
+			onLogin(cacheContent, activityConnection, email, password);
+		}
+		else{
+			
+			/* On construit un Objet pour les paramètres à envoyer en POST */
+			JSONObject params = new JSONObject();
+			try {
+				params.put("email", email);
+				params.put("password", password);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 
-		/* On construit un Objet pour les paramètres à envoyer en POST */
-		JSONObject params = new JSONObject();
+			JsonObjectRequest jsObjRequest = new JsonObjectRequest(
+
+			Request.Method.POST, url,
+					params, new Response.Listener<JSONObject>() {
+
+						@Override
+						public void onResponse(JSONObject response) {
+							Log.i("Api",response.toString());
+					            onLogin(response, activityConnection,email,password);
+						}
+
+					}, new Response.ErrorListener() {
+
+						@Override
+						public void onErrorResponse(VolleyError error) {
+							Log.i("ERROR---------", error.toString());
+						}
+					});
+
+			_volleyQueue.add(jsObjRequest);
+			
+		}
+	
+
+	}
+	
+	private static void onLogin(JSONObject response,Context activityConnection,String email,String password ){
+		
+	
 		try {
-			params.put("email", email);
-			params.put("password", password);
+			/* On récupère le code HTTP reçu et on traite selon */
+			int codeHTTP = response.getInt("code");
+			/*
+			 * Si le mot de passe ne correspond pas ou si
+			 * l'email ne correspond pas à aucune Nounou
+			 */
+			if (codeHTTP == 401 || codeHTTP == 404)
+				Toast.makeText(activityConnection,
+						"Email ou mot de passe incorrect.",
+						Toast.LENGTH_LONG).show();
+
+			/* Si les mots de passe correspondent */
+			else {
+
+				/*
+				 * On récupère l'id de la Nounou renvoyé par le
+				 * serveur
+				 */
+				String idNounou = response.getString("message");
+				Intent listeNounous = new Intent(
+						activityConnection,
+						ListDesNounous.class);
+				SessionManager sm = new SessionManager(
+						activityConnection);
+				sm.createUserLoginSession(idNounou, email);
+				Toast.makeText(activityConnection,
+						 " vous êtes connecté!",
+						Toast.LENGTH_LONG).show();
+				activityConnection.startActivity(listeNounous);
+			}
+
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-
-		JsonObjectRequest jsObjRequest = new JsonObjectRequest(
-
-		Request.Method.POST, UrlServer.getServerUrl() + "/api/connexionNounou",
-				params, new Response.Listener<JSONObject>() {
-
-					@Override
-					public void onResponse(JSONObject response) {
-						try {
-							/* On récupère le code HTTP reçu et on traite selon */
-							int codeHTTP = response.getInt("code");
-							/*
-							 * Si le mot de passe ne correspond pas ou si
-							 * l'email ne correspond pas à aucune Nounou
-							 */
-							if (codeHTTP == 401 || codeHTTP == 404)
-								Toast.makeText(activityConnection,
-										"Email ou mot de passe incorrect.",
-										Toast.LENGTH_LONG).show();
-
-							/* Si les mots de passe correspondent */
-							else {
-
-								/*
-								 * On récupère l'id de la Nounou renvoyé par le
-								 * serveur
-								 */
-								String idNounou = response.getString("message");
-								Intent listeNounous = new Intent(
-										activityConnection,
-										ListDesNounous.class);
-								SessionManager sm = new SessionManager(
-										activityConnection);
-								sm.createUserLoginSession(idNounou, email);
-								Toast.makeText(activityConnection,
-										email + ", vous êtes Connecté!",
-										Toast.LENGTH_LONG).show();
-								activityConnection.startActivity(listeNounous);
-							}
-
-						} catch (JSONException e) {
-							e.printStackTrace();
-						}
-					}
-
-				}, new Response.ErrorListener() {
-
-					@Override
-					public void onErrorResponse(VolleyError error) {
-						Log.i("ERROR---------", error.toString());
-					}
-				});
-
-		_volleyQueue.add(jsObjRequest);
-
 	}
 
 	/*
@@ -393,30 +424,52 @@ public class ApiNounou {
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(
 				activityUtilisateur).getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(activityUtilisateur);
-
-		JsonObjectRequest jsObjRequest = new JsonObjectRequest(
-
-		Request.Method.GET, UrlServer.getServerUrl() + "/api/nounou/"
-				+ idNounou, null, new Response.Listener<JSONObject>() {
-
-			@Override
-			public void onResponse(JSONObject response) {
-
-				try {
-					afficherProfil(activityUtilisateur, response, listEditText,
-							imageProfil);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
+        String url=UrlServer.getServerUrl() + "/api/nounou/"+ idNounou;
+				
+        
+		if (_volleyQueue.getCache().get(url) != null){
+			
+			JSONObject cacheContent = null;
+			try {
+				cacheContent = new JSONObject(new String(
+						_volleyQueue.getCache().get(url).data));
+			} catch (JSONException e) {			
+				e.printStackTrace();
 			}
-		}, new Response.ErrorListener() {
-
-			@Override
-			public void onErrorResponse(VolleyError error) {
-				Log.i("ERROR---------", error.toString());
+			
+			try {
+				afficherProfil(activityUtilisateur,cacheContent,listEditText,imageProfil);
+			} catch (JSONException e) {				
+				e.printStackTrace();
 			}
-		});
-		_volleyQueue.add(jsObjRequest);
+			
+		}
+		else{
+			
+			JsonObjectRequest jsObjRequest = new JsonObjectRequest(
+
+					Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+						@Override
+						public void onResponse(JSONObject response) {
+
+							try {
+								afficherProfil(activityUtilisateur, response, listEditText,
+										imageProfil);
+							} catch (JSONException e) {
+								e.printStackTrace();
+							}
+						}
+					}, new Response.ErrorListener() {
+
+						@Override
+						public void onErrorResponse(VolleyError error) {
+							Log.i("ERROR---------", error.toString());
+						}
+					});
+					_volleyQueue.add(jsObjRequest);			
+		}
+	
 	}
 
 	/* Affiche le compte de l'utilisateur avec toutes ses informations */
@@ -432,6 +485,7 @@ public class ApiNounou {
 		EditText civilite = (EditText) listEditText.get("civilite");
 		EditText password = (EditText) listEditText.get("password");
 		EditText adresse = (EditText) listEditText.get("adresse");
+		EditText ville=(EditText) listEditText.get("ville");
 		EditText telephone = (EditText) listEditText.get("telephone");
 		EditText disponibilite = (EditText) listEditText.get("disponibilite");
 		EditText description = (EditText) listEditText.get("description");
@@ -446,6 +500,7 @@ public class ApiNounou {
 			password.setText(response.getString("password"));
 			civilite.setText(response.getString("civilite"));
 			adresse.setText(response.getString("adresse"));
+			ville.setText(response.getString("ville"));
 			telephone.setText(response.getString("telephone"));
 			description.setText(response.getString("descriptionPrestation"));
 			tarifHoraire.setText(response.getString("tarifHoraire"));
@@ -481,6 +536,7 @@ public class ApiNounou {
 			paramsBody.put("dateDeNaissance", nounou.getDateDeNaissance());
 			paramsBody.put("civilite", nounou.getCivilite());
 			paramsBody.put("adresse", nounou.getAdresse());
+			paramsBody.put("ville", nounou.getVille());
 			paramsBody.put("email", nounou.getEmail());
 			paramsBody.put("tarifHoraire", nounou.getTarifHoraire());
 			paramsBody.put("descriptionPrestation",
@@ -618,6 +674,7 @@ public class ApiNounou {
 		paramsBody.put("dateDeNaissance", nounou.getDateDeNaissance());
 		paramsBody.put("civilite", nounou.getCivilite());
 		paramsBody.put("adresse", nounou.getAdresse());
+		paramsBody.put("ville", nounou.getVille());
 		paramsBody.put("email", nounou.getEmail());
 		paramsBody.put("tarifHoraire", nounou.getTarifHoraire());
 		paramsBody.put("descriptionPrestation",

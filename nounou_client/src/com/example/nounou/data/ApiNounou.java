@@ -87,7 +87,7 @@ public class ApiNounou {
 			Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 				@Override
 				public void onResponse(JSONObject response) {
-
+Log.i("Api",response.toString());
 					ajoutListeNounou(response, contexte, listView);
 				}
 			}, new Response.ErrorListener() {

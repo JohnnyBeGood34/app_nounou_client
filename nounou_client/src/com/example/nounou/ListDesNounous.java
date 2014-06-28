@@ -13,6 +13,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -64,43 +65,17 @@ public class ListDesNounous extends Activity {
 		 */
 
 		LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-		//Si le GPS est activé
+		//Si le GPS est désactivé
 		if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-			// Demande a l'utilisateur si il veut activer son gps
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle("GPS manager");
-			builder.setMessage("Voulez vous activer la fonction GPS de votre telephone?");
-			builder.setPositiveButton("Oui",
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// Lancement des settings pour activer le GPS
-							Intent i = new Intent(
-									Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-							startActivity(i);
-						}
-					});
-			builder.setNegativeButton("Non",
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.cancel();
-							ApiNounou.getAllNounousApi(URL + "/api/nounous", ListDesNounous.this, mainListView);
-						}
-					});
-			builder.create().show();
+			ApiNounou.getAllNounousApi(URL + "/api/nounous", ListDesNounous.this, mainListView);
 		}else{
 		    //Si le GPS est activé on récupere la derniere latitude et longitude connue
 			Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-			if(location != null){
-				latitude = String.valueOf(location.getLatitude());
-				longitude = String.valueOf(location.getLongitude());
-				ApiNounou.getAllNounousApi(URL + "/api/nounous/latitude/"+ latitude + "/longitude/" + longitude, this, mainListView);
-			}
-			else
-			{
-				ApiNounou.getAllNounousApi(URL + "/api/nounous", this, mainListView);
-			}
+			Log.i("LOCATION++++++++++++++",String.valueOf(location));
+			latitude = String.valueOf(location.getLatitude());
+			longitude = String.valueOf(location.getLongitude());
+			ApiNounou.getAllNounousApi(URL + "/api/nounous/latitude/"+ latitude + "/longitude/" + longitude, this, mainListView);
+			
 		}
 		
 		connexion.setOnClickListener(new OnClickListener() {

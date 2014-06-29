@@ -8,6 +8,7 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -21,8 +22,11 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
 		LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		
 		if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+			Log.i("GPS++++++++++","NON ACTIVE");
 			// Demande a l'utilisateur si il veut activer son gps
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle("GPS manager");
@@ -35,6 +39,8 @@ public class MainActivity extends Activity {
 							Intent i = new Intent(
 									Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 							startActivity(i);
+							// Check de la connection internet
+							registerReceiver(new ConnectivityChangeReceiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 						}
 					});
 			builder.setNegativeButton("Non",
@@ -42,6 +48,8 @@ public class MainActivity extends Activity {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
 							dialog.cancel();
+							// Check de la connection internet
+							registerReceiver(new ConnectivityChangeReceiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 						}
 					});
 			builder.create().show();
@@ -54,8 +62,7 @@ public class MainActivity extends Activity {
 			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 		}
 		
-		// Check de la connection internet
-		registerReceiver(new ConnectivityChangeReceiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+		
         
 		
 		/*

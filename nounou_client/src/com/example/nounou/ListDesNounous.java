@@ -145,19 +145,19 @@ public class ListDesNounous extends Activity {
 						 * TODO Remplacer la latitude/longitude par les
 						 * véritbles coordonnées
 						 */
-						if (progressChanged != 0)
+						if (progressChanged != 0){
 							ApiNounou.getAllNounousApi(
 									URL + "/api/nounous/latitude/" + latitude
 											+ "/longitude/" + longitude
 											+ "/kilometres/"
 											+ String.valueOf(progressChanged),
 									ListDesNounous.this, mainListView);
-						else
+						}else{
 							ApiNounou.getAllNounousApi(URL
 									+ "/api/nounous/latitude/" + latitude
 									+ "/longitude/" + longitude,
 									ListDesNounous.this, mainListView);
-
+						}
 					}
 				});
 

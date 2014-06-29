@@ -64,8 +64,7 @@ public class ApiNounou {
 			final ListView listView) {
 		Log.i("URL SERVER---------", url);
 		dialog = ProgressDialog.show(contexte, "", "Chargement...");
-		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte)
-				.getRequestQueue();
+		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte).getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(contexte);
 		//_volleyQueue.getCache().clear();
 		/* Si on a un cache pour cette url */

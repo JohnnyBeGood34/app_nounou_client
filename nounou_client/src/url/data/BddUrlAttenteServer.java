@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class BddUrlAttenteServer extends SQLiteOpenHelper {
 	/*Requete de creation de la table URL*/
-	private static final String CREATION_BASE_REQUEST = "CREATE TABLE "+UrlServerAttenteDao.TABLE_NAME+" ("+UrlServerAttenteDao.CALL_URL+" TEXT NOT NULL PRIMARY KEY, "+UrlServerAttenteDao.TIMESTAMP+" TEXT NOT NULL,, "+UrlServerAttenteDao.LABEL+" TEXT NOT NULL );";
+	private static final String CREATION_BASE_REQUEST = "CREATE TABLE "+UrlServerAttenteDao.TABLE_NAME+" ("+UrlServerAttenteDao.CALL_URL+" TEXT NOT NULL PRIMARY KEY, "+UrlServerAttenteDao.TIMESTAMP+" TEXT NOT NULL, "+UrlServerAttenteDao.LABEL+" TEXT NOT NULL, "+UrlServerAttenteDao.PARAM_BODY+" TEXT NOT NULL );";
 	public BddUrlAttenteServer(Context context, String name,CursorFactory factory, int version) {
 		super(context, name, factory, version);
 	}

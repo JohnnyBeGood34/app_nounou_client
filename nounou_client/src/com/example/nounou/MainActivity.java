@@ -23,8 +23,8 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-		
+
+		final LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 			Log.i("GPS++++++++++","NON ACTIVE");
 			// Demande a l'utilisateur si il veut activer son gps
@@ -53,15 +53,6 @@ public class MainActivity extends Activity {
 			builder.create().show();
 		}
 		
-		LocationListener locationListener = null;
-		// Mise à l'écoute des coordonnées GPS du client
-		if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-
-			// Check de la connection internet
-			registerReceiver(new ConnectivityChangeReceiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-			locationListener = new MyLocationListener(this);
-			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-		}
 		
 		
         
@@ -80,6 +71,22 @@ public class MainActivity extends Activity {
 		timer.schedule(clearTask, 10*60*1000,10*60*1000);//ici 10 => 10 minutes
 		
 		
+	}
+
+	@Override
+	public void onResume(){
+	    super.onResume();
+
+		final LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		LocationListener locationListener = null;
+		// Mise à l'écoute des coordonnées GPS du client
+		if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+
+			// Check de la connection internet
+			registerReceiver(new ConnectivityChangeReceiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+			locationListener = new MyLocationListener(MainActivity.this);
+			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		}
 	}
 
 }

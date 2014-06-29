@@ -39,8 +39,6 @@ public class MainActivity extends Activity {
 							Intent i = new Intent(
 									Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 							startActivity(i);
-							// Check de la connection internet
-							registerReceiver(new ConnectivityChangeReceiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 						}
 					});
 			builder.setNegativeButton("Non",
@@ -58,6 +56,9 @@ public class MainActivity extends Activity {
 		LocationListener locationListener = null;
 		// Mise à l'écoute des coordonnées GPS du client
 		if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+
+			// Check de la connection internet
+			registerReceiver(new ConnectivityChangeReceiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 			locationListener = new MyLocationListener(this);
 			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 		}

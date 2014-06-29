@@ -1,13 +1,7 @@
 package com.example.nounou;
 
-<<<<<<< HEAD
-=======
 import java.util.Timer;
 
-import com.example.nounou.data.ApiNounou;
-
-
->>>>>>> f2b5779ac8406db5746e3c010cd7072750f34b84
 import Manager.ConnectivityChangeReceiver;
 import android.location.LocationListener;
 import android.location.LocationManager;

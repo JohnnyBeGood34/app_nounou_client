@@ -51,4 +51,7 @@ public class VolleySingleton {
         return imageLoader;
     }
     
+    public void clearCache(){
+    	requestQueue.getCache().clear();
+    }
 }

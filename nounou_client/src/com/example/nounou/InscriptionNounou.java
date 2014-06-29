@@ -22,7 +22,7 @@ public class InscriptionNounou extends Activity {
 	//Variable permettant d'obtenir la reponse de l'acivity gallery
 	private static int RESULT_LOAD_IMAGE = 1;
 	Button boutonAnnuler,boutonvalider,boutonUploadPhoto;
-	EditText id,nom,prenom,dateDeNaissance,civilite,adresse,email,tarifHoraire,descriptionPrestation,telephone,disponibilite,password;
+	EditText id,nom,prenom,dateDeNaissance,civilite,adresse,ville,email,tarifHoraire,descriptionPrestation,telephone,disponibilite,password;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -37,6 +37,7 @@ public class InscriptionNounou extends Activity {
 		dateDeNaissance = (EditText)findViewById(R.id.edDate);
 		civilite = (EditText)findViewById(R.id.edCivilite);
 		adresse = (EditText)findViewById(R.id.edAdresse);
+		ville= (EditText)findViewById(R.id.edVille);
 		email = (EditText)findViewById(R.id.edEmail);
 		tarifHoraire = (EditText)findViewById(R.id.edTarif);
 		descriptionPrestation = (EditText)findViewById(R.id.edDescription);
@@ -77,6 +78,7 @@ public class InscriptionNounou extends Activity {
 				nounou.setDateDeNaissance(dateDeNaissance.getText().toString());
 				nounou.setCivilite(civilite.getText().toString());
 				nounou.setAdresse(adresse.getText().toString());
+				nounou.setVille(ville.getText().toString());
 				nounou.setEmail(email.getText().toString());
 				nounou.setTarifHoraire(tarifHoraire.getText().toString());
 				nounou.setDescriptionPrestation(descriptionPrestation.getText().toString());
@@ -91,87 +93,6 @@ public class InscriptionNounou extends Activity {
 				
 				e.printStackTrace();
 			}
-                
-                /*Version BD Locale */
-                
-                //booléens pour les conditions if de validation du formulaire
-               /* boolean verifEMail = db.verificationMail(mailAVerif);
-                boolean verifDate = db.verificationDate(dateAVerif);
-                boolean verifTel = db.verificationTelephone(telAVerif);
-                boolean verifTarif = db.verificationTarif(tarifAVerif);
-                //nounou renvoyée par la requète (select * from nounou where email = "email saisi")
-                Nounou nounou = db.getNounouConnexion(mailAVerif);
-                //variables pour l'affichage des toasts
-                int duration = Toast.LENGTH_SHORT;
-                String messageMail1 = "Vous avez saisi un email déjà utilisé.";
-                String messageMail2 = "Veuillez saisir un email valide.";
-                String messageDate = "Veuillez entrer une date valide au format DD/MM/AAAA.";
-                String messageTarif = "Veuillez entrer un montant de tarif horaire en chiffre.";
-                String messageTel = "Veuillez entrer un numéro de téléphone valide";
-                Context context = getApplicationContext();
-
-                	if (verifEMail == true)
-                	{
-                		if (verifDate == true)
-                		{
-                			if (verifTel == true)
-                			{
-                				if(verifTarif == true)
-                				{
-                					if (nounou == null)
-                					{
-                							Nounou nounous= new Nounou();
-                								//nounous.setIdNounou(id.getText().toString());
-                								nounous.setNom(nom.getText().toString());
-                								nounous.setPrenom(prenom.getText().toString());
-                								nounous.setDateDeNaissance(dateDeNaissance.getText().toString());
-                								nounous.setCivilite(civilite.getText().toString());
-                								nounous.setAdresse(adresse.getText().toString());
-                								nounous.setEmail(email.getText().toString());
-                								nounous.setTarifHoraire(tarifHoraire.getText().toString());
-                								nounous.setDescriptionPrestation(descriptionPrestation.getText().toString());
-                								nounous.setTelephone(telephone.getText().toString());
-                								nounous.setDisponibilite(disponibilite.getText().toString());
-                								nounous.setCheminPhoto("aucun");
-                								nounous.setPassword(password.getText().toString());
-        		
-                								db.insertNounou(nounous);
-        		
-                								Intent intent=new Intent(InscriptionNounou.this,ListDesNounous.class);
-                								String etLogin = email.getText().toString();
-                								String mdpLogin = password.getText().toString();
-                								SessionManager sm = new SessionManager(getApplicationContext());
-                								sm.createUserLoginSession(etLogin, mdpLogin);
-                								Toast.makeText(getApplicationContext(),etLogin+
-                										", vous êtes Connecté!",
-                										Toast.LENGTH_LONG).show();
-                								startActivity(intent);
-                						}
-                 						else
-                 						{
-                 							Toast.makeText(context, messageMail1, duration).show();
-                 						}
-                 					}
-                 					else
-                 					{
-                 						Toast.makeText(context, messageTarif, duration).show();
-                 					}
-                 				}
-                 				else
-                 				{
-                 					Toast.makeText(context, messageTel, duration).show();	
-                 				}
-                 			}
-                 			else
-                 			{
-                 				Toast.makeText(context, messageDate, duration).show();
-                 			}
-                 		}
-                 		else
-                 		{
-                 			Toast.makeText(context, messageMail2, duration).show();
-                 		}
-                 		*/
                  	}
         	});
         }

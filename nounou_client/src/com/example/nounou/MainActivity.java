@@ -3,6 +3,7 @@ package com.example.nounou;
 import java.util.Timer;
 
 import Manager.ConnectivityChangeReceiver;
+import Manager.ConnexionManager;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
@@ -61,7 +62,8 @@ public class MainActivity extends Activity {
 		/*
 		 * Clear du cache de Volley à intervalle régulier si il y a une connexion
 		 * */
-		if(isNetworkAvailable()){
+		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		if(ConnexionManager.testConnexion(connectivityManager)){
 			TimerCache clearTask=new TimerCache(this);
 			Timer timer=new Timer();
 			/*
@@ -89,11 +91,4 @@ public class MainActivity extends Activity {
 			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 		}
 	}
-	
-	private boolean isNetworkAvailable() {
-	    ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-	}
-
 }

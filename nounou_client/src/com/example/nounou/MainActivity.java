@@ -6,6 +6,7 @@ import Manager.ConnectivityChangeReceiver;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -58,18 +59,18 @@ public class MainActivity extends Activity {
         
 		
 		/*
-		 * Clear du cache de Volley à intervalle régulier
+		 * Clear du cache de Volley à intervalle régulier si il y a une connexion
 		 * */
-		
-		TimerCache clearTask=new TimerCache(this);
-		Timer timer=new Timer();
-		/*
-		 * 1st Param : tache à effectuer
-		 * 2nd Param : temps en millisecondes à partir duquel commencer la tache
-		 * 3rd Param : intervalle en millisecondes
-		 * */
-		timer.schedule(clearTask, 10*60*1000,10*60*1000);//ici 10 => 10 minutes
-		
+		if(isNetworkAvailable()){
+			TimerCache clearTask=new TimerCache(this);
+			Timer timer=new Timer();
+			/*
+			 * 1st Param : tache à effectuer
+			 * 2nd Param : temps en millisecondes à partir duquel commencer la tache
+			 * 3rd Param : intervalle en millisecondes
+			 * */
+			timer.schedule(clearTask, 10*60*1000,10*60*1000);//ici 10 => 10 minutes
+		}
 		
 	}
 
@@ -87,6 +88,12 @@ public class MainActivity extends Activity {
 			locationListener = new MyLocationListener(MainActivity.this);
 			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 		}
+	}
+	
+	private boolean isNetworkAvailable() {
+	    ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+	    return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
 
 }

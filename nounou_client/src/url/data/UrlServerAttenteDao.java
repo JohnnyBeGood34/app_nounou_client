@@ -14,10 +14,11 @@ public class UrlServerAttenteDao {
 	public static final String TABLE_NAME = "urlAttente";
 	public static final String CALL_URL = "call_url";
 	public static final String TIMESTAMP = "timestamp_request";
-
+	public static final String LABEL = "label";
 	public static final int NUM_COLUMN_CALL_URL = 0;
 	public static final int NUM_COLUMN_TIMESTAMP = 1;
-
+	public static final int NUM_COLUMN_LABEL = 2;
+	
 	private SQLiteDatabase managerDb;
 	private BddUrlAttenteServer managerbaseSqlite;
 
@@ -42,6 +43,7 @@ public class UrlServerAttenteDao {
 		ContentValues values = new ContentValues();
 		values.put(CALL_URL, url.getCallurl());
 		values.put(TIMESTAMP, url.getTimestamp());
+		values.put(LABEL, url.getLabel());
 		return managerDb.insert(TABLE_NAME, null, values);
 	}
 
@@ -50,6 +52,7 @@ public class UrlServerAttenteDao {
 		ContentValues values = new ContentValues();
 		values.put(CALL_URL, url.getCallurl());
 		values.put(TIMESTAMP, url.getTimestamp());
+		values.put(LABEL, url.getLabel());
 		return managerDb.update(TABLE_NAME, values,
 				CALL_URL + " = '" + url.getCallurl() + "'", null);
 	}
@@ -62,11 +65,11 @@ public class UrlServerAttenteDao {
 	/*Retourne la liste de toutes les urls de la table*/
 	public List<UrlServerAttente> getAllurl(){
 		List<UrlServerAttente> listeUrl = new ArrayList<UrlServerAttente>();
-		Cursor c = managerDb.query(TABLE_NAME, new String[]{CALL_URL,TIMESTAMP},null,null,null,null,null);
+		Cursor c = managerDb.query(TABLE_NAME, new String[]{CALL_URL,TIMESTAMP,LABEL},null,null,null,null,null);
 		c.moveToFirst();
 		int sizeCursor = c.getCount();
 		for (int i=0;i<sizeCursor;i++){
-			UrlServerAttente URL = new UrlServerAttente(c.getString(NUM_COLUMN_CALL_URL),c.getString(NUM_COLUMN_TIMESTAMP));
+			UrlServerAttente URL = new UrlServerAttente(c.getString(NUM_COLUMN_CALL_URL),c.getString(NUM_COLUMN_TIMESTAMP),c.getString(NUM_COLUMN_LABEL));
 			listeUrl.add(URL);
 			c.moveToNext();
 		}
@@ -75,8 +78,8 @@ public class UrlServerAttenteDao {
 	}
 	
 	public UrlServerAttente getUrl(String url){
-		Cursor curseur = managerDb.query(TABLE_NAME,new String[]{CALL_URL,TIMESTAMP},CALL_URL + " LIKE \""+url+"\" ",null,null,null,null);
-		UrlServerAttente URL = new UrlServerAttente(curseur.getString(NUM_COLUMN_CALL_URL),curseur.getString(NUM_COLUMN_TIMESTAMP));
+		Cursor curseur = managerDb.query(TABLE_NAME,new String[]{CALL_URL,TIMESTAMP,LABEL},CALL_URL + " LIKE \""+url+"\" ",null,null,null,null);
+		UrlServerAttente URL = new UrlServerAttente(curseur.getString(NUM_COLUMN_CALL_URL),curseur.getString(NUM_COLUMN_TIMESTAMP),curseur.getString(NUM_COLUMN_LABEL));
 		curseur.close();
 		return URL;
 	}

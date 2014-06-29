@@ -61,25 +61,30 @@ public class ListDesNounous extends Activity {
 		 * Localisation
 		 */
 
-		LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-		//Si le GPS n'est activé pas activé
+		final LocationManager locationManager = (LocationManager) this
+				.getSystemService(Context.LOCATION_SERVICE);
+		// Si le GPS n'est activé pas activé
 		if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-			ApiNounou.getAllNounousApi(URL + "/api/nounous", ListDesNounous.this, mainListView);
-		}else{
-			Log.i("GPS","activé");
-		    //Si le GPS est activé on récupere la derniere latitude et longitude connue
-			Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-			if(location != null){
+			ApiNounou.getAllNounousApi(URL + "/api/nounous",
+					ListDesNounous.this, mainListView);
+		} else {
+			Log.i("GPS", "activé");
+			// Si le GPS est activé on récupere la derniere latitude et
+			// longitude connue
+			Location location = locationManager
+					.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			if (location != null) {
 				latitude = String.valueOf(location.getLatitude());
 				longitude = String.valueOf(location.getLongitude());
-				ApiNounou.getAllNounousApi(URL + "/api/nounous/latitude/"+ latitude + "/longitude/" + longitude, this, mainListView);
-			}
-			else
-			{
-				ApiNounou.getAllNounousApi(URL + "/api/nounous", this, mainListView);
+				ApiNounou.getAllNounousApi(URL + "/api/nounous/latitude/"
+						+ latitude + "/longitude/" + longitude, this,
+						mainListView);
+			} else {
+				ApiNounou.getAllNounousApi(URL + "/api/nounous", this,
+						mainListView);
 			}
 		}
-		
+
 		connexion.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -145,18 +150,24 @@ public class ListDesNounous extends Activity {
 						 * TODO Remplacer la latitude/longitude par les
 						 * véritbles coordonnées
 						 */
-						if (progressChanged != 0){
-							ApiNounou.getAllNounousApi(
-									URL + "/api/nounous/latitude/" + latitude
-											+ "/longitude/" + longitude
-											+ "/kilometres/"
-											+ String.valueOf(progressChanged),
-									ListDesNounous.this, mainListView);
-						}else{
-							ApiNounou.getAllNounousApi(URL
-									+ "/api/nounous/latitude/" + latitude
-									+ "/longitude/" + longitude,
-									ListDesNounous.this, mainListView);
+						if (locationManager
+								.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+							if (progressChanged != 0) {
+								ApiNounou.getAllNounousApi(
+										URL
+												+ "/api/nounous/latitude/"
+												+ latitude
+												+ "/longitude/"
+												+ longitude
+												+ "/kilometres/"
+												+ String.valueOf(progressChanged),
+										ListDesNounous.this, mainListView);
+							} else {
+								ApiNounou.getAllNounousApi(URL
+										+ "/api/nounous/latitude/" + latitude
+										+ "/longitude/" + longitude,
+										ListDesNounous.this, mainListView);
+							}
 						}
 					}
 				});

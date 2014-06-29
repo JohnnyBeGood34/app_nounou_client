@@ -3,9 +3,11 @@ package com.example.nounou;
 import java.util.Timer;
 
 import Manager.ConnectivityChangeReceiver;
+import Manager.ConnexionManager;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
@@ -23,8 +25,8 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-		
+
+		final LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 			Log.i("GPS++++++++++","NON ACTIVE");
 			// Demande a l'utilisateur si il veut activer son gps
@@ -39,8 +41,6 @@ public class MainActivity extends Activity {
 							Intent i = new Intent(
 									Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 							startActivity(i);
-							// Check de la connection internet
-							registerReceiver(new ConnectivityChangeReceiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 						}
 					});
 			builder.setNegativeButton("Non",
@@ -55,30 +55,40 @@ public class MainActivity extends Activity {
 			builder.create().show();
 		}
 		
-		LocationListener locationListener = null;
-		// Mise à l'écoute des coordonnées GPS du client
-		if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-			locationListener = new MyLocationListener(this);
-			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-		}
 		
 		
         
 		
 		/*
-		 * Clear du cache de Volley à intervalle régulier
+		 * Clear du cache de Volley à intervalle régulier si il y a une connexion
 		 * */
-		
-		TimerCache clearTask=new TimerCache(this);
-		Timer timer=new Timer();
-		/*
-		 * 1st Param : tache à effectuer
-		 * 2nd Param : temps en millisecondes à partir duquel commencer la tache
-		 * 3rd Param : intervalle en millisecondes
-		 * */
-		timer.schedule(clearTask, 10*60*1000,10*60*1000);//ici 10 => 10 minutes
-		
+		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		if(ConnexionManager.testConnexion(connectivityManager)){
+			TimerCache clearTask=new TimerCache(this);
+			Timer timer=new Timer();
+			/*
+			 * 1st Param : tache à effectuer
+			 * 2nd Param : temps en millisecondes à partir duquel commencer la tache
+			 * 3rd Param : intervalle en millisecondes
+			 * */
+			timer.schedule(clearTask, 10*60*1000,10*60*1000);//ici 10 => 10 minutes
+		}
 		
 	}
 
+	@Override
+	public void onResume(){
+	    super.onResume();
+
+		final LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+		LocationListener locationListener = null;
+		// Mise à l'écoute des coordonnées GPS du client
+		if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+
+			// Check de la connection internet
+			registerReceiver(new ConnectivityChangeReceiver(), new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+			locationListener = new MyLocationListener(MainActivity.this);
+			locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		}
+	}
 }

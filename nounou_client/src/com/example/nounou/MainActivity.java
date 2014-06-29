@@ -1,7 +1,5 @@
 package com.example.nounou;
 
-import com.example.nounou.data.ApiNounou;
-
 import Manager.ConnectivityChangeReceiver;
 import android.location.LocationListener;
 import android.location.LocationManager;

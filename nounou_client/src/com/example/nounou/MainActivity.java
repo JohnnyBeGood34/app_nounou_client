@@ -2,9 +2,6 @@ package com.example.nounou;
 
 import java.util.Timer;
 
-import com.example.nounou.data.ApiNounou;
-
-
 import Manager.ConnectivityChangeReceiver;
 import android.location.LocationListener;
 import android.location.LocationManager;

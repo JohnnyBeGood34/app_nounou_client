@@ -69,7 +69,7 @@ public class InscriptionNounou extends Activity {
 		boutonvalider.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
-        		     Log.i("Api","click valider");   		              
+        		Log.i("Api","click valider");   		              
                 
                 Nounou nounou= new Nounou();
 				
@@ -89,10 +89,10 @@ public class InscriptionNounou extends Activity {
               
 		       try {
 				ApiNounou.createNounou(InscriptionNounou.this,nounou);
-			} catch (JSONException e) {
-				
-				e.printStackTrace();
-			}
+				} catch (JSONException e) {
+					
+					e.printStackTrace();
+				}
                  	}
         	});
         }

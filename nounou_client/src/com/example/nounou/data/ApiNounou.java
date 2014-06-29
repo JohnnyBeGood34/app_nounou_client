@@ -59,7 +59,7 @@ public class ApiNounou {
 
 	private static NounouAdapter _nounouManager;
 	static ProgressDialog dialog = null;
-
+	
 	public static void getAllNounousApi(String url, final Context contexte,
 			final ListView listView) {
 		Log.i("URL SERVER---------", url);
@@ -426,7 +426,7 @@ public class ApiNounou {
 		_volleyQueue = Volley.newRequestQueue(activityUtilisateur);
         String url=UrlServer.getServerUrl() + "/api/nounou/"+ idNounou;
 				
-        
+        /*Si il y a l'url dans le cache on l'utilise*/
 		if (_volleyQueue.getCache().get(url) != null){
 			
 			JSONObject cacheContent = null;
@@ -443,7 +443,7 @@ public class ApiNounou {
 				e.printStackTrace();
 			}
 			
-		}
+		}/*Sinon appel serveur*/
 		else{
 			
 			JsonObjectRequest jsObjRequest = new JsonObjectRequest(
@@ -517,9 +517,7 @@ public class ApiNounou {
 	}
 
 	@SuppressWarnings("deprecation")
-	public static void updateProfil(final String idNounou,
-			final Context activityUtilisateur, final Nounou nounou,
-			final String cheminPhoto) throws JSONException {
+	public static void updateProfil(final String idNounou,final Context activityUtilisateur, final Nounou nounou,final String cheminPhoto) throws JSONException {
 
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(
 				activityUtilisateur).getRequestQueue();
@@ -539,8 +537,7 @@ public class ApiNounou {
 			paramsBody.put("ville", nounou.getVille());
 			paramsBody.put("email", nounou.getEmail());
 			paramsBody.put("tarifHoraire", nounou.getTarifHoraire());
-			paramsBody.put("descriptionPrestation",
-					nounou.getDescriptionPrestation());
+			paramsBody.put("descriptionPrestation",nounou.getDescriptionPrestation());
 			paramsBody.put("telephone", nounou.getTelephone());
 			paramsBody.put("disponibilite", nounou.getDisponibilite());
 			paramsBody.put("cheminPhoto", "chemin");
@@ -581,7 +578,9 @@ public class ApiNounou {
 
 		String paramsUrl = "?time=" + timestampClient + "&login=abcd4ABCD"
 				+ "&signature=" + signatureClient;
-
+		
+		
+		
 		JsonObjectRequest jsObjRequest = new JsonObjectRequest(
 
 		Request.Method.PUT, UrlServer.getServerUrl() + "/api/nounou/"

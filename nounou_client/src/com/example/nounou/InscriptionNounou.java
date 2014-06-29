@@ -91,58 +91,60 @@ public class InscriptionNounou extends Activity {
 				nounou.setPassword(password.getText().toString());
 				
 				VerifChampsManager verifChamps = new VerifChampsManager();
-				Boolean testNom = verifChamps.nom(nom.getText().toString());
-				Boolean testPrenom = verifChamps.prenom(prenom.getText().toString());
-				Boolean testDateDeNaissance = verifChamps.dateDeNaissance(dateDeNaissance.getText().toString());
-				Boolean testCivilite = verifChamps.civilite(civilite.getText().toString());
-				Boolean testAdresse = verifChamps.adresse(adresse.getText().toString());
-				Boolean testVille = verifChamps.ville(ville.getText().toString());
-				Boolean testEmail = verifChamps.email(email.getText().toString());
-				Boolean testTarif = verifChamps.tarif(tarifHoraire.getText().toString());
-				Boolean testDescription = verifChamps.description(descriptionPrestation.getText().toString());
-				Boolean testTel = verifChamps.tel(telephone.getText().toString());
-				Boolean testDisponibilite = verifChamps.dispo(disponibilite.getText().toString());
-				Boolean testmdp = verifChamps.mdp(password.getText().toString());
+				boolean testNom = verifChamps.nom(nom.getText().toString());
+				boolean testPrenom = verifChamps.prenom(prenom.getText().toString());
+				boolean testDateDeNaissance = verifChamps.dateDeNaissance(dateDeNaissance.getText().toString());
+				boolean testCivilite = verifChamps.civilite(civilite.getText().toString());
+				boolean testAdresse = verifChamps.adresse(adresse.getText().toString());
+				boolean testVille = verifChamps.ville(ville.getText().toString());
+				boolean testEmail = verifChamps.email(email.getText().toString());
+				boolean testTarif = verifChamps.tarif(tarifHoraire.getText().toString());
+				boolean testDescription = verifChamps.description(descriptionPrestation.getText().toString());
+				boolean testTel = verifChamps.tel(telephone.getText().toString());
+				boolean testDisponibilite = verifChamps.dispo(disponibilite.getText().toString());
+				boolean testmdp = verifChamps.mdp(password.getText().toString());
 				
-				if( (testNom || testPrenom || testDateDeNaissance || testCivilite || testAdresse || testVille || testEmail || testTarif
-						|| testDescription || testTel || testDisponibilite || testmdp) == false ){
-					if(testNom == false){
-						nom.setError(Html.fromHtml("<font color='red'>Valeur incorrect</font>"));
-					}
-					if(testPrenom == false){
-						prenom.setError(Html.fromHtml("<font color='red'>Valeur incorrect</font>"));
-					}
-					if(testDateDeNaissance == false){
-						dateDeNaissance.setError(Html.fromHtml("<font color='red'>Valeur incorrect</font>"));
-					}
-					if(testCivilite == false){
-						civilite.setError(Html.fromHtml("<font color='red'>Valeur incorrect</font>"));
-					}
-					if(testAdresse == false){
-						adresse.setError(Html.fromHtml("<font color='red'>Valeur incorrect</font>"));
-					}
-					if(testVille == false){
-						ville.setError(Html.fromHtml("<font color='red'>Valeur incorrect</font>"));
-					}
-					if(testEmail == false){
-						email.setError(Html.fromHtml("<font color='red'>Valeur incorrect</font>"));
-					}
-					if(testTarif == false){
-						tarifHoraire.setError(Html.fromHtml("<font color='red'>Valeur incorrect</font>"));
-					}
-					if(testDescription == false){
-						descriptionPrestation.setError(Html.fromHtml("<font color='red'>Valeur incorrect</font>"));
-					}
-					if(testTel == false){
-						telephone.setError(Html.fromHtml("<font color='red'>Valeur incorrect</font>"));
-					}
-					if(testDisponibilite == false){
-						disponibilite.setError(Html.fromHtml("<font color='red'>Valeur incorrect</font>"));
-					}
-					if(testmdp == false){
-						password.setError(Html.fromHtml("<font color='red'>Valeur incorrect</font>"));
-					}
+
+				if(testNom == false|| testPrenom == false|| testDateDeNaissance== false || testCivilite == false|| testAdresse== false || testVille== false
+						|| testEmail== false || testTarif== false	|| testDescription== false || testTel== false || testDisponibilite == false	|| testmdp == false ){
+						if(testNom == false){
+							nom.setError(Html.fromHtml("<font color='red'>Nom non valide, pas chiffre</font>"));
+						}
+						if(testPrenom == false){
+							prenom.setError(Html.fromHtml("<font color='red'>Prenom non valide, pas chiffre</font>"));
+						}
+						if(testDateDeNaissance == false){
+							dateDeNaissance.setError(Html.fromHtml("<font color='red'>Format Date non valide</font>"));
+						}
+						if(testCivilite == false){
+							civilite.setError(Html.fromHtml("<font color='red'>Civilité non valide, pas chiffre</font>"));
+						}
+						if(testAdresse == false){
+							adresse.setError(Html.fromHtml("<font color='red'>Adresse non valide</font>"));
+						}
+						if(testVille == false){
+							ville.setError(Html.fromHtml("<font color='red'>Ville non valide, pas chiffre</font>"));
+						}
+						if(testEmail == false){
+							email.setError(Html.fromHtml("<font color='red'>Email non valide</font>"));
+						}
+						if(testTarif == false){
+							tarifHoraire.setError(Html.fromHtml("<font color='red'>Le tarif n'accepte que des chiffres</font>"));
+						}
+						if(testDescription == false){
+							descriptionPrestation.setError(Html.fromHtml("<font color='red'>Valeur incorrect</font>"));
+						}
+						if(testTel == false){
+							telephone.setError(Html.fromHtml("<font color='red'>Télephone non valide</font>"));
+						}
+						if(testDisponibilite == false){
+							disponibilite.setError(Html.fromHtml("<font color='red'>Valeur erronée</font>"));
+						}
+						if(testmdp == false){
+							password.setError(Html.fromHtml("<font color='red'>Le mdp doit contenir 6 à 20 caractères dont au moins 1 minuscule, 1 majuscule et 1 chiffre</font>"));
+						}
 				}
+				
 				else{
 					try {
 						ApiNounou.createNounou(InscriptionNounou.this,nounou);

@@ -90,6 +90,22 @@
         android:layout_below="@+id/tvAdresse"
         android:ems="10"
         android:singleLine="true" />
+    <TextView 
+         android:id="@+id/tvVille"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edAdresse"
+        android:ems="10"
+        android:text="Ville"         
+        />
+    <EditText
+        android:id="@+id/edVille"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvVille"
+        android:ems="10"
+        android:singleLine="true" />
+    
     <TextView
         android:id="@+id/tvEmail"
         android:layout_width="fill_parent"

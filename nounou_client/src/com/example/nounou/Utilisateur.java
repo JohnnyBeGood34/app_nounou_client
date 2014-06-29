@@ -29,7 +29,7 @@ public class Utilisateur extends Activity {
 	private static int RESULT_LOAD_IMAGE = 1;
 	private String cheminImageProfil = "";
 	Button annuler,supprimer,valider;
-	EditText nom,prenom,dateDeNaissance,civilite,adresse,email,tarifHoraire,description,telephone,disponibilite,password;
+	EditText nom,prenom,dateDeNaissance,civilite,adresse,ville,email,tarifHoraire,description,telephone,disponibilite,password;
 	SessionManager session;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +56,7 @@ public class Utilisateur extends Activity {
 		dateDeNaissance = (EditText)findViewById(R.id.edDate);
 		civilite = (EditText)findViewById(R.id.edCivilite);
 		adresse = (EditText)findViewById(R.id.edAdresse);
+		ville=(EditText)findViewById(R.id.edVille);
 		email = (EditText)findViewById(R.id.edEmail);
 		tarifHoraire = (EditText)findViewById(R.id.edTarif);
 		description = (EditText)findViewById(R.id.edDescription);
@@ -76,6 +77,8 @@ public class Utilisateur extends Activity {
 		listEditText.put("description",description);
 		listEditText.put("disponibilite",disponibilite);
 		listEditText.put("adresse",adresse);
+		listEditText.put("ville",ville);
+		
 		
 		
 		/* On récupère l'id de la Nounou en session */	
@@ -106,6 +109,7 @@ public class Utilisateur extends Activity {
         		nounou.setPrenom(prenom.getText().toString());
         		nounou.setEmail(email.getText().toString());
         		nounou.setAdresse(adresse.getText().toString());
+        		nounou.setVille(ville.getText().toString());
         		nounou.setPassword(password.getText().toString());
         		nounou.setCivilite(civilite.getText().toString());
         		nounou.setDateDeNaissance(dateDeNaissance.getText().toString());

@@ -59,17 +59,18 @@ public class ApiNounou {
 
 	private static NounouAdapter _nounouManager;
 	static ProgressDialog dialog = null;
-	
+
 	public static void getAllNounousApi(String url, final Context contexte,
 			final ListView listView) {
 		Log.i("URL SERVER---------", url);
 		dialog = ProgressDialog.show(contexte, "", "Chargement...");
-		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte).getRequestQueue();
+		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte)
+				.getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(contexte);
-		//_volleyQueue.getCache().clear();
+		// _volleyQueue.getCache().clear();
 		/* Si on a un cache pour cette url */
 		if (_volleyQueue.getCache().get(url) != null) {
-			Log.i("Api","get url from cache");
+			Log.i("Api", "get url from cache");
 			try {
 				// On récupère la liste depuis le cache
 				JSONObject cacheContent = new JSONObject(new String(
@@ -86,7 +87,7 @@ public class ApiNounou {
 			Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 				@Override
 				public void onResponse(JSONObject response) {
-					Log.i("Api",response.toString());
+					Log.i("Api", response.toString());
 					ajoutListeNounou(response, contexte, listView);
 				}
 			}, new Response.ErrorListener() {
@@ -109,7 +110,7 @@ public class ApiNounou {
 		// parse le JSON et remplis un arrayList d'objet
 		// Nounou
 		try {
-			Log.i("JSON----------------",response.toString());
+			Log.i("JSON----------------", response.toString());
 			ArrayList<Nounou> arrayListNounou = new ArrayList<Nounou>();
 			JSONArray jsonArrayNounou = response.getJSONArray("allNounous");
 
@@ -139,8 +140,9 @@ public class ApiNounou {
 
 				newNouNou.setAdresse(jsonArrayNounou.getJSONObject(i)
 						.getString("adresse"));
-                newNouNou.setVille(jsonArrayNounou.getJSONObject(i).getString("ville"));
-				
+				newNouNou.setVille(jsonArrayNounou.getJSONObject(i).getString(
+						"ville"));
+
 				newNouNou.setEmail(jsonArrayNounou.getJSONObject(i).getString(
 						"email"));
 
@@ -202,7 +204,7 @@ public class ApiNounou {
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte)
 				.getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(contexte);
-		//Si on a cette url dans le cache
+		// Si on a cette url dans le cache
 		if (_volleyQueue.getCache().get(url) != null) {
 
 			try {
@@ -248,9 +250,9 @@ public class ApiNounou {
 
 			Nounou nounou = new Nounou(response.getString("_id"),
 					response.getString("nom"), response.getString("prenom"),
-					response.getString("dateDeNaissance"), response.getString("civilite"),
-					response.getString("adresse"),
-					response.getString("ville"),
+					response.getString("dateDeNaissance"),
+					response.getString("civilite"),
+					response.getString("adresse"), response.getString("ville"),
 					response.getString("email"),
 					response.getString("tarifHoraire"),
 					response.getString("descriptionPrestation"),
@@ -313,30 +315,31 @@ public class ApiNounou {
 	 * Méthode utilisée dans l'activité PageConnexion pour s'authentifier
 	 */
 	public static void identification(final String email,
-			final String password, final Context activityConnection,boolean hasConnection)  {
+			final String password, final Context activityConnection,
+			boolean hasConnection) {
 
-		RequestQueue _volleyQueue = VolleySingleton.getInstance(activityConnection).getRequestQueue();				
+		RequestQueue _volleyQueue = VolleySingleton.getInstance(
+				activityConnection).getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(activityConnection);
-		String url=UrlServer.getServerUrl() + "/api/connexionNounou";
+		String url = UrlServer.getServerUrl() + "/api/connexionNounou";
 		final String result = "";
-        
+
 		/*
 		 * Si le cache de Volley contient qqchose et qu'il n' y a pas connection
-		 * */
-		if (_volleyQueue.getCache().get(url) != null && hasConnection==false) {
-			
+		 */
+		if (_volleyQueue.getCache().get(url) != null && hasConnection == false) {
+
 			JSONObject cacheContent = null;
 			try {
-				cacheContent = new JSONObject(new String(
-						_volleyQueue.getCache().get(url).data));
-			} catch (JSONException e) {			
+				cacheContent = new JSONObject(new String(_volleyQueue
+						.getCache().get(url).data));
+			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			Log.i("Api","connexion from cache :"+cacheContent);
+			Log.i("Api", "connexion from cache :" + cacheContent);
 			onLogin(cacheContent, activityConnection, email, password);
-		}
-		else{
-			
+		} else {
+
 			/* On construit un Objet pour les paramètres à envoyer en POST */
 			JSONObject params = new JSONObject();
 			try {
@@ -348,13 +351,14 @@ public class ApiNounou {
 
 			JsonObjectRequest jsObjRequest = new JsonObjectRequest(
 
-			Request.Method.POST, url,
-					params, new Response.Listener<JSONObject>() {
+			Request.Method.POST, url, params,
+					new Response.Listener<JSONObject>() {
 
 						@Override
 						public void onResponse(JSONObject response) {
-							Log.i("Api",response.toString());
-					            onLogin(response, activityConnection,email,password);
+							Log.i("Api", response.toString());
+							onLogin(response, activityConnection, email,
+									password);
 						}
 
 					}, new Response.ErrorListener() {
@@ -366,43 +370,38 @@ public class ApiNounou {
 					});
 
 			_volleyQueue.add(jsObjRequest);
-			
+
 		}
-	
 
 	}
-	
-	private static void onLogin(JSONObject response,Context activityConnection,String email,String password ){
-		
-	
+
+	private static void onLogin(JSONObject response,
+			Context activityConnection, String email, String password) {
+
 		try {
 			/* On récupère le code HTTP reçu et on traite selon */
 			int codeHTTP = response.getInt("code");
 			/*
-			 * Si le mot de passe ne correspond pas ou si
-			 * l'email ne correspond pas à aucune Nounou
+			 * Si le mot de passe ne correspond pas ou si l'email ne correspond
+			 * pas à aucune Nounou
 			 */
 			if (codeHTTP == 401 || codeHTTP == 404)
 				Toast.makeText(activityConnection,
-						"Email ou mot de passe incorrect.",
-						Toast.LENGTH_LONG).show();
+						"Email ou mot de passe incorrect.", Toast.LENGTH_LONG)
+						.show();
 
 			/* Si les mots de passe correspondent */
 			else {
 
 				/*
-				 * On récupère l'id de la Nounou renvoyé par le
-				 * serveur
+				 * On récupère l'id de la Nounou renvoyé par le serveur
 				 */
 				String idNounou = response.getString("message");
-				Intent listeNounous = new Intent(
-						activityConnection,
+				Intent listeNounous = new Intent(activityConnection,
 						ListDesNounous.class);
-				SessionManager sm = new SessionManager(
-						activityConnection);
+				SessionManager sm = new SessionManager(activityConnection);
 				sm.createUserLoginSession(idNounou, email);
-				Toast.makeText(activityConnection,
-						 " vous êtes connecté!",
+				Toast.makeText(activityConnection, " vous êtes connecté!",
 						Toast.LENGTH_LONG).show();
 				activityConnection.startActivity(listeNounous);
 			}
@@ -423,52 +422,53 @@ public class ApiNounou {
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(
 				activityUtilisateur).getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(activityUtilisateur);
-        String url=UrlServer.getServerUrl() + "/api/nounou/"+ idNounou;
-				
-        /*Si il y a l'url dans le cache on l'utilise*/
-		if (_volleyQueue.getCache().get(url) != null){
-			
+		String url = UrlServer.getServerUrl() + "/api/nounou/" + idNounou;
+
+		/* Si il y a l'url dans le cache on l'utilise */
+		if (_volleyQueue.getCache().get(url) != null) {
+
 			JSONObject cacheContent = null;
 			try {
-				cacheContent = new JSONObject(new String(
-						_volleyQueue.getCache().get(url).data));
-			} catch (JSONException e) {			
+				cacheContent = new JSONObject(new String(_volleyQueue
+						.getCache().get(url).data));
+			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			
+
 			try {
-				afficherProfil(activityUtilisateur,cacheContent,listEditText,imageProfil);
-			} catch (JSONException e) {				
+				afficherProfil(activityUtilisateur, cacheContent, listEditText,
+						imageProfil);
+			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-			
-		}/*Sinon appel serveur*/
-		else{
-			
+
+		}/* Sinon appel serveur */
+		else {
+
 			JsonObjectRequest jsObjRequest = new JsonObjectRequest(
 
-					Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+			Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
-						@Override
-						public void onResponse(JSONObject response) {
+				@Override
+				public void onResponse(JSONObject response) {
 
-							try {
-								afficherProfil(activityUtilisateur, response, listEditText,
-										imageProfil);
-							} catch (JSONException e) {
-								e.printStackTrace();
-							}
-						}
-					}, new Response.ErrorListener() {
+					try {
+						afficherProfil(activityUtilisateur, response,
+								listEditText, imageProfil);
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+			}, new Response.ErrorListener() {
 
-						@Override
-						public void onErrorResponse(VolleyError error) {
-							Log.i("ERROR---------", error.toString());
-						}
-					});
-					_volleyQueue.add(jsObjRequest);			
+				@Override
+				public void onErrorResponse(VolleyError error) {
+					Log.i("ERROR---------", error.toString());
+				}
+			});
+			_volleyQueue.add(jsObjRequest);
 		}
-	
+
 	}
 
 	/* Affiche le compte de l'utilisateur avec toutes ses informations */
@@ -484,7 +484,7 @@ public class ApiNounou {
 		EditText civilite = (EditText) listEditText.get("civilite");
 		EditText password = (EditText) listEditText.get("password");
 		EditText adresse = (EditText) listEditText.get("adresse");
-		EditText ville=(EditText) listEditText.get("ville");
+		EditText ville = (EditText) listEditText.get("ville");
 		EditText telephone = (EditText) listEditText.get("telephone");
 		EditText disponibilite = (EditText) listEditText.get("disponibilite");
 		EditText description = (EditText) listEditText.get("description");
@@ -516,7 +516,9 @@ public class ApiNounou {
 	}
 
 	@SuppressWarnings("deprecation")
-	public static void updateProfil(final String idNounou,final Context activityUtilisateur, final Nounou nounou,final String cheminPhoto) throws JSONException {
+	public static void updateProfil(final String idNounou,
+			final Context activityUtilisateur, final Nounou nounou,
+			final String cheminPhoto) throws JSONException {
 
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(
 				activityUtilisateur).getRequestQueue();
@@ -536,7 +538,8 @@ public class ApiNounou {
 			paramsBody.put("ville", nounou.getVille());
 			paramsBody.put("email", nounou.getEmail());
 			paramsBody.put("tarifHoraire", nounou.getTarifHoraire());
-			paramsBody.put("descriptionPrestation",nounou.getDescriptionPrestation());
+			paramsBody.put("descriptionPrestation",
+					nounou.getDescriptionPrestation());
 			paramsBody.put("telephone", nounou.getTelephone());
 			paramsBody.put("disponibilite", nounou.getDisponibilite());
 			paramsBody.put("cheminPhoto", "chemin");
@@ -577,9 +580,7 @@ public class ApiNounou {
 
 		String paramsUrl = "?time=" + timestampClient + "&login=abcd4ABCD"
 				+ "&signature=" + signatureClient;
-		
-		
-		
+
 		JsonObjectRequest jsObjRequest = new JsonObjectRequest(
 
 		Request.Method.PUT, UrlServer.getServerUrl() + "/api/nounou/"
@@ -616,7 +617,7 @@ public class ApiNounou {
 
 		/*
 		 * Mise à jour de la photo de profil réalisée séparemment A mettre dans
-		 * un Thread séparé de l'UI Volley de gérant pas les paramètres de type
+		 * un Thread séparé de Volley de gérant pas les paramètres de type
 		 * fichier, et n'ayant pas besoin de cache dans ce cas on passe par une
 		 * requete POST classique.
 		 */
@@ -645,7 +646,6 @@ public class ApiNounou {
 
 					Log.i("Api ", "reponse :" + e.toString());
 				}
-
 			}
 
 		};
@@ -744,12 +744,11 @@ public class ApiNounou {
 
 						activityInscription.startActivity(intent);
 					}
-
-					else
+					else {
 						Toast.makeText(activityInscription,
 								"Erreur dans la création !", Toast.LENGTH_LONG)
 								.show();
-
+					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}

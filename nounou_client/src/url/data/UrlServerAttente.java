@@ -4,7 +4,7 @@ public class UrlServerAttente {
 	private String CALL_URL;
 	private String TIMESTAMP;
 	/**
-	 * Le label peut être update,insert ou delete
+	 * Le label peut être update, insert, delete ou photo
 	 */
 	private String LABEL;
 	

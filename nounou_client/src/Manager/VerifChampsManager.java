@@ -51,7 +51,10 @@ public class VerifChampsManager {
 		return result;
 	}
 	public boolean adresse(String adresse){
-		result = true;
+		result = false;
+		if (adresse.length() != 0){
+			result = true;
+		}
 		return result;
 	}
 	public boolean ville(String ville){
@@ -85,7 +88,10 @@ public class VerifChampsManager {
 		return result;
 	}
 	public boolean description(String description){
-		result = true;
+		result = false;
+		if (description.length() != 0){
+			result = true;
+		}		
 		return result;
 	}
 	public boolean tel(String tel){
@@ -99,7 +105,10 @@ public class VerifChampsManager {
 		return result;
 	}
 	public boolean dispo(String dispo){
-		result = true;
+		result = false;
+		if (dispo.length() != 0){
+			result = true;
+		}
 		return result;
 	}
 	public boolean mdp(String mdp){

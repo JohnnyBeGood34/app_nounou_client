@@ -34,4 +34,8 @@ public class Hmac {
         String hmac = Signature.calculateRFC2104HMAC(concat, CLE);
         return hmac;
     }
+    
+    public static String getLogin(){
+    	return LOGIN;
+    }
 }

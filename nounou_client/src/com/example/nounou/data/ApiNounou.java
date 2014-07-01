@@ -578,7 +578,7 @@ public class ApiNounou {
 			e1.printStackTrace();
 		}
 
-		String paramsUrl = "?time=" + timestampClient + "&login=abcd4ABCD"
+		String paramsUrl = "?time=" + timestampClient + "&login="+Auth.Hmac.getLogin()
 				+ "&signature=" + signatureClient;
 
 		JsonObjectRequest jsObjRequest = new JsonObjectRequest(
@@ -675,8 +675,7 @@ public class ApiNounou {
 		paramsBody.put("ville", nounou.getVille());
 		paramsBody.put("email", nounou.getEmail());
 		paramsBody.put("tarifHoraire", nounou.getTarifHoraire());
-		paramsBody.put("descriptionPrestation",
-				nounou.getDescriptionPrestation());
+		paramsBody.put("descriptionPrestation",nounou.getDescriptionPrestation());
 		paramsBody.put("telephone", nounou.getTelephone());
 		paramsBody.put("disponibilite", nounou.getDisponibilite());
 		paramsBody.put("cheminPhoto", "chemin");
@@ -712,7 +711,7 @@ public class ApiNounou {
 			e1.printStackTrace();
 		}
 
-		String paramsUrl = "?time=" + timestampClient + "&login=abcd4ABCD"
+		String paramsUrl = "?time=" + timestampClient + "&login="+Auth.Hmac.getLogin()
 				+ "&signature=" + signatureClient;
 
 		JsonObjectRequest jsObjRequest = new JsonObjectRequest(
@@ -808,7 +807,7 @@ public class ApiNounou {
 			e1.printStackTrace();
 		}
 
-		String paramsUrl = "?time=" + timestampClient + "&login=abcd4ABCD"
+		String paramsUrl = "?time=" + timestampClient + "&login="+Auth.Hmac.getLogin()
 				+ "&signature=" + signatureClient;
 
 		JsonObjectRequest jsObjRequest = new JsonObjectRequest(

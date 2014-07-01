@@ -27,7 +27,6 @@ public class MainActivity extends Activity {
 
 		final LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 		if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-			Log.i("GPS++++++++++","NON ACTIVE");
 			// Demande a l'utilisateur si il veut activer son gps
 			AlertDialog.Builder builder = new AlertDialog.Builder(this);
 			builder.setTitle("GPS manager");

@@ -31,6 +31,7 @@ public class PageConnexion extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_page_connexion);
+		setTitle("Connexion");
 		ret=(Button)findViewById(R.id.buttonRetourConnexion);
 		val=(Button)findViewById(R.id.ButtonValider);
 		et = (EditText)findViewById(R.id.username);

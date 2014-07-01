@@ -886,8 +886,7 @@ public class ApiNounou {
 			@Override
 			public void onResponse(ImageContainer response, boolean arg1) {
 
-				Log.i("Api",
-						"Get image url reponse :" + response.getRequestUrl());
+				Log.i("Api","Get image url reponse :" + response.getRequestUrl());
 				if (response.getBitmap() != null) {
 					imageView.setImageBitmap(response.getBitmap());
 				}

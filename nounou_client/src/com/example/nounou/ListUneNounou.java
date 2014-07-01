@@ -23,7 +23,8 @@ public class ListUneNounou extends Activity {
 		protected void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.activity_list_une_nounou);
-			
+
+			setTitle("Detail nounou");
 			//final NounouBdd db=new NounouBdd(this);
 			//db.open();
 			Bundle extra = getIntent().getExtras();

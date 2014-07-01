@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 public class ConnectivityChangeReceiver extends BroadcastReceiver {
 	static ProgressDialog dialog=null;
@@ -15,7 +16,11 @@ public class ConnectivityChangeReceiver extends BroadcastReceiver {
 	   dialog = ProgressDialog.show(context, "", "En attente d'une connexion...");
       if(debugIntent(intent, "Network State") == true){
     	  dialog.hide();
+    	  Log.i("INFO CONNEXION-----------","CO");
     	  context.startActivity(new Intent(context, ListDesNounous.class));
+      }
+      else{
+    	  Log.i("INFO CONNEXION-----------","PAS CO");
       }
    }
    

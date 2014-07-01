@@ -35,7 +35,7 @@ public class Utilisateur extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_utilisateur);
-		
+		setTitle("Votre profil");
 		annuler = (Button) findViewById(R.id.buttonAn);
 		valider = (Button) findViewById(R.id.buttonVal);
 		supprimer = (Button) findViewById(R.id.buttonSup);

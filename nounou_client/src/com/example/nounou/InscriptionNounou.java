@@ -30,6 +30,7 @@ public class InscriptionNounou extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_inscription_nounou);
+		setTitle("Inscription, veuillez renseigner tous les champs");
 		//Buttons
 		boutonAnnuler = (Button) findViewById(R.id.buttonAn);
 		boutonvalider = (Button) findViewById(R.id.buttonVal);
@@ -72,8 +73,7 @@ public class InscriptionNounou extends Activity {
 		boutonvalider.setOnClickListener(new OnClickListener() {
         	@Override
         	public void onClick(View v) {
-        		Log.i("Api","click valider");   		              
-                
+        		  		             
                 Nounou nounou= new Nounou();
 				
 				nounou.setNom(nom.getText().toString());

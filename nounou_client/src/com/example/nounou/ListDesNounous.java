@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 @SuppressLint("ServiceCast")
 public class ListDesNounous extends Activity {
-
+	
 	String URL = UrlServer.getServerUrl();
 	Button connexion, inscription;
 	TextView distance_text;
@@ -38,7 +38,7 @@ public class ListDesNounous extends Activity {
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_list_des_nounous);
-
+		setTitle("Liste des nounous proches de chez vous");
 		connexion = (Button) findViewById(R.id.buttonConnexion);
 		inscription = (Button) findViewById(R.id.buttonInscription);
 		distance_text = (TextView) findViewById(R.id.tvdistance);

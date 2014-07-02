@@ -9,10 +9,12 @@ import com.example.nounou.data.ApiNounou;
 import com.example.nounou.data.Nounou;
 
 import Manager.SessionManager;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore.MediaColumns;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
@@ -35,7 +37,8 @@ public class Utilisateur extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_utilisateur);
-		
+		final ConnectivityManager cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		setTitle("Votre profil");
 		annuler = (Button) findViewById(R.id.buttonAn);
 		valider = (Button) findViewById(R.id.buttonVal);
 		supprimer = (Button) findViewById(R.id.buttonSup);
@@ -86,7 +89,7 @@ public class Utilisateur extends Activity {
         final String  idNounou = extra.getString("id");
         
         /* Appel de l'API qui va remplir les champs du profil en fonction de l'ID de la Nounou */
-        ApiNounou.getProfil(idNounou, this,listEditText,photoView);
+        ApiNounou.getProfil(idNounou, this,listEditText,photoView,cm);
         
                
 		
@@ -117,14 +120,12 @@ public class Utilisateur extends Activity {
         		nounou.setTarifHoraire(tarifHoraire.getText().toString());
         		nounou.setDisponibilite(disponibilite.getText().toString());
         		nounou.setTelephone(telephone.getText().toString());
-        		
         		try {
-					ApiNounou.updateProfil(idNounou,Utilisateur.this,nounou,cheminImageProfil);
+					ApiNounou.updateProfil(idNounou,Utilisateur.this,nounou,cheminImageProfil,cm);
 				} catch (JSONException e) {					
 					e.printStackTrace();
 				}
-        		        		
-        		
+        		  
         		Intent intent=new Intent(Utilisateur.this,ListDesNounous.class);
         		intent.putExtra("id",email.getText().toString());
     			startActivity(intent);
@@ -137,9 +138,12 @@ public class Utilisateur extends Activity {
 			@Override
         	public void onClick(View v) {
 				
+				ConnectivityManager cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+				ApiNounou.deleteProfil(Utilisateur.this,idNounou,cm);
 				
-				ApiNounou.deleteProfil(Utilisateur.this,idNounou);
-								
+				Intent intent=new Intent(Utilisateur.this,ListDesNounous.class);
+        		intent.putExtra("id",email.getText().toString());
+    			startActivity(intent);				
         	}
 		});
 	}
@@ -175,5 +179,5 @@ public class Utilisateur extends Activity {
      
      
     }
-
+    
 }

@@ -196,6 +196,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/edDispo"
+         android:visibility="gone"
         android:ems="10"
         android:text="Mot de passe" /> 
     <EditText
@@ -205,6 +206,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvMdp"
         android:ems="10"
+        android:visibility="gone"
         android:singleLine="true" />
 
     <LinearLayout

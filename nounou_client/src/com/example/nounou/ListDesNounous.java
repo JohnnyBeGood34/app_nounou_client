@@ -2,16 +2,15 @@ package com.example.nounou;
 
 import com.example.nounou.data.ApiNounou;
 
+import Manager.ConnexionManager;
 import Manager.SessionManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
@@ -25,7 +24,7 @@ import android.widget.Toast;
 
 @SuppressLint("ServiceCast")
 public class ListDesNounous extends Activity {
-
+	
 	String URL = UrlServer.getServerUrl();
 	Button connexion, inscription;
 	TextView distance_text;
@@ -38,10 +37,14 @@ public class ListDesNounous extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		final LocationManager locationManager = (LocationManager) this
+				.getSystemService(Context.LOCATION_SERVICE);
+		final ConnectivityManager cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
+		final Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_list_des_nounous);
-
+		setTitle("Liste des nounous proches de chez vous");
 		connexion = (Button) findViewById(R.id.buttonConnexion);
 		inscription = (Button) findViewById(R.id.buttonInscription);
 		distance_text = (TextView) findViewById(R.id.tvdistance);
@@ -64,48 +67,27 @@ public class ListDesNounous extends Activity {
 		 * Localisation
 		 */
 
-		LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-		//Si le GPS n'est activé pas activé
+		
+		// Si le GPS n'est activé pas activé
 		if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-			Log.i("GPS","non activé");
-			// Demande a l'utilisateur si il veut activer son gps
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-			builder.setTitle("GPS manager");
-			builder.setMessage("Voulez vous activer la fonction GPS de votre telephone?");
-			builder.setPositiveButton("Oui",
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							// Lancement des settings pour activer le GPS
-							Intent i = new Intent(
-									Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-							startActivity(i);
-						}
-					});
-			builder.setNegativeButton("Non",
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.cancel();
-							ApiNounou.getAllNounousApi(URL + "/api/nounous", ListDesNounous.this, mainListView);
-						}
-					});
-			builder.create().show();
-		}else{
-			Log.i("GPS","activé");
-		    //Si le GPS est activé on récupere la derniere latitude et longitude connue
-			Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-			if(location != null){
+			ApiNounou.getAllNounousApi(URL + "/api/nounous",
+					ListDesNounous.this, mainListView,cm);
+		} else {
+			Log.i("GPS", "activé");
+			// Si le GPS est activé on récupere la derniere latitude et
+			// longitude connue
+			if (location != null) {
 				latitude = String.valueOf(location.getLatitude());
 				longitude = String.valueOf(location.getLongitude());
-				ApiNounou.getAllNounousApi(URL + "/api/nounous/latitude/"+ latitude + "/longitude/" + longitude, this, mainListView);
-			}
-			else
-			{
-				ApiNounou.getAllNounousApi(URL + "/api/nounous", this, mainListView);
+				ApiNounou.getAllNounousApi(URL + "/api/nounous/latitude/"
+						+ latitude + "/longitude/" + longitude, this,
+						mainListView,cm);
+			} else {
+				ApiNounou.getAllNounousApi(URL + "/api/nounous", this,
+						mainListView,cm);
 			}
 		}
-		
+
 		connexion.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -161,7 +143,7 @@ public class ListDesNounous extends Activity {
 					@Override
 					public void onStopTrackingTouch(SeekBar seekBar) {
 						distance_text.setText(String.valueOf(progressChanged
-								+ "Km"));
+								+ " Km"));
 
 						/*
 						 * On actualise la liste des Nounous se trouvant dans le
@@ -171,19 +153,25 @@ public class ListDesNounous extends Activity {
 						 * TODO Remplacer la latitude/longitude par les
 						 * véritbles coordonnées
 						 */
-						if (progressChanged != 0)
-							ApiNounou.getAllNounousApi(
-									URL + "/api/nounous/latitude/" + latitude
-											+ "/longitude/" + longitude
-											+ "/kilometres/"
-											+ String.valueOf(progressChanged),
-									ListDesNounous.this, mainListView);
-						else
-							ApiNounou.getAllNounousApi(URL
-									+ "/api/nounous/latitude/" + latitude
-									+ "/longitude/" + longitude,
-									ListDesNounous.this, mainListView);
-
+						//Si on a une position gps et de la connexion
+						if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && ConnexionManager.testConnexion(cm) && location != null) {
+							if (progressChanged != 0) {
+								ApiNounou.getAllNounousApi(
+										URL
+												+ "/api/nounous/latitude/"
+												+ latitude
+												+ "/longitude/"
+												+ longitude
+												+ "/kilometres/"
+												+ String.valueOf(progressChanged),
+										ListDesNounous.this, mainListView,cm);
+							} else {
+								ApiNounou.getAllNounousApi(URL
+										+ "/api/nounous/latitude/" + latitude
+										+ "/longitude/" + longitude,
+										ListDesNounous.this, mainListView,cm);
+							}
+						}
 					}
 				});
 

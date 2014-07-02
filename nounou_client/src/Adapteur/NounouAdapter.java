@@ -90,7 +90,7 @@ public class NounouAdapter implements ListAdapter {
 			holder = (CustomNounouHolder) convertView.getTag();
 		}
 		
-		holder.nom.setText(nounou.getNom());
+		holder.nom.setText(nounou.getPrenom()+" "+nounou.getNom());
 		holder.email.setText(nounou.getEmail());
 		holder.distance.setText(nounou.getDistance()+" Km");
 		ApiNounou.getImageFromUrl(URL+nounou.getCheminPhoto(), holder.image, this._ctx);

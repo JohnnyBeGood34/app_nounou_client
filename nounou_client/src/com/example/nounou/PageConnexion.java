@@ -15,7 +15,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -32,6 +31,7 @@ public class PageConnexion extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_page_connexion);
+		setTitle("Connexion");
 		ret=(Button)findViewById(R.id.buttonRetourConnexion);
 		val=(Button)findViewById(R.id.ButtonValider);
 		et = (EditText)findViewById(R.id.username);

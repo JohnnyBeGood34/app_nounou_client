@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 public class ListUneNounou extends Activity {
 	TextView nom,prenom,date,tarif,dispo,tel,des,email;
-	Button boutonRetour;
+	Button boutonRetour, boutonMap;
 		@Override
 		protected void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState);
@@ -33,6 +33,7 @@ public class ListUneNounou extends Activity {
 	        String  idNounou = extra.getString("id");
 			Log.i("Api ","ID :"+idNounou);			
 			boutonRetour = (Button)findViewById(R.id.buttonRetour);
+			boutonMap = (Button)findViewById(R.id.buttonMap);
 			HashMap<String, TextView> arrayTextView = new HashMap<String, TextView>();
 			
 			nom=(TextView) findViewById(R.id.tvNom);
@@ -61,6 +62,13 @@ public class ListUneNounou extends Activity {
 	        	@Override
 	        	public void onClick(View v) {
 	        		Intent intent=new Intent(ListUneNounou.this,ListDesNounous.class);
+	    			startActivity(intent);
+	        	}
+	        });
+			boutonMap.setOnClickListener(new OnClickListener() {
+	        	@Override
+	        	public void onClick(View v) {
+	        		Intent intent=new Intent(ListUneNounou.this,MapNounou.class);
 	    			startActivity(intent);
 	        	}
 	        });

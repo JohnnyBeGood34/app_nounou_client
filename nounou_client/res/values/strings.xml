@@ -11,5 +11,6 @@
     <string name="title_activity_inscription_nounou">InscriptionNounou</string>
     <string name="title_activity_test">Test</string>
     <string name="title_activity_list_des_nounous">ListDesNounous</string>
+    <string name="title_activity_map_nounou">MapNounou</string>
 	<string name="upload">Photo de profil</string>
 </resources>

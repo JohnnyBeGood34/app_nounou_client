@@ -10,7 +10,7 @@ public class UrlServerAttente {
 	
 	private String PARAM_BODY;
 	
-	UrlServerAttente(String url,String timestamp,String label,String params){
+	public UrlServerAttente(String url,String timestamp,String label,String params){
 		this.CALL_URL = url;
 		this.TIMESTAMP = timestamp;
 		this.LABEL = label;

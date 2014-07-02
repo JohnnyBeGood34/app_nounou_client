@@ -1,6 +1,10 @@
 package com.example.nounou;
 
+import java.util.List;
 import java.util.Timer;
+
+import url.data.UrlServerAttente;
+import url.data.UrlServerAttenteDao;
 
 import Manager.ConnectivityChangeReceiver;
 import Manager.ConnexionManager;
@@ -71,7 +75,18 @@ public class MainActivity extends Activity {
 			 * */
 			timer.schedule(clearTask, 10*60*1000,10*60*1000);//ici 10 => 10 minutes
 		}
-		
+		/*
+		UrlServerAttenteDao urlAttente = new UrlServerAttenteDao(this);
+		urlAttente.open();
+		List<UrlServerAttente> listeTest = urlAttente.getAllurl();
+		for(UrlServerAttente url : listeTest){
+			Log.i("INFO URL ATTENTE",url.getCallurl());
+		}
+		urlAttente.deleteAll();
+		for(UrlServerAttente url : listeTest){
+			Log.i("INFO URL ATTENTE AFTER DELETE",url.getCallurl());
+		}
+		urlAttente.close();*/
 	}
 
 	@Override

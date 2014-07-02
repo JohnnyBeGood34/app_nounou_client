@@ -6,8 +6,10 @@ import com.example.nounou.data.ApiNounou;
 import com.example.nounou.data.Nounou;
 
 import Manager.VerifChampsManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.text.Html;
 import android.util.Log;
@@ -146,8 +148,12 @@ public class InscriptionNounou extends Activity {
 				}
 				
 				else{
+					ConnectivityManager cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 					try {
-						ApiNounou.createNounou(InscriptionNounou.this,nounou);
+						ApiNounou.createNounou(InscriptionNounou.this,nounou,cm);
+						Intent intent=new Intent(InscriptionNounou.this,ListDesNounous.class);
+		        		intent.putExtra("id",email.getText().toString());
+		    			startActivity(intent);
 						} catch (JSONException e) {
 							
 							e.printStackTrace();

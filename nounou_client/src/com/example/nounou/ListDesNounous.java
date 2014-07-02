@@ -2,9 +2,11 @@ package com.example.nounou;
 
 import com.example.nounou.data.ApiNounou;
 
+import Manager.ConnexionManager;
 import Manager.SessionManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -35,7 +37,9 @@ public class ListDesNounous extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
+		final LocationManager locationManager = (LocationManager) this
+				.getSystemService(Context.LOCATION_SERVICE);
+		final ConnectivityManager cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_list_des_nounous);
 		setTitle("Liste des nounous proches de chez vous");
@@ -61,8 +65,7 @@ public class ListDesNounous extends Activity {
 		 * Localisation
 		 */
 
-		final LocationManager locationManager = (LocationManager) this
-				.getSystemService(Context.LOCATION_SERVICE);
+		
 		// Si le GPS n'est activé pas activé
 		if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 			ApiNounou.getAllNounousApi(URL + "/api/nounous",
@@ -140,7 +143,7 @@ public class ListDesNounous extends Activity {
 					@Override
 					public void onStopTrackingTouch(SeekBar seekBar) {
 						distance_text.setText(String.valueOf(progressChanged
-								+ "Km"));
+								+ " Km"));
 
 						/*
 						 * On actualise la liste des Nounous se trouvant dans le
@@ -150,8 +153,7 @@ public class ListDesNounous extends Activity {
 						 * TODO Remplacer la latitude/longitude par les
 						 * véritbles coordonnées
 						 */
-						if (locationManager
-								.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+						if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && ConnexionManager.testConnexion(cm)) {
 							if (progressChanged != 0) {
 								ApiNounou.getAllNounousApi(
 										URL

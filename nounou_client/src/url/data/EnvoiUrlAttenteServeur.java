@@ -40,12 +40,14 @@ public class EnvoiUrlAttenteServeur {
 	 */
 	private boolean checkUrlAttenteBdd() {
 		boolean urlAttente = false;
+		urlServerDao.open();
 		// On récupère la liste des urls en attente
-		List<UrlServerAttente> urlsEnAttente = urlServerDao.getAllurl();
-		// Si la liste n'est pas vide on renvoi true
-		if (!urlsEnAttente.isEmpty()) {
+		int counturl = urlServerDao.checkUrlAttente();
+		// Si il y a au moins un enregistrement
+		if (counturl != 0) {
 			urlAttente = true;
 		}
+		urlServerDao.close();
 		return urlAttente;
 	}
 
@@ -53,7 +55,10 @@ public class EnvoiUrlAttenteServeur {
 
 		// Si il y a des urls en attente pour le serveur
 		if (checkUrlAttenteBdd()) {
+			Log.i("PASSAGE DANS LE CHECK URL","OUI");
+			urlServerDao.open();
 			List<UrlServerAttente> urlsEnAttente = urlServerDao.getAllurl();
+			urlServerDao.close();
 			for (UrlServerAttente url : urlsEnAttente) {
 				/**
 				 * Récupération du label pour savoir quel methodes volley
@@ -71,6 +76,8 @@ public class EnvoiUrlAttenteServeur {
 					this.envoiPhoto(url);
 				}
 			}
+		}else{
+			Log.i("PASSAGE DANS LE CHECK URL","NON");
 		}
 	}
 
@@ -87,9 +94,25 @@ public class EnvoiUrlAttenteServeur {
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(this.contexte)
 				.getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(this.contexte);
-		JSONObject jsonUpdate = new JSONObject(url.getParamsBody());
+		JSONObject jsonUpdateRecup = new JSONObject(url.getParamsBody());
+		JSONObject jsonUpdate = new JSONObject();
+		jsonUpdate.put("nom", jsonUpdateRecup.get("nom"));
+		jsonUpdate.put("prenom", jsonUpdateRecup.get("prenom"));
+		jsonUpdate.put("dateDeNaissance", jsonUpdateRecup.get("dateDeNaissance"));
+		jsonUpdate.put("civilite", jsonUpdateRecup.get("civilite"));
+		jsonUpdate.put("adresse", jsonUpdateRecup.get("adresse"));
+		jsonUpdate.put("ville", jsonUpdateRecup.get("ville"));
+		jsonUpdate.put("email", jsonUpdateRecup.get("email"));
+		jsonUpdate.put("tarifHoraire", jsonUpdateRecup.get("tarifHoraire"));
+		jsonUpdate.put("descriptionPrestation",jsonUpdateRecup.get("descriptionPrestation"));
+		jsonUpdate.put("telephone",jsonUpdateRecup.get("telephone"));
+		jsonUpdate.put("disponibilite", jsonUpdateRecup.get("disponibilite"));
+		jsonUpdate.put("cheminPhoto", jsonUpdateRecup.get("cheminPhoto"));
+		jsonUpdate.put("password", jsonUpdateRecup.get("password"));
+		Log.i("JSON CONSTRUIT--------",jsonUpdate.toString());
+		
 		JsonObjectRequest jsObjRequest = new JsonObjectRequest(
-
+				
 		Request.Method.PUT, url.getCallurl(), jsonUpdate,
 				new Response.Listener<JSONObject>() {
 
@@ -98,8 +121,10 @@ public class EnvoiUrlAttenteServeur {
 						try {
 							// Si l'update s'est bien passé
 							if (response.getInt("code") == 200) {
-								// On supprime l'URL dans la bdd locale
+								// On supprime l'URL dans la bdd locale*
+								urlServerDao.open();
 								urlServerDao.removeUrl(url.getCallurl());
+								urlServerDao.close();
 							}
 						} catch (JSONException e) {
 							e.printStackTrace();
@@ -126,10 +151,9 @@ public class EnvoiUrlAttenteServeur {
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(this.contexte)
 				.getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(this.contexte);
-		JSONObject jsonDelete = new JSONObject(url.getParamsBody());
 		JsonObjectRequest jsObjRequest = new JsonObjectRequest(
 
-				Request.Method.DELETE, url.getCallurl(), jsonDelete,
+				Request.Method.DELETE, url.getCallurl(), null,
 						new Response.Listener<JSONObject>() {
 							@Override
 							public void onResponse(JSONObject response) {
@@ -137,7 +161,9 @@ public class EnvoiUrlAttenteServeur {
 									//Si on recoit une response 200 OK
 									if (response.getInt("code") == 200) {
 										//On supprimer l'URL sur la bdd locale
+										urlServerDao.open();
 										urlServerDao.removeUrl(url.getCallurl());
+										urlServerDao.close();
 									}
 								} catch (JSONException e) {
 									e.printStackTrace();
@@ -165,9 +191,24 @@ public class EnvoiUrlAttenteServeur {
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(this.contexte)
 				.getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(this.contexte);
-		JSONObject jsonInsert = new JSONObject(url.getParamsBody());
+		JSONObject jsonUpdateRecup = new JSONObject(url.getParamsBody());
+		JSONObject jsonInsert = new JSONObject();
+		jsonInsert.put("nom", jsonUpdateRecup.get("nom"));
+		jsonInsert.put("prenom", jsonUpdateRecup.get("prenom"));
+		jsonInsert.put("dateDeNaissance", jsonUpdateRecup.get("dateDeNaissance"));
+		jsonInsert.put("civilite", jsonUpdateRecup.get("civilite"));
+		jsonInsert.put("adresse", jsonUpdateRecup.get("adresse"));
+		jsonInsert.put("ville", jsonUpdateRecup.get("ville"));
+		jsonInsert.put("email", jsonUpdateRecup.get("email"));
+		jsonInsert.put("tarifHoraire", jsonUpdateRecup.get("tarifHoraire"));
+		jsonInsert.put("descriptionPrestation",jsonUpdateRecup.get("descriptionPrestation"));
+		jsonInsert.put("telephone",jsonUpdateRecup.get("telephone"));
+		jsonInsert.put("disponibilite", jsonUpdateRecup.get("disponibilite"));
+		jsonInsert.put("cheminPhoto", jsonUpdateRecup.get("cheminPhoto"));
+		jsonInsert.put("password", jsonUpdateRecup.get("password"));
+		Log.i("INSERT AUTO JSON------",jsonInsert.toString());
 		JsonObjectRequest jsObjRequest = new JsonObjectRequest(
-
+				
 		Request.Method.POST, url.getCallurl(), jsonInsert,
 				new Response.Listener<JSONObject>() {
 
@@ -177,7 +218,9 @@ public class EnvoiUrlAttenteServeur {
 							// Si on reçoit une response 200 OK
 							if (response.getInt("code") == 200) {
 								// On supprime l'URL dans la bdd locale
+								urlServerDao.open();
 								urlServerDao.removeUrl(url.getCallurl());
+								urlServerDao.close();
 							}
 						} catch (JSONException e) {
 							e.printStackTrace();
@@ -219,7 +262,9 @@ public class EnvoiUrlAttenteServeur {
 				try {
 					HttpResponse response = client.execute(httpPost);
 					// On supprime l'URL dans la bdd locale
+					urlServerDao.open();
 					urlServerDao.removeUrl(url.getCallurl());
+					urlServerDao.close();
 				} catch (ClientProtocolException e) {
 
 					Log.i("Api ", "reponse :" + e.toString());

@@ -90,4 +90,16 @@ public class UrlServerAttenteDao {
 		curseur.close();
 		return URL;
 	}
+	
+	public int checkUrlAttente(){
+		Cursor mCount= managerDb.rawQuery("select count(*) from "+TABLE_NAME, null);
+		mCount.moveToFirst();
+		int count= mCount.getInt(0);
+		mCount.close();
+		return count;
+	}
+	
+	public void deleteAll(){
+		managerDb.delete(TABLE_NAME, null, null);
+	}
 }

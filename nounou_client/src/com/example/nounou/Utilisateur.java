@@ -8,11 +8,14 @@ import org.json.JSONException;
 import com.example.nounou.data.ApiNounou;
 import com.example.nounou.data.Nounou;
 
+import Manager.ConnexionManager;
 import Manager.SessionManager;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore.MediaColumns;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
@@ -117,14 +120,13 @@ public class Utilisateur extends Activity {
         		nounou.setTarifHoraire(tarifHoraire.getText().toString());
         		nounou.setDisponibilite(disponibilite.getText().toString());
         		nounou.setTelephone(telephone.getText().toString());
-        		
+        		ConnectivityManager cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         		try {
-					ApiNounou.updateProfil(idNounou,Utilisateur.this,nounou,cheminImageProfil);
+					ApiNounou.updateProfil(idNounou,Utilisateur.this,nounou,cheminImageProfil,cm);
 				} catch (JSONException e) {					
 					e.printStackTrace();
 				}
-        		        		
-        		
+        		  
         		Intent intent=new Intent(Utilisateur.this,ListDesNounous.class);
         		intent.putExtra("id",email.getText().toString());
     			startActivity(intent);
@@ -137,9 +139,12 @@ public class Utilisateur extends Activity {
 			@Override
         	public void onClick(View v) {
 				
+				ConnectivityManager cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+				ApiNounou.deleteProfil(Utilisateur.this,idNounou,cm);
 				
-				ApiNounou.deleteProfil(Utilisateur.this,idNounou);
-								
+				Intent intent=new Intent(Utilisateur.this,ListDesNounous.class);
+        		intent.putExtra("id",email.getText().toString());
+    			startActivity(intent);				
         	}
 		});
 	}

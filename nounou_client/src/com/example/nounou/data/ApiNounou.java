@@ -58,24 +58,26 @@ import com.example.nounou.ListDesNounous;
 import com.example.nounou.ListUneNounou;
 import com.example.nounou.R;
 import com.example.nounou.UrlServer;
+import com.example.nounou.Utilisateur;
 import com.example.nounou.VolleySingleton;
 
 public class ApiNounou {
 
 	private static NounouAdapter _nounouManager;
 	static ProgressDialog dialog = null;
-
+	/*public static ArrayList<String> urlsListe = new ArrayList<String>();
+	public static HashMap<String,String> urlsProfil = new HashMap<String,String>();*/
 	
 	public static void getAllNounousApi(String url, final Context contexte,
-			final ListView listView) {
+			final ListView listView,final ConnectivityManager cm) {
 		Log.i("URL SERVER---------", url);
 		dialog = ProgressDialog.show(contexte, "", "Chargement...");
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte)
 				.getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(contexte);
 		// _volleyQueue.getCache().clear();
-		/* Si on a un cache pour cette url */
-		if (_volleyQueue.getCache().get(url) != null) {
+		/* Si on a un cache pour cette url mais pas de connexion*/
+		if (_volleyQueue.getCache().get(url) != null && !ConnexionManager.testConnexion(cm)) {
 			Log.i("Api", "get url from cache");
 			try {
 				// On récupère la liste depuis le cache
@@ -240,14 +242,14 @@ public class ApiNounou {
 	 * Permet d'obtenir le détail d'une Nounou parmi la liste
 	 */
 	public static void getUneNounou(final String url, final Context contexte,
-			final HashMap hashMap, final ImageView imageView) {
-
+			final HashMap hashMap, final ImageView imageView,final ConnectivityManager cm) {
+		
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte)
 				.getRequestQueue();
 		_volleyQueue = Volley.newRequestQueue(contexte);
-		// Si on a cette url dans le cache
-		if (_volleyQueue.getCache().get(url) != null) {
-			Log.i("PASSAGE CACHE UNE NOUNOU---------", "OUAI OUAI OUAI");
+		// Si on a cette url dans le cache et qu'on a pas de connexion
+		if (_volleyQueue.getCache().get(url) != null && !ConnexionManager.testConnexion(cm)) {
+			
 			try {
 				// Si il y a un cache on récupère le JSON depuis le cache
 				JSONObject cacheContent = new JSONObject(new String(
@@ -458,7 +460,7 @@ public class ApiNounou {
 	 */
 	public static void getProfil(String idNounou,
 			final Context activityUtilisateur, final HashMap listEditText,
-			final ImageView imageProfil) {
+			final ImageView imageProfil,final ConnectivityManager cm) {
 
 		RequestQueue _volleyQueue = VolleySingleton.getInstance(
 				activityUtilisateur).getRequestQueue();
@@ -466,7 +468,7 @@ public class ApiNounou {
 		String url = UrlServer.getServerUrl() + "/api/nounou/" + idNounou;
 
 		/* Si il y a l'url dans le cache on l'utilise */
-		if (_volleyQueue.getCache().get(url) != null) {
+		if (_volleyQueue.getCache().get(url) != null && !ConnexionManager.testConnexion(cm)) {
 
 			JSONObject cacheContent = null;
 			try {
@@ -638,7 +640,6 @@ public class ApiNounou {
 									Toast.makeText(activityUtilisateur,
 											"Mise à jour du profil réussie !",
 											Toast.LENGTH_LONG).show();
-									
 								}else{
 									Toast.makeText(activityUtilisateur,
 											"Erreur dans la mise à jour !",

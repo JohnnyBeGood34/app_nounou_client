@@ -8,7 +8,6 @@ import org.json.JSONException;
 import com.example.nounou.data.ApiNounou;
 import com.example.nounou.data.Nounou;
 
-import Manager.ConnexionManager;
 import Manager.SessionManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
@@ -38,6 +37,7 @@ public class Utilisateur extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_utilisateur);
+		final ConnectivityManager cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		setTitle("Votre profil");
 		annuler = (Button) findViewById(R.id.buttonAn);
 		valider = (Button) findViewById(R.id.buttonVal);
@@ -89,7 +89,7 @@ public class Utilisateur extends Activity {
         final String  idNounou = extra.getString("id");
         
         /* Appel de l'API qui va remplir les champs du profil en fonction de l'ID de la Nounou */
-        ApiNounou.getProfil(idNounou, this,listEditText,photoView);
+        ApiNounou.getProfil(idNounou, this,listEditText,photoView,cm);
         
                
 		
@@ -120,7 +120,6 @@ public class Utilisateur extends Activity {
         		nounou.setTarifHoraire(tarifHoraire.getText().toString());
         		nounou.setDisponibilite(disponibilite.getText().toString());
         		nounou.setTelephone(telephone.getText().toString());
-        		ConnectivityManager cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         		try {
 					ApiNounou.updateProfil(idNounou,Utilisateur.this,nounou,cheminImageProfil,cm);
 				} catch (JSONException e) {					
@@ -180,5 +179,5 @@ public class Utilisateur extends Activity {
      
      
     }
-
+    
 }

@@ -6,8 +6,10 @@ import java.util.HashMap;
 import com.example.nounou.data.ApiNounou;
 
 
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
@@ -51,8 +53,8 @@ public class ListUneNounou extends Activity {
 			arrayTextView.put("tel", tel);
 			arrayTextView.put("des", des);
 			arrayTextView.put("email", email);
-			
-			ApiNounou.getUneNounou(UrlServer.getServerUrl()+"/api/nounou/"+idNounou,this,arrayTextView,photoView);
+			ConnectivityManager cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+			ApiNounou.getUneNounou(UrlServer.getServerUrl()+"/api/nounou/"+idNounou,this,arrayTextView,photoView,cm);
 			
 			
 			boutonRetour.setOnClickListener(new OnClickListener() {

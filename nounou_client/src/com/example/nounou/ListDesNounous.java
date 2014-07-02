@@ -40,6 +40,8 @@ public class ListDesNounous extends Activity {
 		final LocationManager locationManager = (LocationManager) this
 				.getSystemService(Context.LOCATION_SERVICE);
 		final ConnectivityManager cm =(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+		final Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_list_des_nounous);
 		setTitle("Liste des nounous proches de chez vous");
@@ -69,22 +71,20 @@ public class ListDesNounous extends Activity {
 		// Si le GPS n'est activé pas activé
 		if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 			ApiNounou.getAllNounousApi(URL + "/api/nounous",
-					ListDesNounous.this, mainListView);
+					ListDesNounous.this, mainListView,cm);
 		} else {
 			Log.i("GPS", "activé");
 			// Si le GPS est activé on récupere la derniere latitude et
 			// longitude connue
-			Location location = locationManager
-					.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 			if (location != null) {
 				latitude = String.valueOf(location.getLatitude());
 				longitude = String.valueOf(location.getLongitude());
 				ApiNounou.getAllNounousApi(URL + "/api/nounous/latitude/"
 						+ latitude + "/longitude/" + longitude, this,
-						mainListView);
+						mainListView,cm);
 			} else {
 				ApiNounou.getAllNounousApi(URL + "/api/nounous", this,
-						mainListView);
+						mainListView,cm);
 			}
 		}
 
@@ -153,7 +153,8 @@ public class ListDesNounous extends Activity {
 						 * TODO Remplacer la latitude/longitude par les
 						 * véritbles coordonnées
 						 */
-						if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && ConnexionManager.testConnexion(cm)) {
+						//Si on a une position gps et de la connexion
+						if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && ConnexionManager.testConnexion(cm) && location != null) {
 							if (progressChanged != 0) {
 								ApiNounou.getAllNounousApi(
 										URL
@@ -163,12 +164,12 @@ public class ListDesNounous extends Activity {
 												+ longitude
 												+ "/kilometres/"
 												+ String.valueOf(progressChanged),
-										ListDesNounous.this, mainListView);
+										ListDesNounous.this, mainListView,cm);
 							} else {
 								ApiNounou.getAllNounousApi(URL
 										+ "/api/nounous/latitude/" + latitude
 										+ "/longitude/" + longitude,
-										ListDesNounous.this, mainListView);
+										ListDesNounous.this, mainListView,cm);
 							}
 						}
 					}

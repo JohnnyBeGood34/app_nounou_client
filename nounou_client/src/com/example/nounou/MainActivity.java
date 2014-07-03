@@ -1,10 +1,6 @@
 package com.example.nounou;
 
-import java.util.List;
 import java.util.Timer;
-
-import url.data.UrlServerAttente;
-import url.data.UrlServerAttenteDao;
 
 import Manager.ConnectivityChangeReceiver;
 import Manager.ConnexionManager;
@@ -13,7 +9,6 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;

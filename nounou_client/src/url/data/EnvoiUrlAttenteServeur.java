@@ -21,8 +21,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.nounou.VolleySingleton;
-import com.example.nounou.data.ApiNounou;
-
 import android.content.Context;
 import android.util.Log;
 

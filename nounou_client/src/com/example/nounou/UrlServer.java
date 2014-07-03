@@ -3,7 +3,7 @@ package com.example.nounou;
 public class UrlServer {
 
 
-	private static String url = "http://stefnodejs.azurewebsites.net"; 
+	private static String url = "http://172.20.116.10:3000"; 
 
 
 	

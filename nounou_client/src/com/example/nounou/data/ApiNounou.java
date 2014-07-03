@@ -59,7 +59,6 @@ import com.example.nounou.ListDesNounous;
 import com.example.nounou.ListUneNounou;
 import com.example.nounou.R;
 import com.example.nounou.UrlServer;
-import com.example.nounou.Utilisateur;
 import com.example.nounou.VolleySingleton;
 
 public class ApiNounou {

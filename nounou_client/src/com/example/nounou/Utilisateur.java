@@ -5,25 +5,25 @@ import java.util.HashMap;
 
 import org.json.JSONException;
 
-import com.example.nounou.data.ApiNounou;
-import com.example.nounou.data.Nounou;
-
 import Manager.SessionManager;
-import android.net.ConnectivityManager;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.MediaStore.MediaColumns;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore.MediaColumns;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import com.example.nounou.data.ApiNounou;
+import com.example.nounou.data.Nounou;
 
 public class Utilisateur extends Activity {
 	

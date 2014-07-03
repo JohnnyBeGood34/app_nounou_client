@@ -29,6 +29,7 @@ import url.data.UrlServerAttente;
 import url.data.UrlServerAttenteDao;
 
 import Adapteur.NounouAdapter;
+import Auth.Crypt;
 import Manager.ConnexionManager;
 import Manager.SessionManager;
 import android.app.ProgressDialog;
@@ -385,9 +386,11 @@ public class ApiNounou {
 
 			/* On construit un Objet pour les paramètres à envoyer en POST */
 			JSONObject params = new JSONObject();
+			/*On crypte le mot de passe en MD5 pour ne pas l'envoyer en clair*/
+			String passCrypted=Crypt.toMD5(password);
 			try {
 				params.put("email", email);
-				params.put("password", password);
+				params.put("password", passCrypted);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -572,7 +575,8 @@ public class ApiNounou {
 		long timestampClient = new Timestamp(date.getTime()).getTime();
 
 		JSONObject paramsBody = new JSONObject();
-
+        
+		
 		try {
 			paramsBody.put("nom", nounou.getNom());
 			paramsBody.put("prenom", nounou.getPrenom());
@@ -586,7 +590,7 @@ public class ApiNounou {
 			paramsBody.put("telephone", nounou.getTelephone());
 			paramsBody.put("disponibilite", nounou.getDisponibilite());
 			paramsBody.put("cheminPhoto", "chemin");
-			paramsBody.put("password", nounou.getPassword());
+			paramsBody.put("password",nounou.getPassword());
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -634,13 +638,26 @@ public class ApiNounou {
 
 						@Override
 						public void onResponse(JSONObject response) {
-
+                          try {
+							Log.i("Api update",response.getString("message").toString());
+						} catch (JSONException e1) {
+							
+							e1.printStackTrace();
+						}
 							try {
 								if (response.getInt("code") == 200){
 									Toast.makeText(activityUtilisateur,
 											"Mise à jour du profil réussie !",
 											Toast.LENGTH_LONG).show();
-								}else{
+									
+								}else if(response.getInt("code") == 404){
+									
+									if(response.getInt("message") == 404){
+										Toast.makeText(activityUtilisateur,
+												"Adresse inconnue !",
+												Toast.LENGTH_LONG).show();
+									}
+									else
 									Toast.makeText(activityUtilisateur,
 											"Erreur dans la mise à jour !",
 											Toast.LENGTH_LONG).show();
@@ -733,7 +750,10 @@ public class ApiNounou {
 
 		Date date = new Date();
 		long timestampClient = new Timestamp(date.getTime()).getTime();
-
+        
+		//On crypte le mdp en MD5
+		String password = Crypt.toMD5(nounou.getPassword());
+		
 		JSONObject paramsBody = new JSONObject();
 		paramsBody.put("nom", nounou.getNom());
 		paramsBody.put("prenom", nounou.getPrenom());
@@ -748,7 +768,7 @@ public class ApiNounou {
 		paramsBody.put("telephone", nounou.getTelephone());
 		paramsBody.put("disponibilite", nounou.getDisponibilite());
 		paramsBody.put("cheminPhoto", "chemin");
-		paramsBody.put("password", nounou.getPassword());
+		paramsBody.put("password",password);
 
 		/*
 		 * On contruit l'URL pour la signature avec les params du JSON envoyé en
@@ -784,6 +804,7 @@ public class ApiNounou {
 				+ Auth.Hmac.getLogin() + "&signature=" + signatureClient;
 
 		if (ConnexionManager.testConnexion(cm)) {
+			
 			JsonObjectRequest jsObjRequest = new JsonObjectRequest(
 					Request.Method.POST, UrlServer.getServerUrl()
 							+ "/api/nounous" + paramsUrl, paramsBody,
@@ -813,9 +834,17 @@ public class ApiNounou {
 											Toast.LENGTH_LONG).show();
 
 									activityInscription.startActivity(intent);
-								} else {
+								} 
+								else if(response.getInt("code") == 404){
+									
+									if(response.getInt("message") == 404){
+										Toast.makeText(activityInscription,
+												"Adresse inconnue !",
+												Toast.LENGTH_LONG).show();
+									}
+									else
 									Toast.makeText(activityInscription,
-											"Erreur dans la création !",
+											"Erreur dans la création du profil !",
 											Toast.LENGTH_LONG).show();
 								}
 							} catch (JSONException e) {
@@ -865,18 +894,12 @@ public class ApiNounou {
 		Date date = new Date();
 		long timestampClient = new Timestamp(date.getTime()).getTime();
 
-		JSONObject paramsBody = new JSONObject();
-		try {
-			paramsBody.put("idNounou", idNounou);
-		} catch (JSONException e2) {
-			e2.printStackTrace();
-		}
-
+		
 		/*
 		 * On contruit l'URL pour la signature avec les params du JSON envoyé en
 		 * params
 		 */
-		String urlForSignature = "idNounou=" + idNounou;
+		String urlForSignature = "id="+idNounou;
 
 		/* On crypte l'URL pour faire la signature du client */
 		String signatureClient = "";

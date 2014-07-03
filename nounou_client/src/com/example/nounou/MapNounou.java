@@ -26,10 +26,25 @@ public class MapNounou extends Activity {
         LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE); 
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         
-        _latUtilisateur = location.getLatitude();
-        _lonUtilisateur = location.getLongitude();
-        _latlonUtilisateur = new LatLng(_latUtilisateur, _lonUtilisateur);
-        _Utilisateur = "Vous êtes ici";
+
+        mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+        
+		if(location != null){
+		        	
+			_latUtilisateur = location.getLatitude();
+	        _lonUtilisateur = location.getLongitude();
+	        _latlonUtilisateur = new LatLng(_latUtilisateur, _lonUtilisateur);
+	        _Utilisateur = "Vous êtes ici";
+	      //Place un marqueur sur la carte pour la localisation de l'utilisateur
+	        mMap.addMarker(new MarkerOptions()
+		        .position(_latlonUtilisateur)
+		        //met la couleur du marker en bleu pour l'utilisateur
+		        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+		        .title(_Utilisateur));
+	        
+		}
+        
+        
         
         _latNounou = 43.6200;
         _lonNounou = 3.87672;
@@ -37,17 +52,12 @@ public class MapNounou extends Activity {
         _NomNounou = "Nom de la nounou";
         
 
-        mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+        
         //Place un marqueur sur la carte pour la localisation de la nounou
         mMap.addMarker(new MarkerOptions()
 	        .position(_latlonNounou)
 	        .title(_NomNounou));
-      //Place un marqueur sur la carte pour la localisation de l'utilisateur
-        mMap.addMarker(new MarkerOptions()
-	        .position(_latlonUtilisateur)
-	        //met la couleur du marker en bleu pour l'utilisateur
-	        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
-	        .title(_Utilisateur));
+      
         //Permet de zoomer sur le marker de la nounou, le 12 permet de définir la profondeur du zoom
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(_latlonNounou,12));
 

@@ -212,13 +212,20 @@
 
      </ScrollView>
 
-<Button
+<ImageView
     android:id="@+id/buttonRetour"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
     android:layout_alignParentBottom="true"
     android:layout_alignParentLeft="true"
-    android:background="@drawable/roundrect"
-    android:text="Retour" />
+    android:src="@drawable/arrow_back" />
+
+<ImageView
+    android:id="@+id/buttonMap"
+    android:layout_width="60dp"
+    android:layout_height="60dp"
+    android:layout_alignBottom="@+id/buttonRetour"
+    android:layout_alignRight="@+id/scroll"
+    android:src="@drawable/geoloc"/>
 
 </RelativeLayout>

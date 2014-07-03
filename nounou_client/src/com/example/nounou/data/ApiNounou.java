@@ -35,6 +35,8 @@ import Manager.SessionManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.util.Log;
 import android.view.View;
@@ -60,11 +62,106 @@ import com.example.nounou.ListUneNounou;
 import com.example.nounou.R;
 import com.example.nounou.UrlServer;
 import com.example.nounou.VolleySingleton;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 public class ApiNounou {
 
 	private static NounouAdapter _nounouManager;
 	static ProgressDialog dialog = null;
+	
+	public static void getLatLngNounou(final String url, final Context contexte,final GoogleMap mapNounou,final Location location,final ConnectivityManager cm)
+	{
+		RequestQueue _volleyQueue = VolleySingleton.getInstance(contexte)
+				.getRequestQueue();
+		_volleyQueue = Volley.newRequestQueue(contexte);
+
+		Log.i("URL LAT LNG------",url);
+		if (_volleyQueue.getCache().get(url) != null && !ConnexionManager.testConnexion(cm)) {
+			JSONObject cacheContent;
+			try {
+				cacheContent = new JSONObject(new String(
+						_volleyQueue.getCache().get(url).data));
+				setgoogleMap(cacheContent,mapNounou,location);
+				
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}else{
+			JsonObjectRequest jsObjRequest = new JsonObjectRequest(
+
+					Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+						@Override
+						public void onResponse(JSONObject response) {
+							try {
+								setgoogleMap(response,mapNounou,location);
+						        
+							} catch (JSONException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}, new Response.ErrorListener() {
+						@Override
+						public void onErrorResponse(VolleyError error) {
+							Log.i("ERROR MAP---------", error.toString());
+						}
+					});
+
+					_volleyQueue.add(jsObjRequest);
+		}
+	}
+	
+	private static void setgoogleMap(JSONObject json,GoogleMap mapNounou,Location location) throws NumberFormatException, JSONException{
+		ArrayList<LatLng> markers = new ArrayList<LatLng>();
+		LatLngBounds.Builder builder = new LatLngBounds.Builder();
+		
+		Double latitudeNounou = Double.parseDouble(json.getString("latitude"));
+		Double longitudeNounou = Double.parseDouble(json.getString("longitude"));
+
+		//Si le client à une connexion GPS
+		if(location != null){
+		     //On récupère ses coordonnée et on l'ajoute en marqueur   	
+			Double _latUtilisateur = location.getLatitude();
+			Double _lonUtilisateur = location.getLongitude();
+			LatLng _latlonUtilisateur = new LatLng(_latUtilisateur, _lonUtilisateur);
+			markers.add(_latlonUtilisateur);
+	        String _Utilisateur = "Vous êtes ici";
+	      //Place un marqueur sur la carte pour la localisation de l'utilisateur
+	        MarkerOptions markerClient = new MarkerOptions()
+	        .position(_latlonUtilisateur)
+	        //met la couleur du marker en bleu pour l'utilisateur
+	        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+	        .title(_Utilisateur);
+	        mapNounou.addMarker(markerClient);
+		}
+		LatLng _latlonNounou = new LatLng(latitudeNounou, longitudeNounou);
+		//Place un marqueur sur la carte pour la localisation de la nounou
+        mapNounou.addMarker(new MarkerOptions()
+	        .position(_latlonNounou));
+        markers.add(_latlonNounou);
+                
+        
+        for(LatLng marker:markers){
+        	builder.include(marker);
+        }
+        
+        LatLngBounds bounds = builder.build();
+        int padding = 15;
+        
+        //Permet de zoomer sur le marker de la nounou, le 12 permet de définir la profondeur du zoom
+        mapNounou.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds,padding));
+        
+	}
 	/*public static ArrayList<String> urlsListe = new ArrayList<String>();
 	public static HashMap<String,String> urlsProfil = new HashMap<String,String>();*/
 	
